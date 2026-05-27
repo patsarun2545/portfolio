@@ -3,9 +3,8 @@ import { auth } from "@/lib/auth";
 import prisma from "@/lib/db";
 import { blogSchema } from "@/lib/validations";
 import { z } from "zod";
-import DOMPurify from "isomorphic-dompurify";
 import { checkRateLimit } from "@/lib/rate-limit";
-import { sanitizeText } from "@/lib/sanitize";
+import { sanitizeText, sanitizeHTML } from "@/lib/sanitize";
 
 export async function GET(request: Request) {
   try {
@@ -67,10 +66,10 @@ export async function POST(request: Request) {
       ...validatedData,
       title: sanitizeText(validatedData.title),
       slug: sanitizeText(validatedData.slug),
-      excerpt: validatedData.excerpt ? DOMPurify.sanitize(validatedData.excerpt) : null,
+      excerpt: validatedData.excerpt ? sanitizeHTML(validatedData.excerpt) : null,
       titleTh: validatedData.titleTh ? sanitizeText(validatedData.titleTh) : undefined,
-      excerptTh: validatedData.excerptTh ? DOMPurify.sanitize(validatedData.excerptTh) : undefined,
-      contentTh: validatedData.contentTh ? DOMPurify.sanitize(validatedData.contentTh) : undefined,
+      excerptTh: validatedData.excerptTh ? sanitizeHTML(validatedData.excerptTh) : undefined,
+      contentTh: validatedData.contentTh ? sanitizeHTML(validatedData.contentTh) : undefined,
       tags: validatedData.tags.map((tag) => sanitizeText(tag)),
     };
 
@@ -104,7 +103,7 @@ export async function POST(request: Request) {
       data: {
         ...sanitizedData,
         slug: finalSlug,
-        content: DOMPurify.sanitize(sanitizedData.content),
+        content: sanitizeHTML(sanitizedData.content),
         publishedAt: sanitizedData.isPublished ? new Date() : null,
       },
     });
