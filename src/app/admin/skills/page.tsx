@@ -169,6 +169,7 @@ export default function SkillsPage() {
   });
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/incompatible-library
     const subscription = watch((value, { name }) => {
       if (name === "iconUrl") {
         setIconPreview(value.iconUrl || "");

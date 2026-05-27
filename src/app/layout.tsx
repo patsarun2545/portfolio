@@ -22,20 +22,9 @@ const sarabun = Sarabun({
 });
 
 export const metadata: Metadata = {
-  title: "Portfolio - Your Name",
-  description: "Full Stack Developer specializing in React, Next.js, and Node.js",
-  keywords: ["portfolio", "developer", "react", "nextjs", "nodejs", "fullstack"],
-  authors: [{ name: "Your Name" }],
-  openGraph: {
-    title: "Portfolio - Your Name",
-    description: "Full Stack Developer specializing in React, Next.js, and Node.js",
-    type: "website",
-    locale: "en_US",
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "Portfolio - Your Name",
-    description: "Full Stack Developer specializing in React, Next.js, and Node.js",
+  title: {
+    default: "Portfolio",
+    template: "%s | Portfolio",
   },
   robots: {
     index: true,

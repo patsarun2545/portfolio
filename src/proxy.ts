@@ -1,10 +1,9 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
-import { auth } from "@/lib/auth";
+import { getEdgeSession } from "@/lib/edge-auth";
 import { validateCSRFToken } from "@/lib/csrf";
-import "@/lib/env";
 
-export async function middleware(request: NextRequest) {
+export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
   // Allow access to login page and public API routes
@@ -14,7 +13,7 @@ export async function middleware(request: NextRequest) {
 
   // Protect all /admin routes (both pages and API)
   if (pathname.startsWith("/admin")) {
-    const session = await auth();
+    const session = await getEdgeSession();
 
     if (!session) {
       return NextResponse.redirect(new URL("/admin/login", request.url));

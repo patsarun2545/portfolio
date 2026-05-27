@@ -38,7 +38,7 @@ export async function login(username: string, password: string): Promise<LoginRe
         data: { failedAttempts: 0, lockedUntil: null },
       });
     }
-  } catch (error) {
+  } catch {
     if (user) {
       const newFailedAttempts = user.failedAttempts + 1;
       const MAX_FAILED_ATTEMPTS = 5;
