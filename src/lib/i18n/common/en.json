@@ -1,0 +1,52 @@
+{
+  "nav": {
+    "about": "About",
+    "skills": "Skills",
+    "projects": "Projects",
+    "experience": "Experience",
+    "education": "Education",
+    "blog": "Blog",
+    "contact": "Contact"
+  },
+  "hero": {
+    "downloadResume": "Download Resume",
+    "contactMe": "Contact Me",
+    "github": "GitHub",
+    "linkedin": "LinkedIn"
+  },
+  "skills": {
+    "proficiency": "Proficiency"
+  },
+  "projects": {
+    "featured": "Featured Projects",
+    "other": "Other Projects",
+    "viewCode": "View Code",
+    "viewDemo": "View Demo",
+    "customer": "View Demo Customer",
+    "admin": "View Demo Admin"
+  },
+  "contact": {
+    "name": "Name",
+    "email": "Email",
+    "subject": "Subject",
+    "message": "Message",
+    "send": "Send Message",
+    "success": "Message sent successfully",
+    "error": "An error occurred, please try again",
+    "namePlaceholder": "Your name",
+    "emailPlaceholder": "your@email.com",
+    "subjectPlaceholder": "What's this about?",
+    "messagePlaceholder": "Your message...",
+    "sending": "Sending..."
+  },
+  "error": {
+    "title": "Something went wrong!",
+    "tryAgain": "Try again"
+  },
+  "notFound": {
+    "title": "404",
+    "subtitle": "Page Not Found",
+    "description": "The page you're looking for doesn't exist or has been moved.",
+    "returnHome": "Return Home"
+  }
+}

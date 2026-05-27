@@ -1,0 +1,26 @@
+{
+  "framework": "nextjs",
+  "buildCommand": "npm run build",
+  "devCommand": "npm run dev",
+  "installCommand": "npm install",
+  "functions": {
+    "api/**/*.ts": {
+      "maxDuration": 60
+    }
+  },
+  "env": {
+    "DATABASE_URL": "@database-url",
+    "NEXTAUTH_SECRET": "@nextauth-secret",
+    "NEXTAUTH_URL": "@nextauth-url",
+    "ALLOWED_ORIGINS": "@allowed-origins",
+    "IMAGEKIT_PUBLIC_KEY": "@imagekit-public-key",
+    "IMAGEKIT_PRIVATE_KEY": "@imagekit-private-key",
+    "IMAGEKIT_URL_ENDPOINT": "@imagekit-url-endpoint",
+    "PRISMA_LOG_LEVEL": "error",
+    "UPSTASH_REDIS_REST_URL": "@upstash-redis-rest-url",
+    "UPSTASH_REDIS_REST_TOKEN": "@upstash-redis-rest-token",
+    "UPSTASH_RATELIMIT_LIMIT": "@upstash-ratelimit-limit",
+    "UPSTASH_RATELIMIT_WINDOW": "@upstash-ratelimit-window",
+    "SEED_ADMIN_PASSWORD": "@seed-admin-password"
+  }
+}

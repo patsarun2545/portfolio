@@ -1,0 +1,52 @@
+{
+  "nav": {
+    "about": "เกี่ยวกับฉัน",
+    "skills": "ทักษะ",
+    "projects": "ผลงาน",
+    "experience": "ประสบการณ์",
+    "education": "การศึกษา",
+    "blog": "บทความ",
+    "contact": "ติดต่อ"
+  },
+  "hero": {
+    "downloadResume": "ดาวน์โหลด Resume",
+    "contactMe": "ติดต่อฉัน",
+    "github": "GitHub",
+    "linkedin": "LinkedIn"
+  },
+  "skills": {
+    "proficiency": "ความเชี่ยวชาญ"
+  },
+  "projects": {
+    "featured": "ผลงานเด่น",
+    "other": "ผลงานอื่นๆ",
+    "viewCode": "ดูโค้ด",
+    "viewDemo": "ดูตัวอย่าง",
+    "customer": "ดูตัวอย่าง ลูกค้า",
+    "admin": "ดูตัวอย่าง ผู้ดูแล"
+  },
+  "contact": {
+    "name": "ชื่อ",
+    "email": "อีเมล",
+    "subject": "หัวข้อ",
+    "message": "ข้อความ",
+    "send": "ส่งข้อความ",
+    "success": "ส่งข้อความสำเร็จ",
+    "error": "เกิดข้อผิดพลาด กรุณาลองใหม่",
+    "namePlaceholder": "ชื่อของคุณ",
+    "emailPlaceholder": "your@email.com",
+    "subjectPlaceholder": "เกี่ยวกับอะไร?",
+    "messagePlaceholder": "ข้อความของคุณ...",
+    "sending": "กำลังส่ง..."
+  },
+  "error": {
+    "title": "เกิดข้อผิดพลาด!",
+    "tryAgain": "ลองอีกครั้ง"
+  },
+  "notFound": {
+    "title": "404",
+    "subtitle": "ไม่พบหน้า",
+    "description": "หน้าที่คุณกำลังค้นหาไม่มีอยู่หรือถูกย้ายไปแล้ว",
+    "returnHome": "กลับหน้าแรก"
+  }
+}
