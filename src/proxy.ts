@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
-import { getEdgeSession } from "@/lib/edge-auth";
+import { auth } from "@/lib/auth";
 import { validateCSRFToken } from "@/lib/csrf";
 
 export async function proxy(request: NextRequest) {
@@ -13,7 +13,7 @@ export async function proxy(request: NextRequest) {
 
   // Protect all /admin routes (both pages and API)
   if (pathname.startsWith("/admin")) {
-    const session = await getEdgeSession();
+    const session = await auth();
 
     if (!session) {
       return NextResponse.redirect(new URL("/admin/login", request.url));
