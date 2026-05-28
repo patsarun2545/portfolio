@@ -22,6 +22,7 @@
     "other": "Other Projects",
     "viewCode": "View Code",
     "viewDemo": "View Demo",
+    "liveDemo": "Live Demo",
     "customer": "View Demo Customer",
     "admin": "View Demo Admin"
   },
@@ -48,5 +49,10 @@
     "subtitle": "Page Not Found",
     "description": "The page you're looking for doesn't exist or has been moved.",
     "returnHome": "Return Home"
+  },
+  "blog": {
+    "showMore": "Show more →",
+    "showLess": "Show less ↑",
+    "readMore": "Read more →"
   }
 }

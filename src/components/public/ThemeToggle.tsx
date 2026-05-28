@@ -16,18 +16,18 @@ export default function ThemeToggle() {
   return (
     <button
       onClick={() => setTheme(resolvedTheme === "dark" ? "light" : "dark")}
-      className="p-1.5 rounded-md bg-gray-200 dark:bg-gray-800 hover:bg-gray-300 dark:hover:bg-gray-700 transition-colors border border-border/50 shadow-sm"
+      className="p-1.5 rounded-sm bg-transparent border border-border hover:border-foreground transition-colors"
       aria-label="Toggle theme"
       suppressHydrationWarning
     >
       {mounted ? (
         resolvedTheme === "dark" ? (
-          <Sun className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+          <Sun className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-muted-foreground hover:text-primary transition-colors" />
         ) : (
-          <Moon className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+          <Moon className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-muted-foreground hover:text-primary transition-colors" />
         )
       ) : (
-        <Moon className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+        <Moon className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-muted-foreground hover:text-primary transition-colors" />
       )}
     </button>
   );

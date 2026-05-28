@@ -41,33 +41,35 @@ export default function Navbar() {
   return (
     <nav
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isScrolled
-        ? "bg-background/80 backdrop-blur-md shadow-lg"
+        ? "bg-background/90 backdrop-blur-sm border-b border-border"
         : "bg-transparent"
         }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-14 sm:h-16">
-          <div className="shrink-0">
+          <div className="shrink-0 mr-8">
             <a
               href="#"
-              className="text-xl sm:text-2xl font-bold bg-linear-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent"
+              className="font-mono md:text-sm lg:text-base text-foreground"
             >
-              Portfolio
+              [ Portfolio ]
             </a>
           </div>
 
-          <div className="hidden md:flex items-center space-x-4 sm:space-x-6 lg:space-x-8">
+          <div className="hidden md:flex items-center md:space-x-4 lg:space-x-6">
             {navItems.map((item) => (
-              <button
-                key={item.key}
-                onClick={() => scrollToSection(item.href)}
-                className="text-sm sm:text-base text-foreground hover:text-primary transition-colors"
-                aria-label={`Navigate to ${t(`nav.${item.key}`)}`}
-              >
-                {t(`nav.${item.key}`)}
-              </button>
+              <span key={item.key} className="relative group">
+                <button
+                  onClick={() => scrollToSection(item.href)}
+                  className="font-mono text-sm uppercase md:tracking-wider tracking-widest text-muted-foreground hover:text-primary transition-colors"
+                  aria-label={`Navigate to ${t(`nav.${item.key}`)}`}
+                >
+                  {t(`nav.${item.key}`)}
+                </button>
+                <span className="absolute -bottom-px left-0 right-0 h-px bg-primary scale-x-0 group-hover:scale-x-100 transition-transform duration-200 origin-left" />
+              </span>
             ))}
-            <div className="flex items-center gap-2 pl-4 border-l border-border/50">
+            <div className="flex items-center gap-2 pl-4 border-l border-border">
               <LanguageToggle />
               <ThemeToggle />
             </div>
@@ -80,7 +82,7 @@ export default function Navbar() {
             </div>
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="p-2 rounded-lg text-foreground"
+              className="p-2 rounded-sm text-muted-foreground hover:text-primary transition-colors"
               aria-label={isMobileMenuOpen ? "Close menu" : "Open menu"}
               aria-expanded={isMobileMenuOpen}
             >
@@ -101,9 +103,9 @@ export default function Navbar() {
               <button
                 key={item.key}
                 onClick={() => scrollToSection(item.href)}
-                className="block w-full text-left px-3 sm:px-4 py-2 sm:py-2.5 text-sm sm:text-base text-foreground hover:bg-accent rounded-lg transition-colors"
+                className="block w-full text-left px-3 sm:px-4 py-3 font-mono text-sm text-muted-foreground hover:text-primary transition-colors"
               >
-                {t(`nav.${item.key}`)}
+                → {t(`nav.${item.key}`)}
               </button>
             ))}
           </div>

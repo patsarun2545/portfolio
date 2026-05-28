@@ -15,9 +15,9 @@ export default function ScrollToContactButton() {
   return (
     <button
       onClick={scrollToContact}
-      className="inline-flex items-center justify-center px-5 sm:px-6 py-2.5 sm:py-3 border-2 border-primary text-primary rounded-lg hover:bg-primary hover:text-primary-foreground transition-colors text-sm sm:text-base font-medium"
+      className="inline-flex items-center justify-center px-5 sm:px-6 py-2.5 sm:py-3 border border-border text-muted-foreground font-mono text-xs uppercase tracking-widest rounded-sm hover:border-primary hover:text-primary transition-colors"
     >
-      {t("hero.contactMe")}
+      {t("hero.contactMe")} →
     </button>
   );
 }

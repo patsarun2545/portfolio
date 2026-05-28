@@ -30,28 +30,30 @@ export default function SkillsSection({ skills }: SkillsSectionProps) {
   return (
     <section id="skills" className="py-16 sm:py-20 px-4 sm:px-6 lg:px-8">
       <div className="max-w-6xl mx-auto animate-fade-in-up">
-        <h2 className="text-3xl sm:text-4xl font-bold mb-8 sm:mb-12 text-center bg-linear-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+        <p className="font-mono text-xs text-primary tracking-widest uppercase mb-2 text-center">{"// SKILLS"}</p>
+        <h2 className="text-3xl sm:text-4xl font-black tracking-tight text-foreground mb-8 sm:mb-12 text-center">
           {t("nav.skills")}
         </h2>
 
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-0">
           {Object.entries(groupedSkills).map(([category, categorySkills]) => {
             const firstSkill = categorySkills[0];
             return (
               <div
                 key={category}
-                className="bg-card rounded-xl p-5 sm:p-6 shadow-lg"
+                className="border border-border hover:border-foreground/30 transition-colors p-4 md:p-5"
               >
-                <h3 className="text-lg sm:text-xl font-bold mb-4 text-foreground whitespace-nowrap overflow-hidden text-ellipsis">
+                <h3 className="font-mono text-xs text-primary uppercase tracking-widest border-b border-border pb-3 mb-4 whitespace-nowrap overflow-hidden text-ellipsis">
                   {translateCategory(category, firstSkill.categoryTh)}
                 </h3>
                 <div className="space-y-2 sm:space-y-3">
-                  {categorySkills.map((skill) => {
+                  {categorySkills.map((skill, index) => {
                     const name = locale === "th" ? skill.nameTh || skill.name : skill.name;
+                    const isLast = index === categorySkills.length - 1;
                     return (
                       <div
                         key={skill.id}
-                        className="flex items-center gap-3 p-2 rounded-lg hover:bg-muted/50 transition-colors duration-200"
+                        className={`flex items-center gap-3 py-2 ${isLast ? '' : 'border-b border-border'}`}
                       >
                         {skill.iconUrl && (
                           <Image
@@ -59,11 +61,11 @@ export default function SkillsSection({ skills }: SkillsSectionProps) {
                             alt={name}
                             width={28}
                             height={28}
-                            className="w-7 h-7 object-contain shrink-0"
+                            className="w-7 h-7 object-contain shrink-0 grayscale hover:grayscale-0 transition-all duration-200"
                             unoptimized
                           />
                         )}
-                        <span className="text-sm font-medium text-foreground whitespace-nowrap overflow-hidden text-ellipsis">
+                        <span className="font-mono text-xs text-muted-foreground hover:text-primary whitespace-nowrap overflow-hidden text-ellipsis">
                           {name}
                         </span>
                       </div>

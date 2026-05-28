@@ -16,7 +16,7 @@ export default function LanguageToggle() {
   return (
     <button
       onClick={() => setLocale(locale === "th" ? "en" : "th")}
-      className="text-xs font-bold px-2 py-1.5 rounded-md bg-linear-to-r from-blue-600 to-purple-600 text-white hover:shadow-lg hover:scale-105 transition-all"
+      className="font-mono text-xs text-muted-foreground tracking-widest px-2 py-1 rounded-sm bg-transparent border border-border hover:border-foreground hover:text-primary transition-colors"
       aria-label={`Switch to ${locale === "th" ? "English" : "Thai"}`}
       suppressHydrationWarning
     >

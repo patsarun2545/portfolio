@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <rect width="32" height="32" fill="#09090b"/>
+  <rect width="31" height="31" x="0.5" y="0.5" fill="none" 
+        stroke="#f59e0b" stroke-opacity="0.4" stroke-width="1"/>
+  <text x="16" y="22" text-anchor="middle" 
+        font-family="monospace" font-weight="900" 
+        font-size="14" fill="#f59e0b">PK</text>
+</svg>

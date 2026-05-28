@@ -1,7 +1,6 @@
 "use client";
 
 import { Project } from "@prisma/client";
-import { ExternalLink } from "lucide-react";
 import { useLocale } from "@/hooks/useLocale";
 import ImageCarousel from "./ImageCarousel";
 
@@ -19,18 +18,17 @@ export default function ProjectsSection({ projects }: ProjectsSectionProps) {
   const otherProjects = projects.filter((p) => !p.isFeatured);
 
   return (
-    <section id="projects" className="py-16 sm:py-20 px-4 sm:px-6 lg:px-8 bg-muted/50">
+    <section id="projects" className="py-16 sm:py-20 px-4 sm:px-6 lg:px-8 border-t border-b border-border">
       <div className="max-w-6xl mx-auto animate-fade-in-up">
-        <h2 className="text-3xl sm:text-4xl font-bold mb-8 sm:mb-12 text-center bg-linear-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+        <p className="font-mono text-xs text-primary tracking-widest uppercase mb-2 text-center">{"// PROJECTS"}</p>
+        <h2 className="text-3xl sm:text-4xl font-black tracking-tight text-foreground mb-8 sm:mb-12 text-center">
           {t("nav.projects")}
         </h2>
 
         {featuredProjects.length > 0 && (
           <div className="mb-8 sm:mb-12">
-            <h3 className="text-xl sm:text-2xl font-bold mb-4 sm:mb-6 text-foreground">
-              {t("projects.featured")}
-            </h3>
-            <div className="grid sm:grid-cols-2 gap-6 sm:gap-8">
+            <p className="font-mono text-xs text-muted-foreground tracking-widest uppercase mb-6">{"[ FEATURED ]"}</p>
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8">
               {featuredProjects.map((project, index) => {
                 const title = locale === "th" ? project.titleTh || project.title : project.title;
                 const description = locale === "th" ? project.descriptionTh || project.description : project.description;
@@ -38,11 +36,11 @@ export default function ProjectsSection({ projects }: ProjectsSectionProps) {
                 return (
                   <div
                     key={project.id}
-                    className="bg-card rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow"
+                    className="border border-border hover:border-foreground/30 transition-colors overflow-hidden"
                   >
                     <ImageCarousel images={project.images} priority={index === 0} />
                     <div className="p-4 sm:p-6">
-                      <h4 className="text-lg sm:text-xl font-bold text-foreground mb-2">
+                      <h4 className="text-lg md:text-xl font-bold text-foreground mb-2">
                         {title}
                       </h4>
                       {project.stack && (
@@ -60,11 +58,11 @@ export default function ProjectsSection({ projects }: ProjectsSectionProps) {
                           ))}
                         </ul>
                       )}
-                      <div className="flex flex-wrap gap-1.5 sm:gap-2 mb-3 sm:mb-4">
+                      <div className="flex flex-wrap gap-1.5 mb-3 sm:mb-4">
                         {project.techStack.map((tech) => (
                           <span
                             key={tech}
-                            className="px-2 sm:px-3 py-1 bg-primary/10 text-primary rounded-full text-xs sm:text-sm"
+                            className="border border-border font-mono text-xs text-muted-foreground px-2 py-0.5 rounded-sm"
                           >
                             {tech}
                           </span>
@@ -76,9 +74,9 @@ export default function ProjectsSection({ projects }: ProjectsSectionProps) {
                             href={project.githubUrl}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="flex items-center gap-2 text-sm sm:text-base text-foreground hover:text-primary transition-colors"
+                            className="font-mono text-xs text-muted-foreground hover:text-primary transition-colors"
                           >
-                            {t("projects.viewCode")}
+                            ↗ {t("projects.viewCode")}
                           </a>
                         )}
                         {project.liveUrls && project.liveUrls.length === 1 && (
@@ -86,10 +84,9 @@ export default function ProjectsSection({ projects }: ProjectsSectionProps) {
                             href={project.liveUrls[0]}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="flex items-center gap-2 text-sm sm:text-base text-foreground hover:text-primary transition-colors"
+                            className="font-mono text-xs text-muted-foreground hover:text-primary transition-colors"
                           >
-                            <ExternalLink className="w-4 h-4" />
-                            {t("projects.viewDemo")}
+                            ↗ {t("projects.liveDemo")}
                           </a>
                         )}
                         {project.liveUrls && project.liveUrls.length === 2 && (
@@ -98,19 +95,17 @@ export default function ProjectsSection({ projects }: ProjectsSectionProps) {
                               href={project.liveUrls[0]}
                               target="_blank"
                               rel="noopener noreferrer"
-                              className="flex items-center gap-2 text-sm sm:text-base text-foreground hover:text-primary transition-colors"
+                              className="font-mono text-xs text-muted-foreground hover:text-primary transition-colors"
                             >
-                              <ExternalLink className="w-4 h-4" />
-                              {t("projects.customer")}
+                              ↗ {t("projects.customer")}
                             </a>
                             <a
                               href={project.liveUrls[1]}
                               target="_blank"
                               rel="noopener noreferrer"
-                              className="flex items-center gap-2 text-sm sm:text-base text-foreground hover:text-primary transition-colors"
+                              className="font-mono text-xs text-muted-foreground hover:text-primary transition-colors"
                             >
-                              <ExternalLink className="w-4 h-4" />
-                              {t("projects.admin")}
+                              ↗ {t("projects.admin")}
                             </a>
                           </>
                         )}
@@ -125,19 +120,17 @@ export default function ProjectsSection({ projects }: ProjectsSectionProps) {
 
         {otherProjects.length > 0 && (
           <div>
-            <h3 className="text-xl sm:text-2xl font-bold mb-4 sm:mb-6 text-foreground">
-              {t("projects.other")}
-            </h3>
-            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+            <p className="font-mono text-xs text-muted-foreground tracking-widest uppercase mb-6">{"[ OTHER ]"}</p>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
               {otherProjects.map((project) => {
                 const title = locale === "th" ? project.titleTh || project.title : project.title;
                 const description = locale === "th" ? project.descriptionTh || project.description : project.description;
                 return (
                   <div
                     key={project.id}
-                    className="bg-card rounded-xl p-4 sm:p-6 shadow-lg hover:shadow-xl transition-shadow"
+                    className="border border-border hover:border-foreground/30 transition-colors p-4 sm:p-5"
                   >
-                    <h4 className="text-base sm:text-lg font-bold text-foreground mb-2">
+                    <h4 className="text-lg md:text-xl font-bold text-foreground mb-2">
                       {title}
                     </h4>
                     {project.stack && (
@@ -148,11 +141,11 @@ export default function ProjectsSection({ projects }: ProjectsSectionProps) {
                     <p className="text-xs sm:text-sm text-foreground mb-3 sm:mb-4">
                       {description}
                     </p>
-                    <div className="flex flex-wrap gap-1.5 sm:gap-2 mb-3 sm:mb-4">
+                    <div className="flex flex-wrap gap-1.5 mb-3 sm:mb-4">
                       {project.techStack.slice(0, 3).map((tech) => (
                         <span
                           key={tech}
-                          className="px-1.5 sm:px-2 py-1 bg-secondary text-muted-foreground rounded-full text-xs"
+                          className="border border-border font-mono text-xs text-muted-foreground px-2 py-0.5 rounded-sm"
                         >
                           {tech}
                         </span>
@@ -164,9 +157,9 @@ export default function ProjectsSection({ projects }: ProjectsSectionProps) {
                           href={project.githubUrl}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="text-xs sm:text-sm text-foreground hover:text-primary transition-colors"
+                          className="font-mono text-xs text-muted-foreground hover:text-primary transition-colors"
                         >
-                          {t("projects.viewCode")}
+                          ↗ {t("projects.viewCode")}
                         </a>
                       )}
                       {project.liveUrls && project.liveUrls.length === 1 && (
@@ -174,9 +167,9 @@ export default function ProjectsSection({ projects }: ProjectsSectionProps) {
                           href={project.liveUrls[0]}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="text-xs sm:text-sm text-foreground hover:text-primary transition-colors"
+                          className="font-mono text-xs text-muted-foreground hover:text-primary transition-colors"
                         >
-                          <ExternalLink className="w-4 h-4" />
+                          ↗ {t("projects.liveDemo")}
                         </a>
                       )}
                       {project.liveUrls && project.liveUrls.length === 2 && (
@@ -185,19 +178,17 @@ export default function ProjectsSection({ projects }: ProjectsSectionProps) {
                             href={project.liveUrls[0]}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="text-xs sm:text-sm text-foreground hover:text-primary transition-colors"
+                            className="font-mono text-xs text-muted-foreground hover:text-primary transition-colors"
                           >
-                            <ExternalLink className="w-4 h-4" />
-                            {t("projects.customer")}
+                            ↗ {t("projects.customer")}
                           </a>
                           <a
                             href={project.liveUrls[1]}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="text-xs sm:text-sm text-foreground hover:text-primary transition-colors"
+                            className="font-mono text-xs text-muted-foreground hover:text-primary transition-colors"
                           >
-                            <ExternalLink className="w-4 h-4" />
-                            {t("projects.admin")}
+                            ↗ {t("projects.admin")}
                           </a>
                         </>
                       )}

@@ -66,81 +66,82 @@ export default function ContactSection() {
   };
 
   return (
-    <section id="contact" className="py-16 sm:py-20 px-4 sm:px-6 lg:px-8 bg-muted/50">
-      <div className="max-w-2xl mx-auto animate-fade-in-up">
-        <h2 className="text-3xl sm:text-4xl font-bold mb-8 sm:mb-12 text-center bg-linear-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+    <section id="contact" className="py-16 sm:py-20 px-4 sm:px-6 lg:px-8 border-t border-b border-border">
+      <div className="max-w-lg md:max-w-2xl mx-auto animate-fade-in-up">
+        <p className="font-mono text-xs text-primary tracking-widest uppercase mb-2 text-center">{"// CONTACT"}</p>
+        <h2 className="text-3xl sm:text-4xl font-black tracking-tight text-foreground mb-8 sm:mb-12 text-center">
           {t("nav.contact")}
         </h2>
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 sm:space-y-6">
           <div>
-            <label htmlFor="name" className="block text-sm font-medium text-foreground mb-2">
+            <label htmlFor="name" className="block font-mono text-xs text-muted-foreground uppercase tracking-widest mb-2">
               {t("contact.name")}
             </label>
             <input
               {...register("name")}
               type="text"
               id="name"
-              className="w-full px-3 sm:px-4 py-2.5 sm:py-3 rounded-lg border border-input bg-background text-foreground focus:ring-2 focus:ring-ring focus:border-transparent outline-none transition-all text-sm sm:text-base"
+              className="w-full bg-transparent border-0 border-b border-border focus:border-primary font-mono text-sm text-foreground placeholder:text-muted-foreground/40 px-0 py-2 md:py-3 outline-none rounded-none transition-colors"
               placeholder={t("contact.namePlaceholder")}
             />
             {errors.name && (
-              <p className="mt-1 text-sm text-destructive">{errors.name.message}</p>
+              <p className="mt-1 font-mono text-xs text-destructive">{errors.name.message}</p>
             )}
           </div>
 
           <div>
-            <label htmlFor="email" className="block text-sm font-medium text-foreground mb-2">
+            <label htmlFor="email" className="block font-mono text-xs text-muted-foreground uppercase tracking-widest mb-2">
               {t("contact.email")}
             </label>
             <input
               {...register("email")}
               type="email"
               id="email"
-              className="w-full px-3 sm:px-4 py-2.5 sm:py-3 rounded-lg border border-input bg-background text-foreground focus:ring-2 focus:ring-ring focus:border-transparent outline-none transition-all text-sm sm:text-base"
+              className="w-full bg-transparent border-0 border-b border-border focus:border-primary font-mono text-sm text-foreground placeholder:text-muted-foreground/40 px-0 py-2 md:py-3 outline-none rounded-none transition-colors"
               placeholder={t("contact.emailPlaceholder")}
             />
             {errors.email && (
-              <p className="mt-1 text-sm text-destructive">{errors.email.message}</p>
+              <p className="mt-1 font-mono text-xs text-destructive">{errors.email.message}</p>
             )}
           </div>
 
           <div>
-            <label htmlFor="subject" className="block text-sm font-medium text-foreground mb-2">
+            <label htmlFor="subject" className="block font-mono text-xs text-muted-foreground uppercase tracking-widest mb-2">
               {t("contact.subject")}
             </label>
             <input
               {...register("subject")}
               type="text"
               id="subject"
-              className="w-full px-3 sm:px-4 py-2.5 sm:py-3 rounded-lg border border-input bg-background text-foreground focus:ring-2 focus:ring-ring focus:border-transparent outline-none transition-all text-sm sm:text-base"
+              className="w-full bg-transparent border-0 border-b border-border focus:border-primary font-mono text-sm text-foreground placeholder:text-muted-foreground/40 px-0 py-2 md:py-3 outline-none rounded-none transition-colors"
               placeholder={t("contact.subjectPlaceholder")}
             />
             {errors.subject && (
-              <p className="mt-1 text-sm text-destructive">{errors.subject.message}</p>
+              <p className="mt-1 font-mono text-xs text-destructive">{errors.subject.message}</p>
             )}
           </div>
 
           <div>
-            <label htmlFor="message" className="block text-sm font-medium text-foreground mb-2">
+            <label htmlFor="message" className="block font-mono text-xs text-muted-foreground uppercase tracking-widest mb-2">
               {t("contact.message")}
             </label>
             <textarea
               {...register("message")}
               id="message"
               rows={5}
-              className="w-full px-3 sm:px-4 py-2.5 sm:py-3 rounded-lg border border-input bg-background text-foreground focus:ring-2 focus:ring-ring focus:border-transparent outline-none transition-all resize-none text-sm sm:text-base"
+              className="w-full bg-transparent border-0 border-b border-border focus:border-primary font-mono text-sm text-foreground placeholder:text-muted-foreground/40 px-0 py-2 md:py-3 outline-none rounded-none transition-colors resize-none"
               placeholder={t("contact.messagePlaceholder")}
             />
             {errors.message && (
-              <p className="mt-1 text-sm text-destructive">{errors.message.message}</p>
+              <p className="mt-1 font-mono text-xs text-destructive">{errors.message.message}</p>
             )}
           </div>
 
           <button
             type="submit"
             disabled={isSubmitting}
-            className="w-full py-2.5 sm:py-3 px-6 bg-linear-to-r from-blue-600 to-purple-600 text-white rounded-lg hover:opacity-90 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed font-medium text-sm sm:text-base"
+            className="bg-primary text-primary-foreground font-mono text-xs uppercase tracking-widest font-bold rounded-sm hover:opacity-90 transition-opacity w-full sm:w-fit px-10 py-3"
           >
             {isSubmitting ? t("contact.sending") : t("contact.send")}
           </button>

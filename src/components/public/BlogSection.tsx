@@ -4,6 +4,7 @@ import { BlogPost } from "@prisma/client";
 import Link from "next/link";
 import { useLocale } from "@/hooks/useLocale";
 import ImageCarousel from "./ImageCarousel";
+import { useState } from "react";
 
 interface BlogPostWithImages extends BlogPost {
   images: Array<{ id: number; url: string; sortOrder: number }>;
@@ -15,43 +16,55 @@ interface BlogSectionProps {
 
 export default function BlogSection({ posts }: BlogSectionProps) {
   const { locale, t } = useLocale();
+  const [showAll, setShowAll] = useState(false);
+  const visiblePosts = showAll ? posts : posts.slice(0, 3);
 
   return (
-    <section id="blog" className="py-16 sm:py-20 px-4 sm:px-6 lg:px-8">
+    <section id="blog" className="py-16 sm:py-20 px-4 sm:px-6 lg:px-8 border-t border-border">
       <div className="max-w-6xl mx-auto animate-fade-in-up">
-        <h2 className="text-3xl sm:text-4xl font-bold mb-8 sm:mb-12 text-center bg-linear-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+        <p className="font-mono text-xs text-primary tracking-widest uppercase mb-2 text-center">{"// BLOG"}</p>
+        <h2 className="text-3xl sm:text-4xl font-black tracking-tight text-foreground mb-8 sm:mb-12 text-center">
           {t("nav.blog")}
         </h2>
 
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
-          {posts.map((post, index) => {
+        <div className="max-w-3xl mx-auto divide-y divide-border">
+          {visiblePosts.map((post, index) => {
             const title = locale === "th" ? post.titleTh || post.title : post.title;
             const excerpt = locale === "th" ? post.excerptTh || post.excerpt : post.excerpt;
             return (
               <Link key={post.id} href={`/blog/${post.slug}`}>
-                <div className="bg-card rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow h-full">
-                  <ImageCarousel images={post.images} sizes="(max-width: 768px) 100vw, 33vw" priority={index === 0} />
-                  <div className="p-4 sm:p-6">
-                    <p className="text-xs sm:text-sm text-muted-foreground mb-2">
-                      {post.publishedAt && new Date(post.publishedAt).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric", timeZone: "Asia/Bangkok" })}
-                    </p>
-                    <h3 className="text-base sm:text-lg xl:text-xl font-bold text-foreground mb-2 sm:mb-3 hover:text-primary transition-colors line-clamp-1">
-                      {title}
-                    </h3>
-                    {excerpt && (
-                      <p className="text-xs sm:text-sm text-foreground mb-3 sm:mb-4 line-clamp-2">
-                        {excerpt}
-                      </p>
+                <div className="py-6 sm:py-8 group hover:bg-card transition-colors">
+                  <div className="flex flex-col md:flex-row md:gap-8 md:items-start">
+                    {post.images && post.images.length > 0 && (
+                      <div className="w-full aspect-video md:w-48 md:shrink-0 overflow-hidden rounded-sm mb-4 md:mb-0">
+                        <div className="w-full h-full group-hover:scale-105 transition-transform duration-500">
+                          <ImageCarousel images={post.images} sizes="(max-width: 768px) 100vw, 33vw" priority={index === 0} />
+                        </div>
+                      </div>
                     )}
-                    <div className="flex flex-wrap gap-1.5 sm:gap-2">
-                      {post.tags.slice(0, 3).map((tag) => (
-                        <span
-                          key={tag}
-                          className="px-1.5 sm:px-2 py-1 bg-primary/10 text-primary rounded-full text-xs"
-                        >
-                          {tag}
-                        </span>
-                      ))}
+                    <div className="flex-1">
+                      <p className="font-mono text-xs text-muted-foreground tracking-wider mb-2">
+                        {post.publishedAt && new Date(post.publishedAt).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric", timeZone: "Asia/Bangkok" })}
+                      </p>
+                      <h3 className="text-sm md:text-base font-semibold text-foreground group-hover:text-primary transition-colors mb-2">
+                        {title}
+                      </h3>
+                      {excerpt && (
+                        <p className="text-sm text-muted-foreground mb-3 line-clamp-2">
+                          {excerpt}
+                        </p>
+                      )}
+                      <div className="flex flex-wrap gap-2 mb-2">
+                        {post.tags.slice(0, 3).map((tag) => (
+                          <span
+                            key={tag}
+                            className="font-mono text-xs text-muted-foreground"
+                          >
+                            #{tag}
+                          </span>
+                        ))}
+                      </div>
+                      <span className="font-mono text-xs text-primary mt-2 block">{t("blog.readMore")}</span>
                     </div>
                   </div>
                 </div>
@@ -59,6 +72,16 @@ export default function BlogSection({ posts }: BlogSectionProps) {
             );
           })}
         </div>
+        {posts.length > 3 && (
+          <div className="flex justify-center mt-8">
+            <button
+              onClick={() => setShowAll(!showAll)}
+              className="font-mono text-xs text-primary uppercase tracking-widest border border-border hover:border-primary px-6 py-2 rounded-sm transition-colors"
+            >
+              {showAll ? t("blog.showLess") : t("blog.showMore")}
+            </button>
+          </div>
+        )}
       </div>
     </section>
   );
