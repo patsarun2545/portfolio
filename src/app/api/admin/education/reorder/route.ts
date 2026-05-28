@@ -3,6 +3,7 @@ import { auth } from "@/lib/auth";
 import prisma from "@/lib/db";
 import { z } from "zod";
 import { checkRateLimit } from "@/lib/rate-limit";
+import { revalidatePath } from "next/cache";
 
 const reorderSchema = z.object({
   items: z.array(
@@ -40,6 +41,7 @@ export async function POST(request: Request) {
       )
     );
 
+    revalidatePath("/");
     return NextResponse.json({ success: true });
   } catch (error) {
     console.error("Failed to reorder education:", error);

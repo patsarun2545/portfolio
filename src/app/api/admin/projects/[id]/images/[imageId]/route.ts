@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 import prisma from "@/lib/db";
 import { checkUploadRateLimit } from "@/lib/rate-limit";
+import { revalidatePath } from "next/cache";
 
 // DELETE - Delete a specific image
 export async function DELETE(
@@ -25,6 +26,7 @@ export async function DELETE(
       where: { id: parseInt(imageId) },
     });
 
+    revalidatePath("/");
     return NextResponse.json({ success: true });
   } catch (error) {
     console.error("Failed to delete project image:", error);

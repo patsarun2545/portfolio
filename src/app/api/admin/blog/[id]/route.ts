@@ -6,6 +6,7 @@ import { z } from "zod";
 import { checkRateLimit } from "@/lib/rate-limit";
 import { sanitizeText, sanitizeHTML } from "@/lib/sanitize";
 import { Prisma } from "@prisma/client";
+import { revalidatePath } from "next/cache";
 
 export async function PUT(request: Request, { params }: { params: Promise<{ id: string }> }) {
   try {
@@ -31,6 +32,8 @@ export async function PUT(request: Request, { params }: { params: Promise<{ id: 
           publishedAt: body.isPublished ? new Date() : null,
         },
       });
+      revalidatePath("/");
+      revalidatePath("/blog");
       return NextResponse.json(blogPost);
     }
 
@@ -70,6 +73,8 @@ export async function PUT(request: Request, { params }: { params: Promise<{ id: 
       },
     });
 
+    revalidatePath("/");
+    revalidatePath("/blog");
     return NextResponse.json(blogPost);
   } catch (error) {
     console.error("Failed to update blog post:", error);
@@ -107,6 +112,8 @@ export async function DELETE(request: Request, { params }: { params: Promise<{ i
       where: { id: parseInt(id) },
     });
 
+    revalidatePath("/");
+    revalidatePath("/blog");
     return NextResponse.json({ success: true });
   } catch (error) {
     console.error("Failed to delete blog post:", error);

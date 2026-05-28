@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 import prisma from "@/lib/db";
 import { checkRateLimit } from "@/lib/rate-limit";
+import { revalidatePath } from "next/cache";
 
 // DELETE - Delete a specific image
 export async function DELETE(
@@ -20,11 +21,13 @@ export async function DELETE(
     }
 
     const { imageId } = await params;
-    
+
     await prisma.blogImage.delete({
       where: { id: parseInt(imageId) },
     });
 
+    revalidatePath("/");
+    revalidatePath("/blog");
     return NextResponse.json({ success: true });
   } catch (error) {
     console.error("Failed to delete blog image:", error);

@@ -3,6 +3,7 @@ import { auth } from "@/lib/auth";
 import prisma from "@/lib/db";
 import { checkRateLimit } from "@/lib/rate-limit";
 import { z } from "zod";
+import { revalidatePath } from "next/cache";
 
 const toggleSchema = z.object({
   isVisible: z.boolean(),
@@ -30,6 +31,7 @@ export async function PATCH(request: Request, { params }: { params: Promise<{ id
       data: { isVisible },
     });
 
+    revalidatePath("/");
     return NextResponse.json(skill);
   } catch (error) {
     console.error("Failed to toggle skill visibility:", error);

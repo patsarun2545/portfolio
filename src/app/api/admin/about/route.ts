@@ -4,6 +4,7 @@ import prisma from "@/lib/db";
 import { aboutSchema } from "@/lib/validations";
 import { checkRateLimit } from "@/lib/rate-limit";
 import { sanitizeText } from "@/lib/sanitize";
+import { revalidatePath } from "next/cache";
 
 export async function GET() {
   try {
@@ -54,6 +55,7 @@ export async function PUT(request: Request) {
       create: { id: 1, ...sanitizedData },
     });
 
+    revalidatePath("/");
     return NextResponse.json(about);
   } catch (error) {
     console.error("Error updating about data:", error);

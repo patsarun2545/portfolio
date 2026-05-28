@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 import prisma from "@/lib/db";
 import { checkRateLimit } from "@/lib/rate-limit";
+import { revalidatePath } from "next/cache";
 
 export async function PUT(request: Request) {
   try {
@@ -29,6 +30,7 @@ export async function PUT(request: Request) {
       create: { id: 1, name: "", title: "", bio: "", email: "", avatarUrl },
     });
 
+    revalidatePath("/");
     return NextResponse.json(about);
   } catch (error) {
     console.error("Error updating avatar:", error);

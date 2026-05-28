@@ -4,6 +4,7 @@ import prisma from "@/lib/db";
 import { z } from "zod";
 import { checkRateLimit } from "@/lib/rate-limit";
 import { sanitizeText } from "@/lib/sanitize";
+import { revalidatePath } from "next/cache";
 
 const categorySchema = z.object({
   category: z.string().min(1, "Category is required").max(100),
@@ -87,6 +88,7 @@ export async function POST(request: Request) {
       },
     });
 
+    revalidatePath("/");
     return NextResponse.json(
       { category: skill.category, categoryTh: skill.categoryTh },
       { status: 201 }
@@ -137,6 +139,7 @@ export async function DELETE(request: Request) {
       return NextResponse.json({ error: "Category not found" }, { status: 404 });
     }
 
+    revalidatePath("/");
     return NextResponse.json({
       message: "Category deleted successfully",
       deletedCount: result.count,
@@ -202,6 +205,7 @@ export async function PATCH(request: Request) {
       return NextResponse.json({ error: "Category not found" }, { status: 404 });
     }
 
+    revalidatePath("/");
     return NextResponse.json({
       message: "Category updated successfully",
       updatedCount: result.count,

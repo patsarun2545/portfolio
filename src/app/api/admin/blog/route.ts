@@ -5,6 +5,7 @@ import { blogSchema } from "@/lib/validations";
 import { z } from "zod";
 import { checkRateLimit } from "@/lib/rate-limit";
 import { sanitizeText, sanitizeHTML } from "@/lib/sanitize";
+import { revalidatePath } from "next/cache";
 
 export async function GET(request: Request) {
   try {
@@ -108,6 +109,8 @@ export async function POST(request: Request) {
       },
     });
 
+    revalidatePath("/");
+    revalidatePath("/blog");
     return NextResponse.json(blogPost, { status: 201 });
   } catch (error) {
     console.error("Failed to create blog post:", error);

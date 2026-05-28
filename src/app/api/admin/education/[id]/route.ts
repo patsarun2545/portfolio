@@ -6,6 +6,7 @@ import { z } from "zod";
 import { checkRateLimit } from "@/lib/rate-limit";
 import { sanitizeText } from "@/lib/sanitize";
 import { Prisma } from "@prisma/client";
+import { revalidatePath } from "next/cache";
 
 export async function PUT(request: Request, { params }: { params: Promise<{ id: string }> }) {
   try {
@@ -51,6 +52,7 @@ export async function PUT(request: Request, { params }: { params: Promise<{ id: 
       },
     });
 
+    revalidatePath("/");
     return NextResponse.json(education);
   } catch (error) {
     console.error("Failed to update education:", error);
@@ -88,6 +90,7 @@ export async function DELETE(request: Request, { params }: { params: Promise<{ i
       where: { id: parseInt(id) },
     });
 
+    revalidatePath("/");
     return NextResponse.json({ success: true });
   } catch (error) {
     console.error("Failed to delete education:", error);

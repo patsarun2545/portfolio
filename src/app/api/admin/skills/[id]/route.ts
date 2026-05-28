@@ -5,6 +5,7 @@ import { skillSchema } from "@/lib/validations";
 import { z } from "zod";
 import { checkRateLimit } from "@/lib/rate-limit";
 import { sanitizeText } from "@/lib/sanitize";
+import { revalidatePath } from "next/cache";
 
 export async function PUT(request: Request, { params }: { params: Promise<{ id: string }> }) {
   try {
@@ -35,6 +36,7 @@ export async function PUT(request: Request, { params }: { params: Promise<{ id: 
       data: sanitizedData,
     });
 
+    revalidatePath("/");
     return NextResponse.json(skill);
   } catch (error) {
     console.error("Failed to update skill:", error);
@@ -72,6 +74,7 @@ export async function DELETE(request: Request, { params }: { params: Promise<{ i
       where: { id: parseInt(id) },
     });
 
+    revalidatePath("/");
     return NextResponse.json({ success: true });
   } catch (error) {
     console.error("Failed to delete skill:", error);

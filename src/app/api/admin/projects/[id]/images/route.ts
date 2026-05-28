@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 import prisma from "@/lib/db";
 import { checkRateLimit } from "@/lib/rate-limit";
+import { revalidatePath } from "next/cache";
 
 // GET - Get all images for a project
 export async function GET(request: Request, { params }: { params: Promise<{ id: string }> }) {
@@ -70,6 +71,7 @@ export async function POST(request: Request, { params }: { params: Promise<{ id:
       )
     );
 
+    revalidatePath("/");
     return NextResponse.json(images, { status: 201 });
   } catch (error) {
     console.error("Failed to add project images:", error);
@@ -107,6 +109,7 @@ export async function PUT(request: Request) {
       )
     );
 
+    revalidatePath("/");
     return NextResponse.json({ success: true });
   } catch (error) {
     console.error("Failed to reorder project images:", error);
