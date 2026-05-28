@@ -19,14 +19,32 @@ const navItems = [
 export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [activeSection, setActiveSection] = useState("");
   const { t } = useLocale();
 
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 50);
+
+      // Determine active section based on scroll position
+      const sections = navItems.map(item => item.href.substring(1));
+      const scrollPosition = window.scrollY + 100;
+
+      for (const section of sections) {
+        const element = document.getElementById(section);
+        if (element) {
+          const offsetTop = element.offsetTop;
+          const offsetBottom = offsetTop + element.offsetHeight;
+          if (scrollPosition >= offsetTop && scrollPosition < offsetBottom) {
+            setActiveSection(section);
+            break;
+          }
+        }
+      }
     };
 
     window.addEventListener("scroll", handleScroll);
+    handleScroll(); // Initial check
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
@@ -57,18 +75,23 @@ export default function Navbar() {
           </div>
 
           <div className="hidden md:flex items-center md:space-x-4 lg:space-x-6">
-            {navItems.map((item) => (
-              <span key={item.key} className="relative group">
-                <button
-                  onClick={() => scrollToSection(item.href)}
-                  className="font-mono text-sm uppercase md:tracking-wider tracking-widest text-muted-foreground hover:text-primary transition-colors"
-                  aria-label={`Navigate to ${t(`nav.${item.key}`)}`}
-                >
-                  {t(`nav.${item.key}`)}
-                </button>
-                <span className="absolute -bottom-px left-0 right-0 h-px bg-primary scale-x-0 group-hover:scale-x-100 transition-transform duration-200 origin-left" />
-              </span>
-            ))}
+            {navItems.map((item) => {
+              const isActive = activeSection === item.key;
+              return (
+                <span key={item.key} className="relative group">
+                  <button
+                    onClick={() => scrollToSection(item.href)}
+                    className={`font-mono text-sm uppercase md:tracking-wider tracking-widest transition-colors ${isActive ? "text-primary" : "text-muted-foreground hover:text-primary"
+                      }`}
+                    aria-label={`Navigate to ${t(`nav.${item.key}`)}`}
+                  >
+                    {t(`nav.${item.key}`)}
+                  </button>
+                  <span className={`absolute -bottom-px left-0 right-0 h-px bg-primary transition-transform duration-200 origin-left ${isActive ? "scale-x-100" : "scale-x-0 group-hover:scale-x-100"
+                    }`} />
+                </span>
+              );
+            })}
             <div className="flex items-center gap-2 pl-4 border-l border-border">
               <LanguageToggle />
               <ThemeToggle />
@@ -99,15 +122,19 @@ export default function Navbar() {
       {isMobileMenuOpen && (
         <div className="md:hidden bg-background border-t border-border">
           <div className="px-4 py-3 sm:py-4 space-y-1 sm:space-y-2">
-            {navItems.map((item) => (
-              <button
-                key={item.key}
-                onClick={() => scrollToSection(item.href)}
-                className="block w-full text-left px-3 sm:px-4 py-3 font-mono text-sm text-muted-foreground hover:text-primary transition-colors"
-              >
-                → {t(`nav.${item.key}`)}
-              </button>
-            ))}
+            {navItems.map((item) => {
+              const isActive = activeSection === item.key;
+              return (
+                <button
+                  key={item.key}
+                  onClick={() => scrollToSection(item.href)}
+                  className={`block w-full text-left px-3 sm:px-4 py-3 font-mono text-sm transition-colors ${isActive ? "text-primary" : "text-muted-foreground hover:text-primary"
+                    }`}
+                >
+                  {isActive ? "→ " : "  "}{t(`nav.${item.key}`)}
+                </button>
+              );
+            })}
           </div>
         </div>
       )}

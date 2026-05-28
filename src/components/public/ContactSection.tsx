@@ -73,7 +73,7 @@ export default function ContactSection() {
           {t("nav.contact")}
         </h2>
 
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 sm:space-y-6">
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 sm:space-y-6 border border-border p-6 sm:p-8">
           <div>
             <label htmlFor="name" className="block font-mono text-xs text-muted-foreground uppercase tracking-widest mb-2">
               {t("contact.name")}

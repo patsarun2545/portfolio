@@ -61,7 +61,7 @@ export default function SkillsSection({ skills }: SkillsSectionProps) {
                             alt={name}
                             width={28}
                             height={28}
-                            className="w-7 h-7 object-contain shrink-0 grayscale hover:grayscale-0 transition-all duration-200"
+                            className="w-7 h-7 object-contain shrink-0 transition-all duration-200"
                             unoptimized
                           />
                         )}

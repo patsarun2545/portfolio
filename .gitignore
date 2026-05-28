@@ -47,6 +47,7 @@ next-env.d.ts
 seed.ts
 seed-admin.ts
 seed-data.ts
+seed-blog.ts
 
 # IDE
 .vscode/

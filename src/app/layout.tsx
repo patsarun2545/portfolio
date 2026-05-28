@@ -24,6 +24,7 @@ const sarabun = Sarabun({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(process.env.NEXTAUTH_URL || 'http://localhost:3000'),
   title: "Patsarun Kathinthong — Full Stack Developer",
   description: "Full Stack Developer specializing in PERN/MERN Stack, RESTful API, Next.js, and scalable web applications.",
   keywords: ["Full Stack Developer", "Next.js", "React", "Node.js", "PostgreSQL", "MongoDB", "TypeScript"],
@@ -38,7 +39,6 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "th_TH",
-    url: "https://your-domain.com",
     title: "Patsarun Kathinthong — Full Stack Developer",
     description: "Full Stack Developer specializing in PERN/MERN Stack, RESTful API, Next.js, and scalable web applications.",
     siteName: "Patsarun Kathinthong Portfolio",

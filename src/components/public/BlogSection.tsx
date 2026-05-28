@@ -27,13 +27,14 @@ export default function BlogSection({ posts }: BlogSectionProps) {
           {t("nav.blog")}
         </h2>
 
-        <div className="max-w-3xl mx-auto divide-y divide-border">
+        <div className="max-w-3xl mx-auto">
           {visiblePosts.map((post, index) => {
             const title = locale === "th" ? post.titleTh || post.title : post.title;
             const excerpt = locale === "th" ? post.excerptTh || post.excerpt : post.excerpt;
+            const isLast = index === visiblePosts.length - 1;
             return (
               <Link key={post.id} href={`/blog/${post.slug}`}>
-                <div className="py-6 sm:py-8 group hover:bg-card transition-colors">
+                <div className={`py-6 sm:py-8 group hover:bg-card transition-colors ${!isLast ? 'border-b border-border' : ''}`}>
                   <div className="flex flex-col md:flex-row md:gap-8 md:items-start">
                     {post.images && post.images.length > 0 && (
                       <div className="w-full aspect-video md:w-48 md:shrink-0 overflow-hidden rounded-sm mb-4 md:mb-0">
