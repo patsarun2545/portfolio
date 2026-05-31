@@ -1,5 +1,7 @@
 # 🚀 Portfolio Next
 
+[![Live Demo](https://img.shields.io/badge/Live-Demo-000?style=flat-square&logo=vercel&logoColor=white)](https://portfolio-patsarun.vercel.app/)
+
 A modern, bilingual portfolio website built with Next.js 16, featuring an admin panel for content management. Supports English and Thai languages with real-time content updates and secure authentication.
 
 ## 🛠️ Tech Stack
