@@ -20,7 +20,7 @@ export default function LanguageToggle() {
       aria-label={`Switch to ${locale === "th" ? "English" : "Thai"}`}
       suppressHydrationWarning
     >
-      {mounted ? (locale === "th" ? "TH" : "EN") : "TH"}
+      {mounted ? (locale === "th" ? "TH" : "EN") : <span className="invisible">TH</span>}
     </button>
   );
 }

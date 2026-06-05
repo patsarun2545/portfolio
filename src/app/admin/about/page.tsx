@@ -280,6 +280,67 @@ export default function AboutPage() {
               {errors.bio && <p className="text-xs text-destructive">{errors.bio.message}</p>}
             </div>
 
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5">
+              <div className="space-y-2">
+                <Label htmlFor="yearsOfExperience" className="text-sm font-medium">{t("admin.aboutPage.yearsOfExperience")}</Label>
+                <Input id="yearsOfExperience" type="number" {...register("yearsOfExperience", { valueAsNumber: true })} placeholder="0" />
+                {errors.yearsOfExperience && <p className="text-xs text-destructive">{errors.yearsOfExperience.message}</p>}
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="availability" className="text-sm font-medium">{t("admin.aboutPage.availability")}</Label>
+                <Input id="availability" {...register("availability")} placeholder="Open to opportunities" />
+                {errors.availability && <p className="text-xs text-destructive">{errors.availability.message}</p>}
+              </div>
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="status" className="text-sm font-medium">{t("admin.aboutPage.statusLabel")}</Label>
+              <Textarea
+                id="status"
+                {...register("status")}
+                placeholder="📍 Bangkok, Thailand | 🎓 Bachelor of Business Administration, Major in Business Computer"
+                rows={2}
+                className="resize-none"
+              />
+              {errors.status && <p className="text-xs text-destructive">{errors.status.message}</p>}
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="strengths" className="text-sm font-medium">{t("admin.aboutPage.strengthsLabel")}</Label>
+              <Textarea
+                id="strengths"
+                {...register("strengths")}
+                placeholder="Problem-solving, System design, Full-stack development"
+                rows={2}
+                className="resize-none"
+              />
+              {errors.strengths && <p className="text-xs text-destructive">{errors.strengths.message}</p>}
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="goals" className="text-sm font-medium">{t("admin.aboutPage.goalsLabel")}</Label>
+              <Textarea
+                id="goals"
+                {...register("goals")}
+                placeholder="Build scalable systems, Contribute to open source, Mentor junior developers"
+                rows={2}
+                className="resize-none"
+              />
+              {errors.goals && <p className="text-xs text-destructive">{errors.goals.message}</p>}
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="nowLearning" className="text-sm font-medium">{t("admin.aboutPage.nowLearningLabel")}</Label>
+              <Textarea
+                id="nowLearning"
+                {...register("nowLearning")}
+                placeholder="Advanced TypeScript, System architecture patterns, Cloud infrastructure"
+                rows={2}
+                className="resize-none"
+              />
+              {errors.nowLearning && <p className="text-xs text-destructive">{errors.nowLearning.message}</p>}
+            </div>
+
             {activeTab === "th" && (
               <>
                 <div className="space-y-2">
@@ -298,6 +359,60 @@ export default function AboutPage() {
                     className="resize-none"
                   />
                   {errors.bioTh && <p className="text-xs text-destructive">{errors.bioTh.message}</p>}
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="availabilityTh" className="text-sm font-medium">{t("admin.aboutPage.availabilityTh")}</Label>
+                  <Input id="availabilityTh" {...register("availabilityTh")} placeholder="เปิดรับโอกาส (ไม่จำเป็น)" />
+                  {errors.availabilityTh && <p className="text-xs text-destructive">{errors.availabilityTh.message}</p>}
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="statusTh" className="text-sm font-medium">{t("admin.aboutPage.statusTh")}</Label>
+                  <Textarea
+                    id="statusTh"
+                    {...register("statusTh")}
+                    placeholder="📍 กรุงเทพฯ ประเทศไทย | 🎓 ปริญญาบริหารธุรกิจบัณฑิต สาขาคอมพิวเตอร์ธุรกิจ (ไม่จำเป็น)"
+                    rows={2}
+                    className="resize-none"
+                  />
+                  {errors.statusTh && <p className="text-xs text-destructive">{errors.statusTh.message}</p>}
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="strengthsTh" className="text-sm font-medium">{t("admin.aboutPage.strengthsTh")}</Label>
+                  <Textarea
+                    id="strengthsTh"
+                    {...register("strengthsTh")}
+                    placeholder="การแก้ปัญหา, การออกแบบระบบ, การพัฒนาซอฟต์แวร์แบบเต็มรูปแบบ (ไม่จำเป็น)"
+                    rows={2}
+                    className="resize-none"
+                  />
+                  {errors.strengthsTh && <p className="text-xs text-destructive">{errors.strengthsTh.message}</p>}
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="goalsTh" className="text-sm font-medium">{t("admin.aboutPage.goalsTh")}</Label>
+                  <Textarea
+                    id="goalsTh"
+                    {...register("goalsTh")}
+                    placeholder="สร้างระบบที่ขยายได้, มีส่วนร่วมในโอเพนซอร์ซ, เป็นเมนเตอร์นักพัฒนา (ไม่จำเป็น)"
+                    rows={2}
+                    className="resize-none"
+                  />
+                  {errors.goalsTh && <p className="text-xs text-destructive">{errors.goalsTh.message}</p>}
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="nowLearningTh" className="text-sm font-medium">{t("admin.aboutPage.nowLearningTh")}</Label>
+                  <Textarea
+                    id="nowLearningTh"
+                    {...register("nowLearningTh")}
+                    placeholder="TypeScript ขั้นสูง, รูปแบบสถาปัตยกรรมระบบ, โครงสร้างคลาวด์ (ไม่จำเป็น)"
+                    rows={2}
+                    className="resize-none"
+                  />
+                  {errors.nowLearningTh && <p className="text-xs text-destructive">{errors.nowLearningTh.message}</p>}
                 </div>
               </>
             )}

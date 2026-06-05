@@ -10,21 +10,32 @@ datasource db {
 }
 
 model About {
-  id          Int      @id @default(autoincrement())
-  name        String   @db.VarChar(100)
-  title       String   @db.VarChar(200)
-  titleTh     String?  @db.VarChar(200)
-  bio         String   @db.Text
-  bioTh       String?  @db.Text
-  avatarUrl   String?  @db.VarChar(500)
-  resumeUrl   String?  @db.VarChar(500)
-  githubUrl   String?  @db.VarChar(300)
-  linkedinUrl String?  @db.VarChar(300)
-  email       String   @db.VarChar(200)
-  phone       String?  @db.VarChar(50)
-  location    String?  @db.VarChar(200)
-  locationTh  String?  @db.VarChar(200)
-  updatedAt   DateTime @updatedAt
+  id                  Int      @id @default(autoincrement())
+  name                String   @db.VarChar(100)
+  title               String   @db.VarChar(200)
+  titleTh             String?  @db.VarChar(200)
+  bio                 String   @db.Text
+  bioTh               String?  @db.Text
+  avatarUrl           String?  @db.VarChar(500)
+  resumeUrl           String?  @db.VarChar(500)
+  githubUrl           String?  @db.VarChar(300)
+  linkedinUrl         String?  @db.VarChar(300)
+  email               String   @db.VarChar(200)
+  phone               String?  @db.VarChar(50)
+  location            String?  @db.VarChar(200)
+  locationTh          String?  @db.VarChar(200)
+  status              String?  @db.VarChar(500)
+  statusTh            String?  @db.VarChar(500)
+  availability        String?  @db.VarChar(100)
+  availabilityTh      String?  @db.VarChar(100)
+  yearsOfExperience   Int?     @default(0)
+  strengths           String?  @db.Text
+  strengthsTh         String?  @db.Text
+  goals               String?  @db.Text
+  goalsTh             String?  @db.Text
+  nowLearning         String?  @db.Text
+  nowLearningTh       String?  @db.Text
+  updatedAt           DateTime @updatedAt
 }
 
 model Skill {
@@ -44,22 +55,40 @@ model Skill {
 }
 
 model Project {
-  id                Int            @id @default(autoincrement())
-  title             String         @db.VarChar(200)
-  titleTh           String?        @db.VarChar(200)
-  description       String         @db.Text
-  descriptionTh     String?        @db.Text
-  longDescription   String?        @db.Text
-  longDescriptionTh String?        @db.Text
-  techStack         String[]
-  stack             String?        @db.VarChar(100)
-  githubUrl         String?        @db.VarChar(300)
-  liveUrls          String[]
-  isFeatured        Boolean        @default(false)
-  isVisible         Boolean        @default(true)
-  sortOrder         Int            @default(0)
-  createdAt         DateTime       @default(now())
-  images            ProjectImage[]
+  id                    Int            @id @default(autoincrement())
+  title                 String         @db.VarChar(200)
+  titleTh               String?        @db.VarChar(200)
+  description           String         @db.Text
+  descriptionTh         String?        @db.Text
+  longDescription       String?        @db.Text
+  longDescriptionTh     String?        @db.Text
+  techStack             String[]
+  stack                 String?        @db.VarChar(100)
+  githubUrl             String?        @db.VarChar(300)
+  liveUrls              String[]
+  isFeatured            Boolean        @default(false)
+  isVisible             Boolean        @default(true)
+  sortOrder             Int            @default(0)
+  createdAt             DateTime       @default(now())
+  images                ProjectImage[]
+  caseStudyProblem      String?        @db.Text
+  caseStudyProblemTh    String?        @db.Text
+  caseStudySolution     String?        @db.Text
+  caseStudySolutionTh   String?        @db.Text
+  caseStudyChallenges   String?        @db.Text
+  caseStudyChallengesTh String?        @db.Text
+  caseStudyResults      String?        @db.Text
+  caseStudyResultsTh    String?        @db.Text
+  architectureDiagram   String?        @db.Text
+  architectureDiagramTh String?        @db.Text
+  techStackUsed         String?        @db.Text
+  techStackUsedTh       String?        @db.Text
+  timeline              String?        @db.VarChar(200)
+  timelineTh            String?        @db.VarChar(200)
+  teamSize              String?        @db.VarChar(100)
+  teamSizeTh            String?        @db.VarChar(100)
+  keyLearnings          String?        @db.Text
+  keyLearningsTh        String?        @db.Text
 
   @@index([isVisible, isFeatured, sortOrder])
 }
@@ -117,6 +146,8 @@ model BlogPost {
   contentTh   String?     @db.Text
   tags        String[]
   isPublished Boolean     @default(false)
+  isFeatured  Boolean     @default(false)
+  readingTime Int?
   publishedAt DateTime?
   createdAt   DateTime    @default(now())
   updatedAt   DateTime    @updatedAt
@@ -157,4 +188,15 @@ model AdminUser {
   failedAttempts Int       @default(0)
   lockedUntil    DateTime?
   createdAt      DateTime  @default(now())
+}
+
+model EngineeringHighlight {
+  id        Int     @id @default(autoincrement())
+  title     String  @db.VarChar(200)
+  titleTh   String? @db.VarChar(200)
+  icon      String? @db.VarChar(100)
+  sortOrder Int     @default(0)
+  isVisible Boolean @default(true)
+
+  @@index([isVisible, sortOrder])
 }

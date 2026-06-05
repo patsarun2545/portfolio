@@ -1,8 +1,12 @@
 "use client";
 
+import { useState } from "react";
 import { Project } from "@prisma/client";
 import { useLocale } from "@/hooks/useLocale";
 import ImageCarousel from "./ImageCarousel";
+import { CaseStudyModal } from "./CaseStudyModal";
+import { Badge } from "@/components/ui/badge";
+import { Star } from "lucide-react";
 
 interface ProjectWithImages extends Project {
   images: Array<{ id: number; url: string; sortOrder: number }>;
@@ -14,8 +18,24 @@ interface ProjectsSectionProps {
 
 export default function ProjectsSection({ projects }: ProjectsSectionProps) {
   const { locale, t } = useLocale();
+  const [modalOpen, setModalOpen] = useState(false);
+  const [selectedProject, setSelectedProject] = useState<ProjectWithImages | null>(null);
+  const [modalView, setModalView] = useState<"caseStudy" | "architecture">("caseStudy");
+
   const featuredProjects = projects.filter((p) => p.isFeatured);
   const otherProjects = projects.filter((p) => !p.isFeatured);
+
+  const handleOpenCaseStudy = (project: ProjectWithImages) => {
+    setSelectedProject(project);
+    setModalView("caseStudy");
+    setModalOpen(true);
+  };
+
+  const handleOpenArchitecture = (project: ProjectWithImages) => {
+    setSelectedProject(project);
+    setModalView("architecture");
+    setModalOpen(true);
+  };
 
   return (
     <section id="projects" className="py-16 sm:py-20 px-4 sm:px-6 lg:px-8 border-t border-b border-border">
@@ -26,9 +46,9 @@ export default function ProjectsSection({ projects }: ProjectsSectionProps) {
         </h2>
 
         {featuredProjects.length > 0 && (
-          <div className="mb-8 sm:mb-12">
-            <p className="font-mono text-xs text-muted-foreground tracking-widest uppercase mb-6">{"[ FEATURED ]"}</p>
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8">
+          <div className="mb-12 sm:mb-16">
+            <p className="font-mono text-xs text-primary tracking-widest uppercase mb-6">{"[ FEATURED ]"}</p>
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-10 items-stretch">
               {featuredProjects.map((project, index) => {
                 const title = locale === "th" ? project.titleTh || project.title : project.title;
                 const description = locale === "th" ? project.descriptionTh || project.description : project.description;
@@ -36,78 +56,95 @@ export default function ProjectsSection({ projects }: ProjectsSectionProps) {
                 return (
                   <div
                     key={project.id}
-                    className="border border-border hover:border-foreground/30 transition-colors overflow-hidden"
+                    className="border border-border hover:border-primary/50 hover:shadow-lg hover:shadow-primary/10 transition-all duration-300 overflow-hidden bg-card relative h-full flex flex-col"
                   >
                     <ImageCarousel images={project.images} priority={index === 0} />
-                    <div className="p-4 sm:p-6">
-                      <h4 className="text-lg md:text-xl font-bold text-foreground mb-2">
+                    <div className="p-6 sm:p-8 flex-1 flex flex-col">
+                      <Badge className="mb-3 w-fit bg-primary text-primary-foreground font-mono text-xs uppercase tracking-wider">
+                        <Star className="w-3 h-3 mr-1 fill-current" />
+                        Featured
+                      </Badge>
+                      <h3 className="text-xl md:text-2xl font-bold text-foreground mb-3">
                         {title}
-                      </h4>
+                      </h3>
                       {project.stack && (
-                        <p className="text-xs text-muted-foreground mb-2">
+                        <p className="text-sm text-primary font-medium mb-3">
                           {project.stack}
                         </p>
                       )}
-                      <p className="text-sm sm:text-base text-foreground mb-3 sm:mb-4 whitespace-nowrap overflow-hidden text-ellipsis">
+                      <p className="text-base sm:text-lg text-foreground mb-4 sm:mb-5">
                         {description}
                       </p>
                       {longDescription && (
-                        <ul className="text-xs sm:text-sm text-muted-foreground mb-3 sm:mb-4 space-y-1 list-disc list-inside max-h-32 overflow-y-auto pr-2 scrollbar-thin scrollbar-thumb-border scrollbar-track-transparent hover:scrollbar-thumb-primary/50">
-                          {longDescription.split('\n').map((line, idx) => (
-                            line.trim() && <li key={idx}>{line}</li>
-                          ))}
-                        </ul>
+                        <div className="relative mb-4 sm:mb-5">
+                          <ul className="text-sm text-muted-foreground space-y-2 list-disc list-inside max-h-40 overflow-y-auto pr-4 scrollbar-thin scrollbar-thumb-primary/30 scrollbar-track-transparent">
+                            {longDescription.split('\n').map((line, idx) => (
+                              line.trim() && <li key={idx}>{line}</li>
+                            ))}
+                          </ul>
+                          <div className="absolute bottom-0 left-0 right-0 h-8 bg-gradient-to-t from-card via-card/80 to-transparent pointer-events-none" />
+                        </div>
                       )}
-                      <div className="flex flex-wrap gap-1.5 mb-3 sm:mb-4">
-                        {project.techStack.map((tech) => (
+                      <div className="flex flex-wrap gap-2 mb-5 sm:mb-6">
+                        {project.techStack.slice(0, 6).map((tech) => (
                           <span
                             key={tech}
-                            className="border border-border font-mono text-xs text-muted-foreground px-2 py-0.5 rounded-sm"
+                            className="border border-border font-mono text-xs text-muted-foreground px-3 py-1 rounded-sm hover:border-primary/50 hover:text-primary transition-colors"
                           >
                             {tech}
                           </span>
                         ))}
+                        {project.techStack.length > 6 && (
+                          <span className="border border-border font-mono text-xs text-muted-foreground px-3 py-1 rounded-sm">
+                            +{project.techStack.length - 6}
+                          </span>
+                        )}
                       </div>
-                      <div className="flex gap-3 sm:gap-4 flex-wrap">
+                      <div className="flex gap-4 sm:gap-6 flex-wrap">
                         {project.githubUrl && (
                           <a
                             href={project.githubUrl}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="font-mono text-xs text-muted-foreground hover:text-primary transition-colors"
+                            className="font-mono text-sm text-foreground hover:text-primary transition-colors font-medium"
+                            aria-label={`View code for ${locale === "th" ? project.titleTh || project.title : project.title} (opens in new tab)`}
                           >
                             ↗ {t("projects.viewCode")}
                           </a>
                         )}
-                        {project.liveUrls && project.liveUrls.length === 1 && (
-                          <a
-                            href={project.liveUrls[0]}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="font-mono text-xs text-muted-foreground hover:text-primary transition-colors"
-                          >
-                            ↗ {t("projects.liveDemo")}
-                          </a>
+                        {project.liveUrls && project.liveUrls.length > 0 && (
+                          project.liveUrls.map((url, i) => (
+                            <a
+                              key={i}
+                              href={url}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="font-mono text-sm text-foreground hover:text-primary transition-colors font-medium"
+                              aria-label={`View live demo ${i + 1} for ${locale === "th" ? project.titleTh || project.title : project.title} (opens in new tab)`}
+                            >
+                              ↗ {project.liveUrls!.length === 1
+                                ? t("projects.liveDemo")
+                                : i === 0 ? t("projects.customer") : t("projects.admin")}
+                            </a>
+                          ))
                         )}
-                        {project.liveUrls && project.liveUrls.length === 2 && (
-                          <>
-                            <a
-                              href={project.liveUrls[0]}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="font-mono text-xs text-muted-foreground hover:text-primary transition-colors"
-                            >
-                              ↗ {t("projects.customer")}
-                            </a>
-                            <a
-                              href={project.liveUrls[1]}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="font-mono text-xs text-muted-foreground hover:text-primary transition-colors"
-                            >
-                              ↗ {t("projects.admin")}
-                            </a>
-                          </>
+                        {(project.caseStudyProblem || project.caseStudySolution) && (
+                          <button
+                            onClick={() => handleOpenCaseStudy(project)}
+                            className="font-mono text-sm text-foreground hover:text-primary transition-colors font-medium"
+                            aria-label={`View case study for ${locale === "th" ? project.titleTh || project.title : project.title}`}
+                          >
+                            ↗ {t("projects.viewCaseStudy")}
+                          </button>
+                        )}
+                        {project.architectureDiagram && (
+                          <button
+                            onClick={() => handleOpenArchitecture(project)}
+                            className="font-mono text-sm text-foreground hover:text-primary transition-colors font-medium"
+                            aria-label={`View architecture for ${locale === "th" ? project.titleTh || project.title : project.title}`}
+                          >
+                            ↗ {t("projects.viewArchitecture")}
+                          </button>
                         )}
                       </div>
                     </div>
@@ -128,21 +165,21 @@ export default function ProjectsSection({ projects }: ProjectsSectionProps) {
                 return (
                   <div
                     key={project.id}
-                    className="border border-border hover:border-foreground/30 transition-colors p-4 sm:p-5"
+                    className="border border-border hover:border-foreground/30 transition-colors p-4 sm:p-5 bg-card h-full flex flex-col"
                   >
-                    <h4 className="text-lg md:text-xl font-bold text-foreground mb-2">
+                    <h3 className="text-base sm:text-lg font-bold text-foreground mb-2">
                       {title}
-                    </h4>
+                    </h3>
                     {project.stack && (
                       <p className="text-xs text-muted-foreground mb-2">
                         {project.stack}
                       </p>
                     )}
-                    <p className="text-xs sm:text-sm text-foreground mb-3 sm:mb-4">
+                    <p className="text-xs sm:text-sm text-muted-foreground mb-3 sm:mb-4 line-clamp-2">
                       {description}
                     </p>
                     <div className="flex flex-wrap gap-1.5 mb-3 sm:mb-4">
-                      {project.techStack.slice(0, 3).map((tech) => (
+                      {project.techStack.slice(0, 4).map((tech) => (
                         <span
                           key={tech}
                           className="border border-border font-mono text-xs text-muted-foreground px-2 py-0.5 rounded-sm"
@@ -150,6 +187,11 @@ export default function ProjectsSection({ projects }: ProjectsSectionProps) {
                           {tech}
                         </span>
                       ))}
+                      {project.techStack.length > 4 && (
+                        <span className="border border-border font-mono text-xs text-muted-foreground px-2 py-0.5 rounded-sm">
+                          +{project.techStack.length - 4}
+                        </span>
+                      )}
                     </div>
                     <div className="flex gap-3 sm:gap-4 flex-wrap">
                       {project.githubUrl && (
@@ -158,39 +200,26 @@ export default function ProjectsSection({ projects }: ProjectsSectionProps) {
                           target="_blank"
                           rel="noopener noreferrer"
                           className="font-mono text-xs text-muted-foreground hover:text-primary transition-colors"
+                          aria-label={`View code for ${locale === "th" ? project.titleTh || project.title : project.title} (opens in new tab)`}
                         >
                           ↗ {t("projects.viewCode")}
                         </a>
                       )}
-                      {project.liveUrls && project.liveUrls.length === 1 && (
-                        <a
-                          href={project.liveUrls[0]}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="font-mono text-xs text-muted-foreground hover:text-primary transition-colors"
-                        >
-                          ↗ {t("projects.liveDemo")}
-                        </a>
-                      )}
-                      {project.liveUrls && project.liveUrls.length === 2 && (
-                        <>
+                      {project.liveUrls && project.liveUrls.length > 0 && (
+                        project.liveUrls.map((url, i) => (
                           <a
-                            href={project.liveUrls[0]}
+                            key={i}
+                            href={url}
                             target="_blank"
                             rel="noopener noreferrer"
                             className="font-mono text-xs text-muted-foreground hover:text-primary transition-colors"
+                            aria-label={`View live demo ${i + 1} for ${locale === "th" ? project.titleTh || project.title : project.title} (opens in new tab)`}
                           >
-                            ↗ {t("projects.customer")}
+                            ↗ {project.liveUrls!.length === 1
+                              ? t("projects.liveDemo")
+                              : i === 0 ? t("projects.customer") : t("projects.admin")}
                           </a>
-                          <a
-                            href={project.liveUrls[1]}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="font-mono text-xs text-muted-foreground hover:text-primary transition-colors"
-                          >
-                            ↗ {t("projects.admin")}
-                          </a>
-                        </>
+                        ))
                       )}
                     </div>
                   </div>
@@ -200,6 +229,15 @@ export default function ProjectsSection({ projects }: ProjectsSectionProps) {
           </div>
         )}
       </div>
+      
+      {selectedProject && (
+        <CaseStudyModal
+          open={modalOpen}
+          onClose={() => setModalOpen(false)}
+          project={selectedProject}
+          view={modalView}
+        />
+      )}
     </section>
   );
 }

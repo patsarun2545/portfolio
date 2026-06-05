@@ -2,6 +2,7 @@
   "nav": {
     "about": "About",
     "skills": "Skills",
+    "engineering": "Engineering",
     "projects": "Projects",
     "experience": "Experience",
     "education": "Education",
@@ -14,17 +15,43 @@
     "github": "GitHub",
     "linkedin": "LinkedIn"
   },
+  "engineeringHighlights": {
+    "title": "Engineering Highlights",
+    "jwtAuth": "JWT Authentication & RBAC",
+    "restfulApi": "RESTful API Design",
+    "postgresDesign": "PostgreSQL Database Design",
+    "websocket": "WebSocket Real-Time Systems",
+    "testing": "Automated Testing (Jest, Vitest, RTL)",
+    "cicd": "CI/CD with GitHub Actions",
+    "deployment": "Linux Server Deployment",
+    "stateMachine": "State Machine Workflows",
+    "security": "Security Best Practices",
+    "performance": "Performance Optimization"
+  },
   "skills": {
     "proficiency": "Proficiency"
   },
   "projects": {
-    "featured": "Featured Projects",
-    "other": "Other Projects",
+    "featuredProjects": "Featured Projects",
+    "otherProjects": "Other Projects",
     "viewCode": "View Code",
     "viewDemo": "View Demo",
     "liveDemo": "Live Demo",
     "customer": "View Demo Customer",
-    "admin": "View Demo Admin"
+    "admin": "View Demo Admin",
+    "viewCaseStudy": "View Case Study",
+    "viewArchitecture": "View Architecture",
+    "caseStudyModal": "View detailed case study information",
+    "architectureModal": "View architecture diagram",
+    "problem": "Problem",
+    "solution": "Solution",
+    "challenges": "Challenges",
+    "results": "Results",
+    "techStackUsed": "Tech Stack Used",
+    "timeline": "Timeline",
+    "teamSize": "Team Size",
+    "keyLearnings": "Key Learnings",
+    "noArchitectureDiagram": "No architecture diagram available."
   },
   "contact": {
     "name": "Name",
@@ -38,7 +65,10 @@
     "emailPlaceholder": "your@email.com",
     "subjectPlaceholder": "What's this about?",
     "messagePlaceholder": "Your message...",
-    "sending": "Sending..."
+    "sending": "Sending...",
+    "sentSuccessfully": "✓ Sent Successfully",
+    "sendAgain": "Send again",
+    "formLoadError": "Failed to load form. Please refresh the page."
   },
   "error": {
     "title": "Something went wrong!",
@@ -53,6 +83,21 @@
   "blog": {
     "showMore": "Show more →",
     "showLess": "Show less ↑",
-    "readMore": "Read more →"
+    "readMore": "Read more →",
+    "featured": "Featured",
+    "minRead": "min read"
+  },
+  "about": {
+    "status": "Status",
+    "strengths": "Strengths",
+    "goals": "Goals",
+    "nowLearning": "Now Learning"
+  },
+  "githubStats": {
+    "title": "GitHub Stats",
+    "totalCommits": "Total Commits",
+    "contributionsYear": "Contributions (Year)",
+    "publicRepos": "Public Repos",
+    "topLanguages": "Top Languages"
   }
 }

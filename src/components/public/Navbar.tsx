@@ -8,6 +8,7 @@ import { useLocale } from "@/hooks/useLocale";
 
 const navItems = [
   { key: "about", href: "#about" },
+  { key: "engineering", href: "#engineering" },
   { key: "skills", href: "#skills" },
   { key: "projects", href: "#projects" },
   { key: "experience", href: "#experience" },
@@ -29,6 +30,12 @@ export default function Navbar() {
       // Determine active section based on scroll position
       const sections = navItems.map(item => item.href.substring(1));
       const scrollPosition = window.scrollY + 100;
+
+      // If at top of page, set "about" as active (first section)
+      if (window.scrollY < 50) {
+        setActiveSection("about");
+        return;
+      }
 
       for (const section of sections) {
         const element = document.getElementById(section);
@@ -130,6 +137,7 @@ export default function Navbar() {
                   onClick={() => scrollToSection(item.href)}
                   className={`block w-full text-left px-3 sm:px-4 py-3 font-mono text-sm transition-colors ${isActive ? "text-primary" : "text-muted-foreground hover:text-primary"
                     }`}
+                  aria-label={`Navigate to ${t(`nav.${item.key}`)}`}
                 >
                   {isActive ? "→ " : "  "}{t(`nav.${item.key}`)}
                 </button>

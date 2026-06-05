@@ -37,6 +37,18 @@ export async function PUT(request: Request, { params }: { params: Promise<{ id: 
       return NextResponse.json(blogPost);
     }
 
+    if (Object.keys(body).length === 1 && "isFeatured" in body) {
+      const blogPost = await prisma.blogPost.update({
+        where: { id: parseInt(id) },
+        data: {
+          isFeatured: body.isFeatured,
+        },
+      });
+      revalidatePath("/");
+      revalidatePath("/blog");
+      return NextResponse.json(blogPost);
+    }
+
     const validatedData = blogSchema.parse(body);
 
     // Sanitize text fields to prevent XSS

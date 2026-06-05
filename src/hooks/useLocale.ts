@@ -30,26 +30,30 @@ export function LocaleProvider({ children, includeAdmin = false }: LocaleProvide
     locale: initialLocale,
     translations: getTranslations(initialLocale, includeAdmin),
   });
-  const hasSyncedRef = React.useRef(false);
+  const [mounted, setMounted] = React.useState(false);
+
+  // Set mounted state after hydration
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setMounted(true);
+  }, []);
 
   // Sync locale from localStorage after mount to avoid hydration mismatch
   useEffect(() => {
-    if (hasSyncedRef.current) return;
-    hasSyncedRef.current = true;
+    if (!mounted) return;
 
     const savedLocale = localStorage.getItem(STORAGE_KEY) as Locale | null;
     const localeToSync =
       savedLocale && (savedLocale === "th" || savedLocale === "en") ? savedLocale : null;
 
-    if (localeToSync) {
-      requestAnimationFrame(() => {
-        setState({
-          locale: localeToSync,
-          translations: getTranslations(localeToSync, includeAdmin),
-        });
+    if (localeToSync && localeToSync !== state.locale) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setState({
+        locale: localeToSync,
+        translations: getTranslations(localeToSync, includeAdmin),
       });
     }
-  }, [includeAdmin]);
+  }, [mounted, includeAdmin, state.locale]);
 
   // Listen for storage changes to sync across tabs/windows
   useEffect(() => {

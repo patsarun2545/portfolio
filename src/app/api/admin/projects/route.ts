@@ -78,6 +78,52 @@ export async function POST(request: Request) {
         ? sanitizeText(validatedData.longDescriptionTh)
         : undefined,
       techStack: validatedData.techStack.map((tech) => sanitizeText(tech)),
+      caseStudyProblem: validatedData.caseStudyProblem
+        ? sanitizeText(validatedData.caseStudyProblem)
+        : null,
+      caseStudyProblemTh: validatedData.caseStudyProblemTh
+        ? sanitizeText(validatedData.caseStudyProblemTh)
+        : null,
+      caseStudySolution: validatedData.caseStudySolution
+        ? sanitizeText(validatedData.caseStudySolution)
+        : null,
+      caseStudySolutionTh: validatedData.caseStudySolutionTh
+        ? sanitizeText(validatedData.caseStudySolutionTh)
+        : null,
+      caseStudyChallenges: validatedData.caseStudyChallenges
+        ? sanitizeText(validatedData.caseStudyChallenges)
+        : null,
+      caseStudyChallengesTh: validatedData.caseStudyChallengesTh
+        ? sanitizeText(validatedData.caseStudyChallengesTh)
+        : null,
+      caseStudyResults: validatedData.caseStudyResults
+        ? sanitizeText(validatedData.caseStudyResults)
+        : null,
+      caseStudyResultsTh: validatedData.caseStudyResultsTh
+        ? sanitizeText(validatedData.caseStudyResultsTh)
+        : null,
+      architectureDiagram: validatedData.architectureDiagram
+        ? sanitizeText(validatedData.architectureDiagram)
+        : null,
+      architectureDiagramTh: validatedData.architectureDiagramTh
+        ? sanitizeText(validatedData.architectureDiagramTh)
+        : null,
+      techStackUsed: validatedData.techStackUsed
+        ? sanitizeText(validatedData.techStackUsed)
+        : null,
+      techStackUsedTh: validatedData.techStackUsedTh
+        ? sanitizeText(validatedData.techStackUsedTh)
+        : null,
+      timeline: validatedData.timeline ? sanitizeText(validatedData.timeline) : null,
+      timelineTh: validatedData.timelineTh ? sanitizeText(validatedData.timelineTh) : null,
+      teamSize: validatedData.teamSize ? sanitizeText(validatedData.teamSize) : null,
+      teamSizeTh: validatedData.teamSizeTh ? sanitizeText(validatedData.teamSizeTh) : null,
+      keyLearnings: validatedData.keyLearnings
+        ? sanitizeText(validatedData.keyLearnings)
+        : null,
+      keyLearningsTh: validatedData.keyLearningsTh
+        ? sanitizeText(validatedData.keyLearningsTh)
+        : null,
     };
 
     const project = await prisma.project.create({

@@ -27,6 +27,17 @@ export const aboutSchema = z.object({
   resumeUrl: z.string().nullable().optional(),
   githubUrl: z.string().nullable().optional(),
   linkedinUrl: z.string().nullable().optional(),
+  status: z.string().nullable().optional(),
+  statusTh: z.string().nullable().optional(),
+  availability: z.string().nullable().optional(),
+  availabilityTh: z.string().nullable().optional(),
+  yearsOfExperience: z.number().int().min(0).nullable().optional(),
+  strengths: z.string().nullable().optional(),
+  strengthsTh: z.string().nullable().optional(),
+  goals: z.string().nullable().optional(),
+  goalsTh: z.string().nullable().optional(),
+  nowLearning: z.string().nullable().optional(),
+  nowLearningTh: z.string().nullable().optional(),
 });
 
 export const skillSchema = z.object({
@@ -54,6 +65,24 @@ export const projectSchema = z.object({
   isFeatured: z.boolean().default(false),
   isVisible: z.boolean().default(true),
   sortOrder: z.number().default(0),
+  caseStudyProblem: z.string().nullable().optional(),
+  caseStudyProblemTh: z.string().nullable().optional(),
+  caseStudySolution: z.string().nullable().optional(),
+  caseStudySolutionTh: z.string().nullable().optional(),
+  caseStudyChallenges: z.string().nullable().optional(),
+  caseStudyChallengesTh: z.string().nullable().optional(),
+  caseStudyResults: z.string().nullable().optional(),
+  caseStudyResultsTh: z.string().nullable().optional(),
+  architectureDiagram: z.string().nullable().optional(),
+  architectureDiagramTh: z.string().nullable().optional(),
+  techStackUsed: z.string().nullable().optional(),
+  techStackUsedTh: z.string().nullable().optional(),
+  timeline: z.string().max(200).nullable().optional(),
+  timelineTh: z.string().max(200).nullable().optional(),
+  teamSize: z.string().max(100).nullable().optional(),
+  teamSizeTh: z.string().max(100).nullable().optional(),
+  keyLearnings: z.string().nullable().optional(),
+  keyLearningsTh: z.string().nullable().optional(),
 });
 
 export const experienceSchema = z
@@ -103,6 +132,8 @@ export const blogSchema = z.object({
   contentTh: z.string().optional(),
   tags: z.array(z.string()).default([]),
   isPublished: z.boolean().default(false),
+  isFeatured: z.boolean().default(false),
+  readingTime: z.number().int().min(0).nullable().optional(),
   publishedAt: z.string().or(z.date()).optional(),
 });
 
@@ -124,4 +155,12 @@ export const adminUserSchema = z.object({
     .min(3, "Username must be at least 3 characters")
     .max(50, "Username must be at most 50 characters"),
   password: z.string().min(8, "Password must be at least 8 characters"),
+});
+
+export const engineeringHighlightSchema = z.object({
+  title: z.string().min(1, "Title is required"),
+  titleTh: z.string().optional(),
+  icon: z.string().nullable().optional(),
+  sortOrder: z.number(),
+  isVisible: z.boolean(),
 });

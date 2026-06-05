@@ -2,6 +2,7 @@ export { default as AboutSection } from "./AboutSection";
 export { default as BlogSection } from "./BlogSection";
 export { default as ContactSection } from "./ContactSection";
 export { default as EducationSection } from "./EducationSection";
+export { default as EngineeringHighlightsSection } from "./EngineeringHighlightsSection";
 export { default as ExperienceSection } from "./ExperienceSection";
 export { default as HeroSection } from "./HeroSection";
 export { default as ImageCarousel } from "./ImageCarousel";

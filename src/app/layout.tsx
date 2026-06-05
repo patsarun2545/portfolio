@@ -1,11 +1,13 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono, Sarabun } from "next/font/google";
+import Script from "next/script";
 import "./globals.css";
 import { Toaster } from "@/components/ui/sonner";
 import ClientLocaleProvider from "@/components/LocaleProvider";
 import { ThemeProvider } from "@/components/theme-provider";
 import ScrollProgressBar from "@/components/public/ScrollProgressBar";
 import BackToTopButton from "@/components/public/BackToTopButton";
+import WebVitals from "@/components/WebVitals";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -26,7 +28,7 @@ const sarabun = Sarabun({
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXTAUTH_URL || 'http://localhost:3000'),
   title: "Patsarun Kathinthong — Full Stack Developer",
-  description: "Full Stack Developer specializing in PERN/MERN Stack, RESTful API, Next.js, and scalable web applications.",
+  description: "Full Stack Developer | React, Next.js, Node.js, PostgreSQL. Specializing in PERN/MERN Stack, RESTful API, and scalable web applications.",
   keywords: ["Full Stack Developer", "Next.js", "React", "Node.js", "PostgreSQL", "MongoDB", "TypeScript"],
   authors: [{ name: "Patsarun Kathinthong" }],
   creator: "Patsarun Kathinthong",
@@ -74,7 +76,38 @@ export default function RootLayout({
       className={`${geistSans.variable} ${geistMono.variable} ${sarabun.variable} h-full antialiased`}
       suppressHydrationWarning
     >
+      <head>
+        <Script
+          id="json-ld-person"
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "Person",
+              name: "Patsarun Kathinthong",
+              jobTitle: "Full Stack Developer",
+              email: "patsarun2545@gmail.com",
+              url: "https://github.com/patsarun2545",
+              sameAs: [
+                "https://github.com/patsarun2545",
+                "https://linkedin.com/in/patsarun-kathinthong",
+              ],
+              knowsAbout: [
+                "React",
+                "Next.js",
+                "Node.js",
+                "PostgreSQL",
+                "MongoDB",
+                "TypeScript",
+                "RESTful API",
+                "GraphQL",
+              ],
+            }),
+          }}
+        />
+      </head>
       <body className="min-h-full flex flex-col">
+        <WebVitals />
         <ScrollProgressBar />
         <ClientLocaleProvider>
           <ThemeProvider

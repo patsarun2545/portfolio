@@ -19,6 +19,10 @@ const nextConfig: NextConfig = {
         protocol: "https",
         hostname: "simpleicons.org",
       },
+      {
+        protocol: "https",
+        hostname: "github-readme-stats.vercel.app",
+      },
     ],
   },
   experimental: {
@@ -32,9 +36,13 @@ const nextConfig: NextConfig = {
   },
   async headers() {
     const isDev = process.env.NODE_ENV === "development";
+
+    // ✅ เพิ่ม GitHub API ใน connect-src
+    const githubApi = "https://api.github.com";
+
     const cspValue = isDev
-      ? "default-src 'self' 'unsafe-inline' 'unsafe-eval'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' https://ik.imagekit.io https://cdn.jsdelivr.net https://devicon.dev https://simpleicons.org data: blob:; font-src 'self' data:; connect-src 'self' https://ik.imagekit.io https://cdn.jsdelivr.net https://devicon.dev https://simpleicons.org; frame-ancestors 'none';"
-      : "default-src 'self'; script-src 'self' 'unsafe-eval' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' https://ik.imagekit.io https://cdn.jsdelivr.net https://devicon.dev https://simpleicons.org data: blob:; font-src 'self' data:; connect-src 'self' https://ik.imagekit.io https://cdn.jsdelivr.net https://devicon.dev https://simpleicons.org; frame-ancestors 'none';";
+      ? `default-src 'self' 'unsafe-inline' 'unsafe-eval'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' https://ik.imagekit.io https://cdn.jsdelivr.net https://devicon.dev https://simpleicons.org data: blob:; font-src 'self' data:; connect-src 'self' https://ik.imagekit.io https://cdn.jsdelivr.net https://devicon.dev https://simpleicons.org ${githubApi}; frame-ancestors 'none';`
+      : `default-src 'self'; script-src 'self' 'unsafe-eval' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' https://ik.imagekit.io https://cdn.jsdelivr.net https://devicon.dev https://simpleicons.org data: blob:; font-src 'self' data:; connect-src 'self' https://ik.imagekit.io https://cdn.jsdelivr.net https://devicon.dev https://simpleicons.org ${githubApi}; frame-ancestors 'none';`;
 
     return [
       {

@@ -1,8 +1,8 @@
 "use client";
 
+import Image from "next/image";
 import { Skill } from "@prisma/client";
 import { useLocale } from "@/hooks/useLocale";
-import Image from "next/image";
 
 interface SkillsSectionProps {
   skills: Skill[];
@@ -35,37 +35,42 @@ export default function SkillsSection({ skills }: SkillsSectionProps) {
           {t("nav.skills")}
         </h2>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-0">
-          {Object.entries(groupedSkills).map(([category, categorySkills]) => {
+        <div className="border border-border divide-x divide-y divide-border grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
+          {Object.entries(groupedSkills)
+            .sort(([, aSkills], [, bSkills]) => {
+              const aOrder = aSkills[0]?.sortOrder ?? 999;
+              const bOrder = bSkills[0]?.sortOrder ?? 999;
+              if (aOrder !== bOrder) return aOrder - bOrder;
+              return (aSkills[0]?.category ?? "").localeCompare(bSkills[0]?.category ?? "");
+            })
+            .map(([category, categorySkills]) => {
             const firstSkill = categorySkills[0];
             return (
               <div
                 key={category}
-                className="border border-border hover:border-foreground/30 transition-colors p-4 md:p-5"
+                className="border border-border hover:border-primary/30 hover:shadow-lg hover:shadow-primary/10 transition-all duration-200 p-4 md:p-5 bg-card"
               >
-                <h3 className="font-mono text-xs text-primary uppercase tracking-widest border-b border-border pb-3 mb-4 whitespace-nowrap overflow-hidden text-ellipsis">
+                <h3 className="font-mono text-xs text-primary uppercase tracking-widest border-b border-border pb-3 mb-4" title={translateCategory(category, firstSkill.categoryTh)}>
                   {translateCategory(category, firstSkill.categoryTh)}
                 </h3>
                 <div className="space-y-2 sm:space-y-3">
-                  {categorySkills.map((skill, index) => {
+                  {categorySkills.map((skill) => {
                     const name = locale === "th" ? skill.nameTh || skill.name : skill.name;
-                    const isLast = index === categorySkills.length - 1;
                     return (
-                      <div
-                        key={skill.id}
-                        className={`flex items-center gap-3 py-2 ${isLast ? '' : 'border-b border-border'}`}
-                      >
-                        {skill.iconUrl && (
+                      <div key={skill.id} className="flex items-center gap-3 py-2">
+                        {skill.iconUrl ? (
                           <Image
                             src={skill.iconUrl}
                             alt={name}
-                            width={28}
-                            height={28}
-                            className="w-7 h-7 object-contain shrink-0 transition-all duration-200"
-                            unoptimized
+                            width={24}
+                            height={24}
+                            className="w-6 h-6 object-contain shrink-0"
                           />
+                        ) : (
+                          <div className="w-6 h-6 shrink-0" />
                         )}
-                        <span className="font-mono text-xs text-muted-foreground hover:text-primary whitespace-nowrap overflow-hidden text-ellipsis">
+                        <span className="font-mono text-xs text-muted-foreground 
+                          hover:text-primary transition-colors truncate">
                           {name}
                         </span>
                       </div>

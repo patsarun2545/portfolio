@@ -86,6 +86,20 @@ function SortableSkill({
       </TableCell>
       <TableCell className="p-3 text-sm hidden sm:table-cell">{skill.category}</TableCell>
       <TableCell className="p-3 text-sm font-medium truncate max-w-[100px] sm:max-w-none">{skill.name}</TableCell>
+      <TableCell className="p-3 hidden sm:table-cell">
+        {skill.iconUrl ? (
+          <Image
+            src={skill.iconUrl}
+            alt={skill.name}
+            width={32}
+            height={32}
+            className="w-8 h-8 object-contain"
+            unoptimized
+          />
+        ) : (
+          <span className="text-sm text-muted-foreground">-</span>
+        )}
+      </TableCell>
       <TableCell className="p-3">
         <div className="flex items-center gap-2">
           <div className="w-12 sm:w-24 bg-secondary rounded-full h-1.5">
@@ -700,7 +714,7 @@ export default function SkillsPage() {
                 <div className="flex items-center space-x-2">
                   <Switch
                     id="isVisible"
-                    {...register("isVisible")}
+                    checked={watch("isVisible")}
                     onCheckedChange={(checked) => setValue("isVisible", checked)}
                   />
                   <Label htmlFor="isVisible" className="text-sm font-medium cursor-pointer">{t("admin.skillsPage.visible")}</Label>
@@ -742,6 +756,7 @@ export default function SkillsPage() {
                       <TableHead className="w-10" />
                       <TableHead className="whitespace-nowrap w-auto hidden sm:table-cell">{t("admin.skillsPage.tableCategory")}</TableHead>
                       <TableHead className="whitespace-nowrap w-auto">{t("admin.skillsPage.tableSkill")}</TableHead>
+                      <TableHead className="whitespace-nowrap w-auto hidden sm:table-cell">{t("admin.skillsPage.tableIcon")}</TableHead>
                       <TableHead className="whitespace-nowrap w-auto">{t("admin.skillsPage.tableProficiency")}</TableHead>
                       <TableHead className="whitespace-nowrap w-16 hidden md:table-cell">{t("admin.skillsPage.tableVis")}</TableHead>
                       <TableHead className="whitespace-nowrap w-auto text-right">{t("admin.skillsPage.tableActions")}</TableHead>
@@ -750,7 +765,7 @@ export default function SkillsPage() {
                   <TableBody>
                     {skills.length === 0 ? (
                       <TableRow>
-                        <TableCell colSpan={6} className="text-center py-8 text-muted-foreground">
+                        <TableCell colSpan={7} className="text-center py-8 text-muted-foreground">
                           {t("admin.skillsPage.noSkills")}
                         </TableCell>
                       </TableRow>

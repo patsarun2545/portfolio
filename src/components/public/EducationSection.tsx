@@ -9,6 +9,7 @@ interface EducationSectionProps {
 
 export default function EducationSection({ education }: EducationSectionProps) {
   const { locale, t } = useLocale();
+
   return (
     <section id="education" className="py-16 sm:py-20 px-4 sm:px-6 lg:px-8 border-t border-border">
       <div className="max-w-4xl mx-auto animate-fade-in-up">
@@ -17,51 +18,50 @@ export default function EducationSection({ education }: EducationSectionProps) {
           {t("nav.education")}
         </h2>
 
-        <div className="relative">
-          <div className="absolute left-4 sm:left-6 md:left-1/2 top-0 bottom-0 w-0.5 border-l-2 border-border" />
+        <div className="relative pl-6 sm:pl-8">
+          {/* Vertical line */}
+          <div className="absolute left-0 top-2 bottom-0 w-px bg-border min-h-8" />
 
           {education.map((edu, index) => {
             const degree = locale === "th" ? edu.degreeTh || edu.degree : edu.degree;
             const fieldOfStudy = locale === "th" ? edu.fieldOfStudyTh || edu.fieldOfStudy : edu.fieldOfStudy;
             const description = locale === "th" ? edu.descriptionTh || edu.description : edu.description;
-            return (
-              <div
-                key={edu.id}
-                className={`relative mb-6 sm:mb-8 pl-10 sm:pl-12 md:pl-0 ${index % 2 === 0 ? "md:pr-1/2 md:text-right" : "md:pl-1/2 md:ml-auto"
-                  }`}
-              >
-                <div className="w-full md:w-5/12 md:px-6 lg:px-8">
-                  <div className="border border-border hover:border-foreground/30 transition-colors p-4 md:p-6 text-left">
-                    <div className="absolute left-4 sm:left-6 md:left-1/2 w-2.5 h-2.5 bg-primary rotate-45 transform -translate-x-1/2 mt-4 sm:mt-6" />
+            const isLast = index === education.length - 1;
 
-                    <h3 className="text-sm md:text-base font-semibold text-foreground mb-2">
-                      {degree}
-                    </h3>
-                    <p className="font-mono text-xs text-primary tracking-wider mb-2">
-                      {edu.institution}
+            return (
+              <div key={edu.id} className={`relative ${!isLast ? "mb-8 sm:mb-10" : ""}`}>
+                {/* Dot */}
+                <div className="absolute -left-6 sm:-left-8 top-1.5 w-2.5 h-2.5 bg-primary rotate-45 transform translate-x-[calc(-50%+0.5px)]" />
+
+                <div className="border border-border hover:border-primary/30 hover:shadow-lg hover:shadow-primary/10 transition-all duration-200 p-4 sm:p-6 bg-card">
+                  <h3 className="text-sm md:text-base font-semibold text-foreground mb-1">
+                    {degree}
+                  </h3>
+                  <p className="font-mono text-xs text-primary tracking-wider mb-1">
+                    {edu.institution}
+                  </p>
+                  {fieldOfStudy && (
+                    <p className="text-sm text-muted-foreground mb-1">
+                      {fieldOfStudy}
                     </p>
-                    {fieldOfStudy && (
-                      <p className="text-sm text-muted-foreground mb-2">
-                        {fieldOfStudy}
-                      </p>
-                    )}
-                    <p className="font-mono text-xs text-muted-foreground mb-2">
-                      {new Date(edu.startDate).toLocaleDateString("en-US", { month: "short", year: "numeric", timeZone: "Asia/Bangkok" })} -{" "}
-                      {edu.endDate
-                        ? new Date(edu.endDate).toLocaleDateString("en-US", { month: "short", year: "numeric", timeZone: "Asia/Bangkok" })
-                        : (locale === "th" ? "ปัจจุบัน" : "Present")}
+                  )}
+                  <p className="font-mono text-xs text-muted-foreground mb-3">
+                    {new Date(edu.startDate).toLocaleDateString(locale === "th" ? "th-TH" : "en-US", { month: "short", year: "numeric", timeZone: "Asia/Bangkok" })}
+                    {" – "}
+                    {edu.endDate
+                      ? new Date(edu.endDate).toLocaleDateString(locale === "th" ? "th-TH" : "en-US", { month: "short", year: "numeric", timeZone: "Asia/Bangkok" })
+                      : (locale === "th" ? "ปัจจุบัน" : "Present")}
+                  </p>
+                  {edu.gpa && (
+                    <p className="font-mono text-xs text-muted-foreground mb-3">
+                      GPA {edu.gpa.toFixed(2)}
                     </p>
-                    {edu.gpa && (
-                      <p className="font-mono text-xs text-muted-foreground mb-2">
-                        GPA {edu.gpa.toFixed(2)}
-                      </p>
-                    )}
-                    {description && (
-                      <p className="text-sm text-muted-foreground leading-relaxed">
-                        {description}
-                      </p>
-                    )}
-                  </div>
+                  )}
+                  {description && (
+                    <p className="text-sm text-muted-foreground leading-relaxed">
+                      {description}
+                    </p>
+                  )}
                 </div>
               </div>
             );

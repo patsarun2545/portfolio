@@ -10,12 +10,13 @@ export default async function DashboardPage() {
     redirect("/admin/login");
   }
 
-  const [projectsCount, skillsCount, blogPostsCount, unreadMessagesCount] =
+  const [projectsCount, skillsCount, blogPostsCount, unreadMessagesCount, engineeringHighlightsCount] =
     await Promise.all([
       prisma.project.count(),
       prisma.skill.count(),
       prisma.blogPost.count(),
       prisma.contactMessage.count({ where: { isRead: false } }),
+      prisma.engineeringHighlight.count(),
     ]);
 
   return (
@@ -24,6 +25,7 @@ export default async function DashboardPage() {
       skillsCount={skillsCount}
       blogPostsCount={blogPostsCount}
       unreadMessagesCount={unreadMessagesCount}
+      engineeringHighlightsCount={engineeringHighlightsCount}
     />
   );
 }

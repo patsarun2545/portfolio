@@ -33,7 +33,7 @@ import {
 import { Switch } from "@/components/ui/switch";
 import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
-import { Plus, Pencil, Trash2, GripVertical, X } from "lucide-react";
+import { Plus, Pencil, Trash2, GripVertical, X, ZoomIn } from "lucide-react";
 import dynamic from "next/dynamic";
 import { closestCenter, KeyboardSensor, PointerSensor, useSensor, useSensors, DragEndEvent, DndContext } from "@dnd-kit/core";
 import { arrayMove, sortableKeyboardCoordinates, useSortable, rectSortingStrategy, SortableContext, verticalListSortingStrategy } from "@dnd-kit/sortable";
@@ -45,33 +45,65 @@ const MDEditor = dynamic(
   { ssr: false }
 );
 
-function SortableBlogPost({ post, onEdit, onDelete, onTogglePublish, t }: { post: BlogPost; onEdit: (post: BlogPost) => void; onDelete: (id: number) => void; onTogglePublish: (id: number, isPublished: boolean) => void; t: (key: string) => string }) {
+function SortableBlogPost({ post, onEdit, onDelete, onTogglePublish, onToggleFeatured, t, onImageClick }: { post: BlogPost; onEdit: (post: BlogPost) => void; onDelete: (id: number) => void; onTogglePublish: (id: number, isPublished: boolean) => void; onToggleFeatured: (id: number, isFeatured: boolean) => void; t: (key: string) => string; onImageClick: (url: string) => void }) {
   const { attributes, listeners, setNodeRef, transform, transition } = useSortable({ id: post.id });
   const style = {
     transform: CSS.Transform.toString(transform),
     transition,
   };
 
+  const firstImage = post.images && post.images.length > 0 ? post.images[0] : null;
+
   return (
     <TableRow ref={setNodeRef} style={style}>
-      <TableCell className="p-3">
+      <TableCell className="p-3 w-10">
         <button {...attributes} {...listeners} className="cursor-grab" aria-label="Drag to reorder post">
           <GripVertical className="h-4 w-4 text-muted-foreground" />
         </button>
       </TableCell>
-      <TableCell className="p-3 text-sm font-medium truncate max-w-[120px] sm:max-w-none">{post.title}</TableCell>
-      <TableCell className="p-3 text-sm text-muted-foreground hidden sm:table-cell truncate max-w-xs">{post.slug}</TableCell>
-      <TableCell className="p-3">
+      <TableCell className="p-3 w-16 hidden sm:table-cell">
+        {firstImage ? (
+          <button
+            onClick={() => onImageClick(firstImage.url)}
+            className="relative w-12 h-12 rounded-lg overflow-hidden border border-border hover:border-primary transition-colors group"
+            aria-label="View image"
+          >
+            <Image
+              src={firstImage.url}
+              alt={post.title}
+              fill
+              sizes="48px"
+              className="object-cover"
+            />
+            <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+              <ZoomIn className="h-4 w-4 text-white" />
+            </div>
+          </button>
+        ) : (
+          <div className="w-12 h-12 rounded-lg bg-muted flex items-center justify-center">
+            <span className="text-xs text-muted-foreground">No img</span>
+          </div>
+        )}
+      </TableCell>
+      <TableCell className="p-3 text-sm font-medium truncate max-w-[150px]">{post.title}</TableCell>
+      <TableCell className="p-3 text-sm text-muted-foreground hidden sm:table-cell truncate max-w-[150px]">{post.slug}</TableCell>
+      <TableCell className="p-3 hidden md:table-cell">
+        <Switch
+          checked={post.isFeatured}
+          onCheckedChange={(checked) => onToggleFeatured(post.id, checked)}
+        />
+      </TableCell>
+      <TableCell className="p-3 w-20">
         <Badge variant={post.isPublished ? "default" : "secondary"} className="text-xs">
           {post.isPublished ? t("admin.publish") : t("admin.unpublish")}
         </Badge>
       </TableCell>
-      <TableCell className="p-3 text-sm text-muted-foreground hidden md:table-cell">
+      <TableCell className="p-3 text-sm text-muted-foreground hidden md:table-cell w-28">
         {post.publishedAt
           ? new Date(post.publishedAt).toLocaleDateString("en-US", { month: "short", year: "numeric" })
           : t("admin.blogPage.notPublished")}
       </TableCell>
-      <TableCell className="p-3">
+      <TableCell className="p-3 w-24">
         <div className="flex gap-1 justify-end">
           <Button
             variant="ghost"
@@ -154,6 +186,8 @@ export default function BlogPage() {
   const [postToDelete, setPostToDelete] = useState<BlogPost | null>(null);
   const [activeTab, setActiveTab] = useState<"en" | "th">("en");
   const [mounted, setMounted] = useState(false);
+  const [lightboxOpen, setLightboxOpen] = useState(false);
+  const [lightboxImageUrl, setLightboxImageUrl] = useState<string>("");
 
   useEffect(() => {
     setTimeout(() => setMounted(true), 0);
@@ -619,6 +653,28 @@ export default function BlogPage() {
     }
   };
 
+  const handleToggleFeatured = async (id: number, isFeatured: boolean) => {
+    try {
+      const response = await fetch(`/api/admin/blog/${id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          "x-csrf-token": getCSRFToken(),
+        },
+        body: JSON.stringify({ isFeatured }),
+      });
+
+      if (response.ok) {
+        toast.success(t("admin.blogPage.featuredStatusUpdated"));
+        fetchPosts();
+      } else {
+        toast.error(t("admin.blogPage.failedToUpdateFeatured"));
+      }
+    } catch {
+      toast.error(t("admin.blogPage.failedToUpdateFeatured"));
+    }
+  };
+
   const handleNewPost = () => {
     setEditingPost(null);
     reset({
@@ -631,6 +687,11 @@ export default function BlogPage() {
     });
     setImages([]);
     setIsDialogOpen(true);
+  };
+
+  const handleImageClick = (url: string) => {
+    setLightboxImageUrl(url);
+    setLightboxOpen(true);
   };
 
   if (isLoading) {
@@ -795,13 +856,29 @@ export default function BlogPage() {
                 )}
               </div>
 
-              <div className="flex items-center space-x-2">
-                <Switch
-                  id="isPublished"
-                  checked={watch("isPublished")}
-                  onCheckedChange={(checked) => setValue("isPublished", checked)}
-                />
-                <Label htmlFor="isPublished" className="text-sm font-medium cursor-pointer">{t("admin.blogPage.published")}</Label>
+              <div className="space-y-2">
+                <Label htmlFor="readingTime" className="text-sm font-medium">{t("admin.blogPage.readingTimeLabel")}</Label>
+                <Input id="readingTime" type="number" {...register("readingTime", { valueAsNumber: true })} placeholder="5" min="0" />
+                {errors.readingTime && <p className="text-xs text-destructive">{errors.readingTime.message}</p>}
+              </div>
+
+              <div className="flex items-center space-x-4 sm:space-x-6">
+                <div className="flex items-center space-x-2">
+                  <Switch
+                    id="isFeatured"
+                    checked={watch("isFeatured")}
+                    onCheckedChange={(checked) => setValue("isFeatured", checked)}
+                  />
+                  <Label htmlFor="isFeatured" className="text-sm font-medium cursor-pointer">{t("admin.blogPage.isFeaturedLabel")}</Label>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <Switch
+                    id="isPublished"
+                    checked={watch("isPublished")}
+                    onCheckedChange={(checked) => setValue("isPublished", checked)}
+                  />
+                  <Label htmlFor="isPublished" className="text-sm font-medium cursor-pointer">{t("admin.blogPage.published")}</Label>
+                </div>
               </div>
 
               <div className="flex justify-end gap-2 sm:gap-3 pt-2">
@@ -844,6 +921,33 @@ export default function BlogPage() {
             </div>
           </DialogContent>
         </Dialog>
+
+        {lightboxOpen && (
+          <div 
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black"
+            onClick={() => setLightboxOpen(false)}
+          >
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                setLightboxOpen(false);
+              }}
+              className="absolute top-4 right-4 z-10 p-2 bg-white/10 hover:bg-white/20 rounded-full transition-colors"
+              aria-label="Close"
+            >
+              <X className="h-6 w-6 text-white" />
+            </button>
+            <div className="relative w-full h-full flex items-center justify-center">
+              <Image
+                src={lightboxImageUrl}
+                alt="Full size image"
+                fill
+                className="object-contain"
+                priority
+              />
+            </div>
+          </div>
+        )}
       </div>
 
       <Card>
@@ -855,17 +959,19 @@ export default function BlogPage() {
                   <TableHeader>
                     <TableRow>
                       <TableHead className="w-10" />
-                      <TableHead className="whitespace-nowrap w-auto">{t("admin.blogPage.titleLabel")}</TableHead>
-                      <TableHead className="whitespace-nowrap w-auto hidden sm:table-cell">{t("admin.blogPage.slugLabel")}</TableHead>
-                      <TableHead className="whitespace-nowrap w-16">{t("admin.blogPage.status")}</TableHead>
-                      <TableHead className="whitespace-nowrap w-auto hidden md:table-cell">{t("admin.blogPage.date")}</TableHead>
-                      <TableHead className="whitespace-nowrap w-auto text-right">{t("admin.blogPage.actions")}</TableHead>
+                      <TableHead className="whitespace-nowrap w-16 hidden sm:table-cell">{t("admin.blogPage.image")}</TableHead>
+                      <TableHead className="whitespace-nowrap">{t("admin.blogPage.titleLabel")}</TableHead>
+                      <TableHead className="whitespace-nowrap hidden sm:table-cell">{t("admin.blogPage.slugLabel")}</TableHead>
+                      <TableHead className="whitespace-nowrap w-16 hidden md:table-cell">{t("admin.blogPage.featured")}</TableHead>
+                      <TableHead className="whitespace-nowrap w-20">{t("admin.blogPage.status")}</TableHead>
+                      <TableHead className="whitespace-nowrap w-28 hidden md:table-cell">{t("admin.blogPage.date")}</TableHead>
+                      <TableHead className="whitespace-nowrap w-24 text-right">{t("admin.blogPage.actions")}</TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
                     {posts.length === 0 ? (
                       <TableRow>
-                        <TableCell colSpan={6} className="text-center py-8 text-muted-foreground">
+                        <TableCell colSpan={8} className="text-center py-8 text-muted-foreground">
                           {t("admin.blogPage.noPosts")}
                         </TableCell>
                       </TableRow>
@@ -877,7 +983,9 @@ export default function BlogPage() {
                           onEdit={handleEdit}
                           onDelete={handleDelete}
                           onTogglePublish={handleTogglePublish}
+                          onToggleFeatured={handleToggleFeatured}
                           t={t}
+                          onImageClick={handleImageClick}
                         />
                       ))
                     )}

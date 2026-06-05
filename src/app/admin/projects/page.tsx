@@ -33,7 +33,7 @@ import {
 import { Switch } from "@/components/ui/switch";
 import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
-import { Plus, Pencil, Trash2, Star, Eye, X, GripVertical } from "lucide-react";
+import { Plus, Pencil, Trash2, Star, Eye, X, GripVertical, ZoomIn } from "lucide-react";
 import {
   DndContext,
   closestCenter,
@@ -97,12 +97,14 @@ function SortableProject({
   onDelete,
   onToggleFeatured,
   onToggleVisibility,
+  onImageClick,
 }: {
   project: Project;
   onEdit: (project: Project) => void;
   onDelete: (id: number) => void;
   onToggleFeatured: (id: number, isFeatured: boolean) => void;
   onToggleVisibility: (id: number, isVisible: boolean) => void;
+  onImageClick: (url: string) => void;
 }) {
   const { attributes, listeners, setNodeRef, transform, transition } = useSortable({
     id: project.id,
@@ -113,6 +115,8 @@ function SortableProject({
     transition,
   };
 
+  const firstImage = project.images && project.images.length > 0 ? project.images[0] : null;
+
   return (
     <TableRow ref={setNodeRef} style={style}>
       <TableCell className="p-3">
@@ -120,7 +124,31 @@ function SortableProject({
           <GripVertical className="h-4 w-4 text-muted-foreground" />
         </button>
       </TableCell>
-      <TableCell className="p-3 text-sm font-medium truncate max-w-[120px] sm:max-w-none">{project.title}</TableCell>
+      <TableCell className="p-3 hidden sm:table-cell">
+        {firstImage ? (
+          <button
+            onClick={() => onImageClick(firstImage.url)}
+            className="relative w-12 h-12 rounded-lg overflow-hidden border border-border hover:border-primary transition-colors group"
+            aria-label="View image"
+          >
+            <Image
+              src={firstImage.url}
+              alt={project.title}
+              fill
+              sizes="48px"
+              className="object-cover"
+            />
+            <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+              <ZoomIn className="h-4 w-4 text-white" />
+            </div>
+          </button>
+        ) : (
+          <div className="w-12 h-12 rounded-lg bg-muted flex items-center justify-center">
+            <span className="text-xs text-muted-foreground">No img</span>
+          </div>
+        )}
+      </TableCell>
+      <TableCell className="p-3 text-sm font-medium truncate max-w-[150px]">{project.title}</TableCell>
       <TableCell className="p-3 text-sm max-w-xs truncate text-muted-foreground hidden sm:table-cell">
         {project.description}
       </TableCell>
@@ -184,6 +212,8 @@ export default function ProjectsPage() {
   const [projectToDelete, setProjectToDelete] = useState<Project | null>(null);
   const [activeTab, setActiveTab] = useState<"en" | "th">("en");
   const [mounted, setMounted] = useState(false);
+  const [lightboxOpen, setLightboxOpen] = useState(false);
+  const [lightboxImageUrl, setLightboxImageUrl] = useState<string>("");
 
   useEffect(() => {
     setTimeout(() => setMounted(true), 0);
@@ -614,6 +644,11 @@ export default function ProjectsPage() {
     setIsDialogOpen(true);
   };
 
+  const handleImageClick = (url: string) => {
+    setLightboxImageUrl(url);
+    setLightboxOpen(true);
+  };
+
   if (isLoading) {
     return (
       <div className="flex items-center justify-center min-h-[50vh]">
@@ -705,6 +740,140 @@ export default function ProjectsPage() {
                 )}
               </div>
 
+              {/* Case Study Section */}
+              <fieldset className="space-y-4 p-4 border rounded-lg">
+                <legend className="text-sm font-medium px-2">{t("admin.projectsPage.caseStudySection")}</legend>
+                <div className="space-y-2">
+                  <Label htmlFor="caseStudyProblem" className="text-sm font-medium">{t("admin.projectsPage.caseStudyProblemLabel")}</Label>
+                  <Textarea
+                    id="caseStudyProblem"
+                    {...register("caseStudyProblem")}
+                    placeholder="Problem statement for case study"
+                    rows={3}
+                    className="resize-y"
+                  />
+                  {errors.caseStudyProblem && (
+                    <p className="text-xs text-red-500">{errors.caseStudyProblem.message}</p>
+                  )}
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="caseStudySolution" className="text-sm font-medium">{t("admin.projectsPage.caseStudySolutionLabel")}</Label>
+                  <Textarea
+                    id="caseStudySolution"
+                    {...register("caseStudySolution")}
+                    placeholder="Solution approach for case study"
+                    rows={3}
+                    className="resize-y"
+                  />
+                  {errors.caseStudySolution && (
+                    <p className="text-xs text-red-500">{errors.caseStudySolution.message}</p>
+                  )}
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="caseStudyChallenges" className="text-sm font-medium">{t("admin.projectsPage.caseStudyChallengesLabel")}</Label>
+                  <Textarea
+                    id="caseStudyChallenges"
+                    {...register("caseStudyChallenges")}
+                    placeholder="Challenges faced during development"
+                    rows={3}
+                    className="resize-y"
+                  />
+                  {errors.caseStudyChallenges && (
+                    <p className="text-xs text-red-500">{errors.caseStudyChallenges.message}</p>
+                  )}
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="caseStudyResults" className="text-sm font-medium">{t("admin.projectsPage.caseStudyResultsLabel")}</Label>
+                  <Textarea
+                    id="caseStudyResults"
+                    {...register("caseStudyResults")}
+                    placeholder="Results and outcomes"
+                    rows={3}
+                    className="resize-y"
+                  />
+                  {errors.caseStudyResults && (
+                    <p className="text-xs text-red-500">{errors.caseStudyResults.message}</p>
+                  )}
+                </div>
+              </fieldset>
+
+              {/* Case Study Extended Section */}
+              <fieldset className="space-y-4 p-4 border rounded-lg">
+                <legend className="text-sm font-medium px-2">{t("admin.projectsPage.caseStudyExtendedSection")}</legend>
+                <div className="space-y-2">
+                  <Label htmlFor="techStackUsed" className="text-sm font-medium">{t("admin.projectsPage.techStackUsedLabel")}</Label>
+                  <Textarea
+                    id="techStackUsed"
+                    {...register("techStackUsed")}
+                    placeholder="Tech stack used in the project"
+                    rows={2}
+                    className="resize-y"
+                  />
+                  {errors.techStackUsed && (
+                    <p className="text-xs text-red-500">{errors.techStackUsed.message}</p>
+                  )}
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="timeline" className="text-sm font-medium">{t("admin.projectsPage.timelineLabel")}</Label>
+                  <Input
+                    id="timeline"
+                    {...register("timeline")}
+                    placeholder="e.g., 3 months"
+                  />
+                  {errors.timeline && (
+                    <p className="text-xs text-red-500">{errors.timeline.message}</p>
+                  )}
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="teamSize" className="text-sm font-medium">{t("admin.projectsPage.teamSizeLabel")}</Label>
+                  <Input
+                    id="teamSize"
+                    {...register("teamSize")}
+                    placeholder="e.g., Solo project, 3 team members"
+                  />
+                  {errors.teamSize && (
+                    <p className="text-xs text-red-500">{errors.teamSize.message}</p>
+                  )}
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="keyLearnings" className="text-sm font-medium">{t("admin.projectsPage.keyLearningsLabel")}</Label>
+                  <Textarea
+                    id="keyLearnings"
+                    {...register("keyLearnings")}
+                    placeholder="Key learnings from the project"
+                    rows={3}
+                    className="resize-y"
+                  />
+                  {errors.keyLearnings && (
+                    <p className="text-xs text-red-500">{errors.keyLearnings.message}</p>
+                  )}
+                </div>
+              </fieldset>
+
+              {/* Architecture Section */}
+              <fieldset className="space-y-4 p-4 border rounded-lg">
+                <legend className="text-sm font-medium px-2">{t("admin.projectsPage.architectureSection")}</legend>
+                <div className="space-y-2">
+                  <Label htmlFor="architectureDiagram" className="text-sm font-medium">{t("admin.projectsPage.architectureDiagramLabel")}</Label>
+                  <Textarea
+                    id="architectureDiagram"
+                    {...register("architectureDiagram")}
+                    placeholder="Architecture diagram (e.g., Component A → Component B → Database)"
+                    rows={3}
+                    className="resize-y font-mono text-sm"
+                  />
+                  {errors.architectureDiagram && (
+                    <p className="text-xs text-red-500">{errors.architectureDiagram.message}</p>
+                  )}
+                </div>
+              </fieldset>
+
               {activeTab === "th" && (
                 <>
                   <div className="space-y-2">
@@ -740,6 +909,140 @@ export default function ProjectsPage() {
                       <p className="text-xs text-red-500">{errors.longDescriptionTh.message}</p>
                     )}
                   </div>
+
+                  {/* Case Study Section - Thai */}
+                  <fieldset className="space-y-4 p-4 border rounded-lg">
+                    <legend className="text-sm font-medium px-2">{t("admin.projectsPage.caseStudySection")}</legend>
+                    <div className="space-y-2">
+                      <Label htmlFor="caseStudyProblemTh" className="text-sm font-medium">{t("admin.projectsPage.caseStudyProblemThLabel")}</Label>
+                      <Textarea
+                        id="caseStudyProblemTh"
+                        {...register("caseStudyProblemTh")}
+                        placeholder="ปัญหาสำหรับ Case Study"
+                        rows={3}
+                        className="resize-y"
+                      />
+                      {errors.caseStudyProblemTh && (
+                        <p className="text-xs text-red-500">{errors.caseStudyProblemTh.message}</p>
+                      )}
+                    </div>
+
+                    <div className="space-y-2">
+                      <Label htmlFor="caseStudySolutionTh" className="text-sm font-medium">{t("admin.projectsPage.caseStudySolutionThLabel")}</Label>
+                      <Textarea
+                        id="caseStudySolutionTh"
+                        {...register("caseStudySolutionTh")}
+                        placeholder="วิธีแก้ปัญหาสำหรับ Case Study"
+                        rows={3}
+                        className="resize-y"
+                      />
+                      {errors.caseStudySolutionTh && (
+                        <p className="text-xs text-red-500">{errors.caseStudySolutionTh.message}</p>
+                      )}
+                    </div>
+
+                    <div className="space-y-2">
+                      <Label htmlFor="caseStudyChallengesTh" className="text-sm font-medium">{t("admin.projectsPage.caseStudyChallengesThLabel")}</Label>
+                      <Textarea
+                        id="caseStudyChallengesTh"
+                        {...register("caseStudyChallengesTh")}
+                        placeholder="ความท้าทายที่เผชิญระหว่างการพัฒนา"
+                        rows={3}
+                        className="resize-y"
+                      />
+                      {errors.caseStudyChallengesTh && (
+                        <p className="text-xs text-red-500">{errors.caseStudyChallengesTh.message}</p>
+                      )}
+                    </div>
+
+                    <div className="space-y-2">
+                      <Label htmlFor="caseStudyResultsTh" className="text-sm font-medium">{t("admin.projectsPage.caseStudyResultsThLabel")}</Label>
+                      <Textarea
+                        id="caseStudyResultsTh"
+                        {...register("caseStudyResultsTh")}
+                        placeholder="ผลลัพธ์และผลสำเร็จ"
+                        rows={3}
+                        className="resize-y"
+                      />
+                      {errors.caseStudyResultsTh && (
+                        <p className="text-xs text-red-500">{errors.caseStudyResultsTh.message}</p>
+                      )}
+                    </div>
+                  </fieldset>
+
+                  {/* Case Study Extended Section - Thai */}
+                  <fieldset className="space-y-4 p-4 border rounded-lg">
+                    <legend className="text-sm font-medium px-2">{t("admin.projectsPage.caseStudyExtendedSection")}</legend>
+                    <div className="space-y-2">
+                      <Label htmlFor="techStackUsedTh" className="text-sm font-medium">{t("admin.projectsPage.techStackUsedThLabel")}</Label>
+                      <Textarea
+                        id="techStackUsedTh"
+                        {...register("techStackUsedTh")}
+                        placeholder="Tech stack ที่ใช้ในโปรเจกต์"
+                        rows={2}
+                        className="resize-y"
+                      />
+                      {errors.techStackUsedTh && (
+                        <p className="text-xs text-red-500">{errors.techStackUsedTh.message}</p>
+                      )}
+                    </div>
+
+                    <div className="space-y-2">
+                      <Label htmlFor="timelineTh" className="text-sm font-medium">{t("admin.projectsPage.timelineThLabel")}</Label>
+                      <Input
+                        id="timelineTh"
+                        {...register("timelineTh")}
+                        placeholder="เช่น 3 เดือน"
+                      />
+                      {errors.timelineTh && (
+                        <p className="text-xs text-red-500">{errors.timelineTh.message}</p>
+                      )}
+                    </div>
+
+                    <div className="space-y-2">
+                      <Label htmlFor="teamSizeTh" className="text-sm font-medium">{t("admin.projectsPage.teamSizeThLabel")}</Label>
+                      <Input
+                        id="teamSizeTh"
+                        {...register("teamSizeTh")}
+                        placeholder="เช่น โปรเจกต์เดี่ยว, ทีม 3 คน"
+                      />
+                      {errors.teamSizeTh && (
+                        <p className="text-xs text-red-500">{errors.teamSizeTh.message}</p>
+                      )}
+                    </div>
+
+                    <div className="space-y-2">
+                      <Label htmlFor="keyLearningsTh" className="text-sm font-medium">{t("admin.projectsPage.keyLearningsThLabel")}</Label>
+                      <Textarea
+                        id="keyLearningsTh"
+                        {...register("keyLearningsTh")}
+                        placeholder="สิ่งที่เรียนรู้จากโปรเจกต์"
+                        rows={3}
+                        className="resize-y"
+                      />
+                      {errors.keyLearningsTh && (
+                        <p className="text-xs text-red-500">{errors.keyLearningsTh.message}</p>
+                      )}
+                    </div>
+                  </fieldset>
+
+                  {/* Architecture Section - Thai */}
+                  <fieldset className="space-y-4 p-4 border rounded-lg">
+                    <legend className="text-sm font-medium px-2">{t("admin.projectsPage.architectureSection")}</legend>
+                    <div className="space-y-2">
+                      <Label htmlFor="architectureDiagramTh" className="text-sm font-medium">{t("admin.projectsPage.architectureDiagramThLabel")}</Label>
+                      <Textarea
+                        id="architectureDiagramTh"
+                        {...register("architectureDiagramTh")}
+                        placeholder="Architecture Diagram (เช่น Component A → Component B → Database)"
+                        rows={3}
+                        className="resize-y font-mono text-sm"
+                      />
+                      {errors.architectureDiagramTh && (
+                        <p className="text-xs text-red-500">{errors.architectureDiagramTh.message}</p>
+                      )}
+                    </div>
+                  </fieldset>
                 </>
               )}
 
@@ -920,6 +1223,33 @@ export default function ProjectsPage() {
             </div>
           </DialogContent>
         </Dialog>
+
+        {lightboxOpen && (
+          <div 
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black"
+            onClick={() => setLightboxOpen(false)}
+          >
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                setLightboxOpen(false);
+              }}
+              className="absolute top-4 right-4 z-10 p-2 bg-white/10 hover:bg-white/20 rounded-full transition-colors"
+              aria-label="Close"
+            >
+              <X className="h-6 w-6 text-white" />
+            </button>
+            <div className="relative w-full h-full flex items-center justify-center">
+              <Image
+                src={lightboxImageUrl}
+                alt="Full size image"
+                fill
+                className="object-contain"
+                priority
+              />
+            </div>
+          </div>
+        )}
       </div>
 
       <Card>
@@ -938,6 +1268,7 @@ export default function ProjectsPage() {
                   <TableHeader>
                     <TableRow>
                       <TableHead className="w-10" />
+                      <TableHead className="whitespace-nowrap w-16 hidden sm:table-cell">{t("admin.projectsPage.image")}</TableHead>
                       <TableHead className="whitespace-nowrap w-auto">{t("admin.projectsPage.tableTitle")}</TableHead>
                       <TableHead className="whitespace-nowrap w-auto hidden sm:table-cell">{t("admin.projectsPage.tableDescription")}</TableHead>
                       <TableHead className="whitespace-nowrap w-auto">{t("admin.projectsPage.tableTechStack")}</TableHead>
@@ -949,7 +1280,7 @@ export default function ProjectsPage() {
                   <TableBody>
                     {projects.length === 0 ? (
                       <TableRow>
-                        <TableCell colSpan={7} className="text-center py-8 text-muted-foreground">
+                        <TableCell colSpan={6} className="text-center py-8 text-muted-foreground">
                           {t("admin.projectsPage.noProjects")}
                         </TableCell>
                       </TableRow>
@@ -962,6 +1293,7 @@ export default function ProjectsPage() {
                           onDelete={handleDelete}
                           onToggleFeatured={handleToggleFeatured}
                           onToggleVisibility={handleToggleVisibility}
+                          onImageClick={handleImageClick}
                         />
                       ))
                     )}

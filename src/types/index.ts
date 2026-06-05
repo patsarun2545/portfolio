@@ -13,6 +13,17 @@ export interface About {
   resumeUrl?: string | null;
   githubUrl?: string | null;
   linkedinUrl?: string | null;
+  status?: string | null;
+  statusTh?: string | null;
+  availability?: string | null;
+  availabilityTh?: string | null;
+  yearsOfExperience?: number | null;
+  strengths?: string | null;
+  strengthsTh?: string | null;
+  goals?: string | null;
+  goalsTh?: string | null;
+  nowLearning?: string | null;
+  nowLearningTh?: string | null;
   updatedAt: Date;
 }
 
@@ -49,6 +60,24 @@ export interface Project {
     url: string;
     sortOrder: number;
   }>;
+  caseStudyProblem?: string | null;
+  caseStudyProblemTh?: string | null;
+  caseStudySolution?: string | null;
+  caseStudySolutionTh?: string | null;
+  caseStudyChallenges?: string | null;
+  caseStudyChallengesTh?: string | null;
+  caseStudyResults?: string | null;
+  caseStudyResultsTh?: string | null;
+  architectureDiagram?: string | null;
+  architectureDiagramTh?: string | null;
+  techStackUsed?: string | null;
+  techStackUsedTh?: string | null;
+  timeline?: string | null;
+  timelineTh?: string | null;
+  teamSize?: string | null;
+  teamSizeTh?: string | null;
+  keyLearnings?: string | null;
+  keyLearningsTh?: string | null;
 }
 
 export interface Experience {
@@ -90,6 +119,8 @@ export interface BlogPost {
   contentTh?: string | null;
   tags: string[];
   isPublished: boolean;
+  isFeatured: boolean;
+  readingTime?: number | null;
   publishedAt?: Date;
   createdAt: Date;
   updatedAt: Date;
@@ -117,6 +148,15 @@ export interface AdminUser {
   failedAttempts: number;
   lockedUntil?: Date | null;
   createdAt: Date;
+}
+
+export interface EngineeringHighlight {
+  id: number;
+  title: string;
+  titleTh?: string | null;
+  icon?: string | null;
+  sortOrder: number;
+  isVisible: boolean;
 }
 
 export interface ProjectImageWithLoading {

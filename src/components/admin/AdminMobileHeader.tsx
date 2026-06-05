@@ -29,11 +29,13 @@ import {
   Moon,
   Sun,
   Globe,
+  Zap,
 } from "lucide-react";
 
 const navigation = [
   { key: "dashboard", href: "/admin/dashboard", iconName: "LayoutDashboard" },
   { key: "about", href: "/admin/about", iconName: "User" },
+  { key: "engineeringHighlights", href: "/admin/engineering-highlights", iconName: "Zap" },
   { key: "skills", href: "/admin/skills", iconName: "Code2" },
   { key: "projects", href: "/admin/projects", iconName: "Briefcase" },
   { key: "experience", href: "/admin/experience", iconName: "Briefcase" },
@@ -84,17 +86,19 @@ export default function AdminMobileHeader({
                   const IconComponent = item.iconName === "LayoutDashboard" ? LayoutDashboard :
                     item.iconName === "User" ? User :
                       item.iconName === "Code2" ? Code2 :
-                        item.iconName === "Briefcase" ? Briefcase :
-                          item.iconName === "GraduationCap" ? GraduationCap :
-                            item.iconName === "FileText" ? FileText :
-                              item.iconName === "Mail" ? Mail : LayoutDashboard;
+                        item.iconName === "Zap" ? Zap :
+                          item.iconName === "Briefcase" ? Briefcase :
+                            item.iconName === "GraduationCap" ? GraduationCap :
+                              item.iconName === "FileText" ? FileText :
+                                item.iconName === "Mail" ? Mail : LayoutDashboard;
                   const iconColor = item.iconName === "LayoutDashboard" ? "text-blue-500" :
                     item.iconName === "User" ? "text-green-500" :
                       item.iconName === "Code2" ? "text-purple-500" :
-                        item.iconName === "Briefcase" ? "text-orange-500" :
-                          item.iconName === "GraduationCap" ? "text-pink-500" :
-                            item.iconName === "FileText" ? "text-cyan-500" :
-                              item.iconName === "Mail" ? "text-red-500" : "text-blue-500";
+                        item.iconName === "Zap" ? "text-yellow-500" :
+                          item.iconName === "Briefcase" ? "text-orange-500" :
+                            item.iconName === "GraduationCap" ? "text-pink-500" :
+                              item.iconName === "FileText" ? "text-cyan-500" :
+                                item.iconName === "Mail" ? "text-red-500" : "text-blue-500";
                   return (
                     <Link
                       key={item.key}

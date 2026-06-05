@@ -27,7 +27,7 @@ export default function ThemeToggle() {
           <Moon className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-muted-foreground hover:text-primary transition-colors" />
         )
       ) : (
-        <Moon className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-muted-foreground hover:text-primary transition-colors" />
+        <div className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
       )}
     </button>
   );

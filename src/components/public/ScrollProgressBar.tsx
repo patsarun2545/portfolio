@@ -23,7 +23,7 @@ export default function ScrollProgressBar() {
   }, []);
 
   return (
-    <div className="fixed top-0 left-0 right-0 z-50">
+    <div className="fixed top-0 left-0 right-0 z-[60]">
       <div
         className="h-px bg-primary"
         style={{ width: `${progress}%` }}

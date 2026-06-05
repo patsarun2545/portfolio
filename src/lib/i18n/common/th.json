@@ -2,6 +2,7 @@
   "nav": {
     "about": "เกี่ยวกับฉัน",
     "skills": "ทักษะ",
+    "engineering": "ความเชี่ยวชาญ",
     "projects": "ผลงาน",
     "experience": "ประสบการณ์",
     "education": "การศึกษา",
@@ -14,17 +15,43 @@
     "github": "GitHub",
     "linkedin": "LinkedIn"
   },
+  "engineeringHighlights": {
+    "title": "ความเชี่ยวชาญด้านวิศวกรรม",
+    "jwtAuth": "JWT Authentication & RBAC",
+    "restfulApi": "RESTful API Design",
+    "postgresDesign": "PostgreSQL Database Design",
+    "websocket": "WebSocket Real-Time Systems",
+    "testing": "Automated Testing (Jest, Vitest, RTL)",
+    "cicd": "CI/CD with GitHub Actions",
+    "deployment": "Linux Server Deployment",
+    "stateMachine": "State Machine Workflows",
+    "security": "Security Best Practices",
+    "performance": "Performance Optimization"
+  },
   "skills": {
     "proficiency": "ความเชี่ยวชาญ"
   },
   "projects": {
-    "featured": "ผลงานเด่น",
-    "other": "ผลงานอื่นๆ",
+    "featuredProjects": "ผลงานเด่น",
+    "otherProjects": "ผลงานอื่นๆ",
     "viewCode": "ดูโค้ด",
     "viewDemo": "ดูตัวอย่าง",
     "liveDemo": "ดูตัวอย่างสด",
     "customer": "ดูตัวอย่าง ลูกค้า",
-    "admin": "ดูตัวอย่าง ผู้ดูแล"
+    "admin": "ดูตัวอย่าง ผู้ดูแล",
+    "viewCaseStudy": "ดูกรณีศึกษา",
+    "viewArchitecture": "ดูสถาปัตยกรรมระบบ",
+    "caseStudyModal": "ดูข้อมูล Case Study โดยละเอียด",
+    "architectureModal": "ดู Architecture Diagram",
+    "problem": "ปัญหา",
+    "solution": "วิธีแก้ไข",
+    "challenges": "ความท้าทาย",
+    "results": "ผลลัพธ์",
+    "techStackUsed": "Tech Stack ที่ใช้",
+    "timeline": "ระยะเวลา",
+    "teamSize": "ขนาดทีม",
+    "keyLearnings": "สิ่งที่ได้เรียนรู้",
+    "noArchitectureDiagram": "ไม่มี Architecture Diagram ให้ดู"
   },
   "contact": {
     "name": "ชื่อ",
@@ -38,7 +65,10 @@
     "emailPlaceholder": "your@email.com",
     "subjectPlaceholder": "เกี่ยวกับอะไร?",
     "messagePlaceholder": "ข้อความของคุณ...",
-    "sending": "กำลังส่ง..."
+    "sending": "กำลังส่ง...",
+    "sentSuccessfully": "✓ ส่งสำเร็จ",
+    "sendAgain": "ส่งอีกครั้ง",
+    "formLoadError": "ไม่สามารถโหลดฟอร์มได้ กรุณารีเฟรชหน้า"
   },
   "error": {
     "title": "เกิดข้อผิดพลาด!",
@@ -53,6 +83,21 @@
   "blog": {
     "showMore": "แสดงเพิ่มเติม →",
     "showLess": "แสดงน้อยลง ↑",
-    "readMore": "อ่านเพิ่มเติม →"
+    "readMore": "อ่านเพิ่มเติม →",
+    "featured": "เด่น",
+    "minRead": "นาที"
+  },
+  "about": {
+    "status": "สถานะ",
+    "strengths": "จุดแข็ง",
+    "goals": "เป้าหมาย",
+    "nowLearning": "กำลังเรียน"
+  },
+  "githubStats": {
+    "title": "สถิติ GitHub",
+    "totalCommits": "คอมมิตทั้งหมด",
+    "contributionsYear": "การมีส่วนร่วม (ปี)",
+    "publicRepos": "Repo สาธารณะ",
+    "topLanguages": "ภาษาหลักที่ใช้"
   }
 }

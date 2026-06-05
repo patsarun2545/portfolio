@@ -8,6 +8,7 @@ import {
   GraduationCap,
   FileText,
   Mail,
+  Zap,
 } from "lucide-react";
 import Link from "next/link";
 import { useLocale } from "@/hooks/useLocale";
@@ -19,6 +20,7 @@ interface DashboardContentProps {
   skillsCount: number;
   blogPostsCount: number;
   unreadMessagesCount: number;
+  engineeringHighlightsCount: number;
 }
 
 export default function DashboardContent({
@@ -26,6 +28,7 @@ export default function DashboardContent({
   skillsCount,
   blogPostsCount,
   unreadMessagesCount,
+  engineeringHighlightsCount,
 }: DashboardContentProps) {
   const { t } = useLocale();
   const [mounted, setMounted] = useState(false);
@@ -49,25 +52,32 @@ export default function DashboardContent({
 
   const stats = [
     {
-      title: mounted ? t("admin.projects") : "Projects",
-      count: projectsCount,
-      icon: Briefcase,
-      href: "/admin/projects",
-      color: "bg-blue-500",
+      title: mounted ? t("admin.engineeringHighlights") : "Engineering Highlights",
+      count: engineeringHighlightsCount,
+      icon: Zap,
+      href: "/admin/engineering-highlights",
+      color: "bg-yellow-500",
     },
     {
       title: mounted ? t("admin.skills") : "Skills",
       count: skillsCount,
       icon: Code2,
       href: "/admin/skills",
-      color: "bg-green-500",
+      color: "bg-purple-500",
+    },
+    {
+      title: mounted ? t("admin.projects") : "Projects",
+      count: projectsCount,
+      icon: Briefcase,
+      href: "/admin/projects",
+      color: "bg-orange-500",
     },
     {
       title: mounted ? t("admin.blogPosts") : "Blog Posts",
       count: blogPostsCount,
       icon: FileText,
       href: "/admin/blog",
-      color: "bg-orange-500",
+      color: "bg-cyan-500",
     },
     {
       title: mounted ? t("admin.unreadMessages") : "Unread Messages",
