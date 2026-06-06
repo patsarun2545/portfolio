@@ -6,7 +6,7 @@ import { useLocale } from "@/hooks/useLocale";
 import ImageCarousel from "./ImageCarousel";
 import { CaseStudyModal } from "./CaseStudyModal";
 import { Badge } from "@/components/ui/badge";
-import { Star } from "lucide-react";
+import { Star, GitBranch, Globe, BookOpen, Network } from "lucide-react";
 
 interface ProjectWithImages extends Project {
   images: Array<{ id: number; url: string; sortOrder: number }>;
@@ -64,20 +64,18 @@ export default function ProjectsSection({ projects }: ProjectsSectionProps) {
                         <Star className="w-3 h-3 mr-1 fill-current" />
                         Featured
                       </Badge>
-                      <h3 className="text-xl md:text-2xl font-bold text-foreground mb-3">
+                      <h3 className="text-xl md:text-2xl font-bold text-foreground mb-3 min-h-[64px]">
                         {title}
                       </h3>
-                      {project.stack && (
-                        <p className="text-sm text-primary font-medium mb-3">
-                          {project.stack}
-                        </p>
-                      )}
-                      <p className="text-base sm:text-lg text-foreground mb-4 sm:mb-5">
+                      <p className="text-sm text-primary font-medium mb-3 min-h-[20px]">
+                        {project.stack || ""}
+                      </p>
+                      <p className="text-base sm:text-lg text-foreground mb-4 sm:mb-5 line-clamp-2 min-h-[64px]">
                         {description}
                       </p>
                       {longDescription && (
                         <div className="relative mb-4 sm:mb-5">
-                          <ul className="text-sm text-muted-foreground space-y-2 list-disc list-inside max-h-40 overflow-y-auto pr-4 scrollbar-thin scrollbar-thumb-primary/30 scrollbar-track-transparent">
+                          <ul className="text-sm text-muted-foreground space-y-2 list-disc list-inside h-40 overflow-y-auto pr-4 scrollbar-thin scrollbar-thumb-primary/30 scrollbar-track-transparent">
                             {longDescription.split('\n').map((line, idx) => (
                               line.trim() && <li key={idx}>{line}</li>
                             ))}
@@ -85,8 +83,7 @@ export default function ProjectsSection({ projects }: ProjectsSectionProps) {
                           <div className="absolute bottom-0 left-0 right-0 h-8 bg-gradient-to-t from-card via-card/80 to-transparent pointer-events-none" />
                         </div>
                       )}
-                      <div className="flex flex-wrap gap-2 mb-5 sm:mb-6">
-                        {project.techStack.slice(0, 6).map((tech) => (
+                      <div className="flex flex-wrap gap-2 mb-5 sm:mb-6 min-h-[60px] content-start">                        {project.techStack.slice(0, 6).map((tech) => (
                           <span
                             key={tech}
                             className="border border-border font-mono text-xs text-muted-foreground px-3 py-1 rounded-sm hover:border-primary/50 hover:text-primary transition-colors"
@@ -100,52 +97,63 @@ export default function ProjectsSection({ projects }: ProjectsSectionProps) {
                           </span>
                         )}
                       </div>
-                      <div className="flex gap-4 sm:gap-6 flex-wrap">
-                        {project.githubUrl && (
-                          <a
-                            href={project.githubUrl}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="font-mono text-sm text-foreground hover:text-primary transition-colors font-medium"
-                            aria-label={`View code for ${locale === "th" ? project.titleTh || project.title : project.title} (opens in new tab)`}
-                          >
-                            ↗ {t("projects.viewCode")}
-                          </a>
-                        )}
-                        {project.liveUrls && project.liveUrls.length > 0 && (
-                          project.liveUrls.map((url, i) => (
+                      <div className="flex flex-col gap-3 mt-auto pt-2">
+                        {/* แถวบน: external links */}
+                        <div className="flex gap-4 sm:gap-6 flex-wrap">
+                          {project.githubUrl && (
                             <a
-                              key={i}
-                              href={url}
+                              href={project.githubUrl}
                               target="_blank"
                               rel="noopener noreferrer"
-                              className="font-mono text-sm text-foreground hover:text-primary transition-colors font-medium"
-                              aria-label={`View live demo ${i + 1} for ${locale === "th" ? project.titleTh || project.title : project.title} (opens in new tab)`}
+                              className="font-mono text-sm text-foreground hover:text-primary transition-colors font-medium flex items-center gap-1.5"
                             >
-                              ↗ {project.liveUrls!.length === 1
-                                ? t("projects.liveDemo")
-                                : i === 0 ? t("projects.customer") : t("projects.admin")}
+                              <GitBranch className="w-3.5 h-3.5" />
+                              {t("projects.viewCode")}
                             </a>
-                          ))
-                        )}
+                          )}
+
+                          {project.liveUrls?.length > 0 &&
+                            project.liveUrls.map((url, i) => (
+                              <a
+                                key={url}
+                                href={url}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="font-mono text-sm text-foreground hover:text-primary transition-colors font-medium flex items-center gap-1.5"
+                              >
+                                <Globe className="w-3.5 h-3.5" />
+                                {project.liveUrls.length === 1
+                                  ? t("projects.liveDemo")
+                                  : i === 0
+                                    ? t("projects.customer")
+                                    : t("projects.admin")}
+                              </a>
+                            ))}
+                        </div>
+
+                        {/* แถวล่าง: in-app modals */}
+                      <div className="flex gap-2 flex-wrap">
                         {(project.caseStudyProblem || project.caseStudySolution) && (
                           <button
+                            type="button"
                             onClick={() => handleOpenCaseStudy(project)}
-                            className="font-mono text-sm text-foreground hover:text-primary transition-colors font-medium"
-                            aria-label={`View case study for ${locale === "th" ? project.titleTh || project.title : project.title}`}
+                            className="font-mono text-xs text-primary uppercase tracking-widest border border-border hover:border-primary px-3 py-1.5 flex items-center gap-1.5 rounded-sm transition-colors"
                           >
-                            ↗ {t("projects.viewCaseStudy")}
+                            <BookOpen className="w-3 h-3" />
+                            {t("projects.viewCaseStudy")}
                           </button>
                         )}
                         {project.architectureDiagram && (
                           <button
+                            type="button"
                             onClick={() => handleOpenArchitecture(project)}
-                            className="font-mono text-sm text-foreground hover:text-primary transition-colors font-medium"
-                            aria-label={`View architecture for ${locale === "th" ? project.titleTh || project.title : project.title}`}
+                            className="font-mono text-xs text-primary uppercase tracking-widest border border-border hover:border-primary px-3 py-1.5 flex items-center gap-1.5 rounded-sm transition-colors"
                           >
-                            ↗ {t("projects.viewArchitecture")}
+                            <Network className="w-3 h-3" />
+                            {t("projects.viewArchitecture")}
                           </button>
                         )}
+                      </div>
                       </div>
                     </div>
                   </div>
@@ -193,7 +201,7 @@ export default function ProjectsSection({ projects }: ProjectsSectionProps) {
                         </span>
                       )}
                     </div>
-                    <div className="flex gap-3 sm:gap-4 flex-wrap">
+                    <div className="flex gap-3 sm:gap-4 flex-wrap mt-auto">
                       {project.githubUrl && (
                         <a
                           href={project.githubUrl}

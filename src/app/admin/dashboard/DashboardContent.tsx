@@ -4,12 +4,13 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   User,
   Code2,
-  Briefcase,
   GraduationCap,
   FileText,
   Mail,
   Zap,
-} from "lucide-react";
+  FolderOpen,
+  Building2,
+  } from "lucide-react";
 import Link from "next/link";
 import { useLocale } from "@/hooks/useLocale";
 import { useState, useEffect, useRef } from "react";
@@ -68,7 +69,7 @@ export default function DashboardContent({
     {
       title: mounted ? t("admin.projects") : "Projects",
       count: projectsCount,
-      icon: Briefcase,
+      icon: FolderOpen,
       href: "/admin/projects",
       color: "bg-orange-500",
     },
@@ -90,7 +91,7 @@ export default function DashboardContent({
 
   const quickActions = [
     { name: mounted ? t("admin.about") : "About", href: "/admin/about", icon: User, color: "bg-blue-500" },
-    { name: mounted ? t("admin.experience") : "Experience", href: "/admin/experience", icon: Briefcase, color: "bg-green-500" },
+    { name: mounted ? t("admin.experience") : "Experience", href: "/admin/experience", icon: Building2, color: "bg-green-500" },
     { name: mounted ? t("admin.education") : "Education", href: "/admin/education", icon: GraduationCap, color: "bg-purple-500" },
   ];
 

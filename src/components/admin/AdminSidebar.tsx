@@ -20,15 +20,17 @@ import {
   Sun,
   Globe,
   Zap,
-} from "lucide-react";
+  FolderOpen,
+  Building2,
+  } from "lucide-react";
 
 const navigation = [
   { key: "dashboard", href: "/admin/dashboard", iconName: "LayoutDashboard" },
   { key: "about", href: "/admin/about", iconName: "User" },
   { key: "engineeringHighlights", href: "/admin/engineering-highlights", iconName: "Zap" },
   { key: "skills", href: "/admin/skills", iconName: "Code2" },
-  { key: "projects", href: "/admin/projects", iconName: "Briefcase" },
-  { key: "experience", href: "/admin/experience", iconName: "Briefcase" },
+  { key: "projects", href: "/admin/projects", iconName: "FolderOpen" },
+  { key: "experience", href: "/admin/experience", iconName: "Building2" },
   { key: "education", href: "/admin/education", iconName: "GraduationCap" },
   { key: "blog", href: "/admin/blog", iconName: "FileText" },
   { key: "messages", href: "/admin/messages", iconName: "Mail" },
@@ -92,7 +94,9 @@ export default function AdminSidebar({
             item.iconName === "User" ? User :
               item.iconName === "Code2" ? Code2 :
                 item.iconName === "Zap" ? Zap :
-                  item.iconName === "Briefcase" ? Briefcase :
+                item.iconName === "FolderOpen" ? FolderOpen :
+                  item.iconName === "Building2" ? Building2 :
+                    item.iconName === "Briefcase" ? Briefcase :
                     item.iconName === "GraduationCap" ? GraduationCap :
                       item.iconName === "FileText" ? FileText :
                         item.iconName === "Mail" ? Mail : LayoutDashboard;
@@ -100,7 +104,9 @@ export default function AdminSidebar({
             item.iconName === "User" ? "text-green-500" :
               item.iconName === "Code2" ? "text-purple-500" :
                 item.iconName === "Zap" ? "text-yellow-500" :
-                  item.iconName === "Briefcase" ? "text-orange-500" :
+                  item.iconName === "FolderOpen" ? "text-orange-500" :
+                  item.iconName === "Building2" ? "text-amber-500" :
+                    item.iconName === "Briefcase" ? "text-amber-500" :
                     item.iconName === "GraduationCap" ? "text-pink-500" :
                       item.iconName === "FileText" ? "text-cyan-500" :
                         item.iconName === "Mail" ? "text-red-500" : "text-blue-500";

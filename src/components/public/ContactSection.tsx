@@ -130,9 +130,9 @@ export default function ContactSection() {
             </button>
           </div>
         ) : (
-          <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 sm:space-y-6 border border-border hover:border-primary/30 hover:shadow-lg hover:shadow-primary/10 transition-all duration-200 p-6 sm:p-8 bg-card">
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 sm:space-y-6 border border-border hover:border-primary/30 hover:shadow-lg hover:shadow-primary/10 transition-all duration-200 p-6 sm:p-8 bg-card/80 backdrop-blur-sm">
           <div>
-            <label htmlFor="name" className="block font-mono text-xs text-muted-foreground uppercase tracking-widest mb-2">
+            <label htmlFor="name" className="block font-mono text-xs text-foreground uppercase tracking-widest mb-2">
               {t("contact.name")}
             </label>
             <input
@@ -140,7 +140,7 @@ export default function ContactSection() {
               type="text"
               id="name"
               disabled={isSubmitting}
-              className="w-full bg-transparent border-0 border-b border-border focus:border-primary font-mono text-sm text-foreground placeholder:text-muted-foreground/40 px-0 py-2 md:py-3 outline-none rounded-none transition-colors disabled:opacity-50"
+              className="w-full bg-transparent border-0 border-b border-border/70 focus:border-primary font-mono text-sm text-foreground placeholder:text-muted-foreground/40 px-0 py-2 md:py-3 outline-none rounded-none transition-colors disabled:opacity-50"
               placeholder={t("contact.namePlaceholder")}
             />
             {errors.name && (
@@ -149,7 +149,7 @@ export default function ContactSection() {
           </div>
 
           <div>
-            <label htmlFor="email" className="block font-mono text-xs text-muted-foreground uppercase tracking-widest mb-2">
+            <label htmlFor="email" className="block font-mono text-xs text-foreground uppercase tracking-widest mb-2">
               {t("contact.email")}
             </label>
             <input
@@ -157,7 +157,7 @@ export default function ContactSection() {
               type="email"
               id="email"
               disabled={isSubmitting}
-              className="w-full bg-transparent border-0 border-b border-border focus:border-primary font-mono text-sm text-foreground placeholder:text-muted-foreground/40 px-0 py-2 md:py-3 outline-none rounded-none transition-colors disabled:opacity-50"
+              className="w-full bg-transparent border-0 border-b border-border/70 focus:border-primary font-mono text-sm text-foreground placeholder:text-muted-foreground/40 px-0 py-2 md:py-3 outline-none rounded-none transition-colors disabled:opacity-50"
               placeholder={t("contact.emailPlaceholder")}
             />
             {errors.email && (
@@ -166,7 +166,7 @@ export default function ContactSection() {
           </div>
 
           <div>
-            <label htmlFor="subject" className="block font-mono text-xs text-muted-foreground uppercase tracking-widest mb-2">
+            <label htmlFor="subject" className="block font-mono text-xs text-foreground uppercase tracking-widest mb-2">
               {t("contact.subject")}
             </label>
             <input
@@ -174,7 +174,7 @@ export default function ContactSection() {
               type="text"
               id="subject"
               disabled={isSubmitting}
-              className="w-full bg-transparent border-0 border-b border-border focus:border-primary font-mono text-sm text-foreground placeholder:text-muted-foreground/40 px-0 py-2 md:py-3 outline-none rounded-none transition-colors disabled:opacity-50"
+              className="w-full bg-transparent border-0 border-b border-border/70 focus:border-primary font-mono text-sm text-foreground placeholder:text-muted-foreground/40 px-0 py-2 md:py-3 outline-none rounded-none transition-colors disabled:opacity-50"
               placeholder={t("contact.subjectPlaceholder")}
             />
             {errors.subject && (
@@ -183,7 +183,7 @@ export default function ContactSection() {
           </div>
 
           <div>
-            <label htmlFor="message" className="block font-mono text-xs text-muted-foreground uppercase tracking-widest mb-2">
+            <label htmlFor="message" className="block font-mono text-xs text-foreground uppercase tracking-widest mb-2">
               {t("contact.message")}
             </label>
             <textarea
@@ -191,7 +191,7 @@ export default function ContactSection() {
               id="message"
               rows={5}
               disabled={isSubmitting}
-              className="w-full bg-transparent border-0 border-b border-border focus:border-primary font-mono text-sm text-foreground placeholder:text-muted-foreground/40 px-0 py-2 md:py-3 outline-none rounded-none transition-colors resize-none disabled:opacity-50"
+              className="w-full bg-transparent border-0 border-b border-border/70 focus:border-primary font-mono text-sm text-foreground placeholder:text-muted-foreground/40 px-0 py-2 md:py-3 outline-none rounded-none transition-colors resize-none disabled:opacity-50"
               placeholder={t("contact.messagePlaceholder")}
             />
             {errors.message && (

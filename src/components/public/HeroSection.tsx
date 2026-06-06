@@ -100,7 +100,7 @@ export default function HeroSection({ about }: HeroSectionProps) {
         </div>
       </div>
 
-      <span className="absolute right-0 top-1/2 -translate-y-1/2 text-[18vw] font-black text-border leading-none opacity-30 z-0 hidden md:block pointer-events-none select-none" aria-hidden="true">
+      <span className="absolute right-0 top-1/2 -translate-y-1/2 text-[18vw] font-black text-border leading-none opacity-35 z-0 hidden md:block pointer-events-none select-none" aria-hidden="true">
         {about.name.split(" ")[0]}
       </span>
     </section>

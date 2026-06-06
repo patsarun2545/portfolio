@@ -37,7 +37,7 @@ import {
 } from "@/components/ui/dialog";
 import { Switch } from "@/components/ui/switch";
 import { toast } from "sonner";
-import { Plus, Pencil, Trash2, GripVertical } from "lucide-react";
+import { Plus, Pencil, Trash2, GripVertical, Eye } from "lucide-react";
 import {
   DndContext,
   closestCenter,
@@ -692,7 +692,8 @@ export default function SkillsPage() {
                     <p className="font-medium">Icon sources:</p>
                     <ul className="list-disc list-inside space-y-1">
                       <li><a href="https://devicon.dev/" target="_blank" rel="noopener noreferrer" className="text-blue-500 hover:underline break-all">Devicon</a> - Technology icons</li>
-                      <li><a href="https://simpleicons.org/" target="_blank" rel="noopener noreferrer" className="text-blue-500 hover:underline break-all">Simple Icons</a> - Brand icons</li>
+                      <li><a href="https://simpleicons.org/" target="_blank" rel="noopener noreferrer" className="text-blue-500 hover:underline break-all">Simple Icons</a> - Brand/concept icons</li>
+                      <li><a href="https://cdn.simpleicons.org" target="_blank" rel="noopener noreferrer" className="text-blue-500 hover:underline break-all">Simple Icons CDN</a> - https://cdn.simpleicons.org/[icon-slug]</li>
                     </ul>
                   </div>
                 </div>
@@ -717,7 +718,10 @@ export default function SkillsPage() {
                     checked={watch("isVisible")}
                     onCheckedChange={(checked) => setValue("isVisible", checked)}
                   />
-                  <Label htmlFor="isVisible" className="text-sm font-medium cursor-pointer">{t("admin.skillsPage.visible")}</Label>
+                  <Label htmlFor="isVisible" className="flex items-center gap-2 text-sm font-medium cursor-pointer">
+                    <Eye className="h-4 w-4" />
+                    {t("admin.skillsPage.visible")}
+                  </Label>
                 </div>
 
                 <div className="flex justify-end gap-2 sm:gap-3 pt-2">

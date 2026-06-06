@@ -33,7 +33,7 @@ import {
 import { Switch } from "@/components/ui/switch";
 import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
-import { Plus, Pencil, Trash2, GripVertical, X, ZoomIn } from "lucide-react";
+import { Plus, Pencil, Trash2, GripVertical, X, ZoomIn, Star, Eye } from "lucide-react";
 import dynamic from "next/dynamic";
 import { closestCenter, KeyboardSensor, PointerSensor, useSensor, useSensors, DragEndEvent, DndContext } from "@dnd-kit/core";
 import { arrayMove, sortableKeyboardCoordinates, useSortable, rectSortingStrategy, SortableContext, verticalListSortingStrategy } from "@dnd-kit/sortable";
@@ -869,7 +869,10 @@ export default function BlogPage() {
                     checked={watch("isFeatured")}
                     onCheckedChange={(checked) => setValue("isFeatured", checked)}
                   />
-                  <Label htmlFor="isFeatured" className="text-sm font-medium cursor-pointer">{t("admin.blogPage.isFeaturedLabel")}</Label>
+                  <Label htmlFor="isFeatured" className="flex items-center gap-2 text-sm font-medium cursor-pointer">
+                    <Star className="h-4 w-4" />
+                    {t("admin.blogPage.isFeaturedLabel")}
+                  </Label>
                 </div>
                 <div className="flex items-center space-x-2">
                   <Switch
@@ -877,7 +880,10 @@ export default function BlogPage() {
                     checked={watch("isPublished")}
                     onCheckedChange={(checked) => setValue("isPublished", checked)}
                   />
-                  <Label htmlFor="isPublished" className="text-sm font-medium cursor-pointer">{t("admin.blogPage.published")}</Label>
+                  <Label htmlFor="isPublished" className="flex items-center gap-2 text-sm font-medium cursor-pointer">
+                    <Eye className="h-4 w-4" />
+                    {t("admin.blogPage.published")}
+                  </Label>
                 </div>
               </div>
 

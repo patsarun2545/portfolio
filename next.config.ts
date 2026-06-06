@@ -2,6 +2,9 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   images: {
+    dangerouslyAllowSVG: true,
+    contentDispositionType: "attachment",
+    contentSecurityPolicy: "default-src 'none'; script-src 'none'; sandbox;",
     remotePatterns: [
       {
         protocol: "https",
@@ -18,6 +21,10 @@ const nextConfig: NextConfig = {
       {
         protocol: "https",
         hostname: "simpleicons.org",
+      },
+      {
+        protocol: "https",
+        hostname: "cdn.simpleicons.org",
       },
       {
         protocol: "https",
@@ -41,8 +48,8 @@ const nextConfig: NextConfig = {
     const githubApi = "https://api.github.com";
 
     const cspValue = isDev
-      ? `default-src 'self' 'unsafe-inline' 'unsafe-eval'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' https://ik.imagekit.io https://cdn.jsdelivr.net https://devicon.dev https://simpleicons.org data: blob:; font-src 'self' data:; connect-src 'self' https://ik.imagekit.io https://cdn.jsdelivr.net https://devicon.dev https://simpleicons.org ${githubApi}; frame-ancestors 'none';`
-      : `default-src 'self'; script-src 'self' 'unsafe-eval' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' https://ik.imagekit.io https://cdn.jsdelivr.net https://devicon.dev https://simpleicons.org data: blob:; font-src 'self' data:; connect-src 'self' https://ik.imagekit.io https://cdn.jsdelivr.net https://devicon.dev https://simpleicons.org ${githubApi}; frame-ancestors 'none';`;
+      ? `default-src 'self' 'unsafe-inline' 'unsafe-eval'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' https://ik.imagekit.io https://cdn.jsdelivr.net https://devicon.dev https://simpleicons.org https://cdn.simpleicons.org data: blob:; font-src 'self' data:; connect-src 'self' https://ik.imagekit.io https://cdn.jsdelivr.net https://devicon.dev https://simpleicons.org https://cdn.simpleicons.org ${githubApi}; frame-ancestors 'none';`
+      : `default-src 'self'; script-src 'self' 'unsafe-eval' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' https://ik.imagekit.io https://cdn.jsdelivr.net https://devicon.dev https://simpleicons.org https://cdn.simpleicons.org data: blob:; font-src 'self' data:; connect-src 'self' https://ik.imagekit.io https://cdn.jsdelivr.net https://devicon.dev https://simpleicons.org https://cdn.simpleicons.org ${githubApi}; frame-ancestors 'none';`;
 
     return [
       {

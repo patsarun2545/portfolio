@@ -64,7 +64,9 @@ export default function SkillsSection({ skills }: SkillsSectionProps) {
                             alt={name}
                             width={24}
                             height={24}
-                            className="w-6 h-6 object-contain shrink-0"
+                            className="w-6 h-6 object-contain shrink-0
+                              drop-shadow-[0_0_4px_rgba(0,0,0,0.35)]
+                              dark:drop-shadow-[0_0_5px_rgba(255,255,255,0.3)]"
                           />
                         ) : (
                           <div className="w-6 h-6 shrink-0" />

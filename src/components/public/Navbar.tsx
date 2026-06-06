@@ -72,23 +72,23 @@ export default function Navbar() {
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-14 sm:h-16">
-          <div className="shrink-0 mr-8">
+          <div className="shrink-0 mr-4">
             <a
               href="#"
               className="font-mono md:text-sm lg:text-base text-foreground"
             >
-              [ Portfolio ]
+              <span className="text-primary">[</span> Portfolio <span className="text-primary">]</span>
             </a>
           </div>
 
-          <div className="hidden md:flex items-center md:space-x-4 lg:space-x-6">
+          <div className="hidden md:flex items-center md:space-x-3 lg:space-x-6">
             {navItems.map((item) => {
               const isActive = activeSection === item.key;
               return (
                 <span key={item.key} className="relative group">
                   <button
                     onClick={() => scrollToSection(item.href)}
-                    className={`font-mono text-sm uppercase md:tracking-wider tracking-widest transition-colors ${isActive ? "text-primary" : "text-muted-foreground hover:text-primary"
+                    className={`font-mono text-xs uppercase tracking-wider transition-colors ${isActive ? "text-primary" : "text-muted-foreground hover:text-primary"
                       }`}
                     aria-label={`Navigate to ${t(`nav.${item.key}`)}`}
                   >
@@ -99,7 +99,7 @@ export default function Navbar() {
                 </span>
               );
             })}
-            <div className="flex items-center gap-2 pl-4 border-l border-border">
+            <div className="flex items-center gap-2 pl-2 border-l border-border">
               <LanguageToggle />
               <ThemeToggle />
             </div>

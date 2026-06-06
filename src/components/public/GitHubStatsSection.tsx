@@ -141,28 +141,23 @@ export default function GitHubStatsSection() {
         </div>
 
         {/* Bottom row — 1 full width card */}
-        <a href="https://github.com/patsarun2545"
-          target="_blank" rel="noopener noreferrer"
-          className="group block">
-          <div className="border border-border hover:border-primary/30
-            hover:shadow-lg hover:shadow-primary/10
-            transition-all duration-200 p-6 sm:p-8 text-center
-            flex items-center justify-center gap-6 bg-card">
-            <Code2 className="h-8 w-8 sm:h-10 sm:w-10 
-              shrink-0 text-yellow-500" />
-            <div>
-              <div className="text-2xl sm:text-3xl font-bold 
-                text-foreground mb-1">
+          <a href="https://github.com/patsarun2545"
+            target="_blank" rel="noopener noreferrer"
+            className="group block">
+            <div className="border border-border hover:border-primary/30
+              hover:shadow-lg hover:shadow-primary/10
+              transition-all duration-200 p-6 sm:p-8 text-center
+              flex flex-col items-center justify-center bg-card">
+              <Code2 className="h-8 w-8 sm:h-10 sm:w-10 mb-3 sm:mb-4 text-yellow-500" />
+              <div className="text-2xl sm:text-3xl font-bold text-foreground mb-1">
                 {stats.topLanguages.slice(0, 2).join(", ")}
-                {stats.topLanguages.length > 2 
-                  ? ` +${stats.topLanguages.length - 2}` : ""}
+                {stats.topLanguages.length > 2 ? ` +${stats.topLanguages.length - 2}` : ""}
               </div>
               <div className="text-xs sm:text-sm text-muted-foreground">
                 {t("githubStats.topLanguages")}
               </div>
             </div>
-          </div>
-        </a>
+          </a>
 
         <div className="mt-8 sm:mt-12 text-center">
           <a

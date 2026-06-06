@@ -24,7 +24,8 @@ export default function EngineeringHighlightsSection({ highlights }: Engineering
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-4 w-full">
           {highlights.length > 0 ? (
             highlights.map((highlight) => {
-              const title = locale === "th" ? highlight.titleTh || highlight.title : highlight.title;
+              const title = (locale === "th" ? highlight.titleTh || highlight.title : highlight.title)
+                .replace(/&amp;/g, "&");
               return (
                 <div
                   key={highlight.id}
@@ -34,17 +35,23 @@ export default function EngineeringHighlightsSection({ highlights }: Engineering
                   <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-sm" />
                   <div className="relative z-10 flex flex-col items-center gap-3">
                     {highlight.icon ? (
-                      <Image src={highlight.icon} alt={title} width={36} height={36}
-                        className="w-9 h-9 object-contain shrink-0" />
+                      <Image
+                        src={highlight.icon}
+                        alt={title}
+                        width={36}
+                        height={36}
+                        className="w-9 h-9 object-contain shrink-0
+                          drop-shadow-[0_0_6px_rgba(0,0,0,0.35)]
+                          dark:drop-shadow-[0_0_8px_rgba(255,255,255,0.3)]"
+                      />
                     ) : (
-                      <div className="w-9 h-9 shrink-0 border border-border/50 
-                        rounded-sm flex items-center justify-center">
+                      <div className="w-9 h-9 shrink-0 border border-border/50 rounded-sm flex items-center justify-center">
                         <span className="text-primary text-lg font-mono">
                           {title.charAt(0)}
                         </span>
                       </div>
                     )}
-                    <p className="font-mono text-xs text-muted-foreground group-hover:text-primary transition-colors leading-relaxed line-clamp-2">
+                    <p className="font-mono text-xs text-muted-foreground group-hover:text-primary transition-colors leading-relaxed line-clamp-2 min-h-[32px] flex items-center justify-center">
                       {title}
                     </p>
                   </div>

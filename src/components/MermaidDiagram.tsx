@@ -25,6 +25,7 @@ function ensureMermaidInit() {
       clusterBorder: '#60a5fa',
       titleColor: '#f8fafc',
       edgeLabelBackground: '#1e293b',
+      fontSize: '16px',
     },
   });
   mermaidInitialized = true;
@@ -56,7 +57,7 @@ export default function MermaidDiagram({ chart, className = '' }: MermaidDiagram
             // Convert simple flow arrows to Mermaid graph LR syntax
             const nodes = chartToRender.split('→').map(n => n.trim());
             const nodeIds = nodes.map((_, i) => `N${i}`);
-            let mermaidChart = 'graph LR\n';
+            let mermaidChart = 'graph TD\n';
             nodes.forEach((node, i) => {
               mermaidChart += `    ${nodeIds[i]}["${node}"]\n`;
               if (i < nodes.length - 1) {
