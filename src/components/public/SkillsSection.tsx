@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import { Skill } from "@prisma/client";
 import { useLocale } from "@/hooks/useLocale";
 
@@ -59,11 +58,9 @@ export default function SkillsSection({ skills }: SkillsSectionProps) {
                     return (
                       <div key={skill.id} className="flex items-center gap-3 py-2">
                         {skill.iconUrl ? (
-                          <Image
+                          <img
                             src={skill.iconUrl}
                             alt={name}
-                            width={24}
-                            height={24}
                             className="w-6 h-6 object-contain shrink-0
                               drop-shadow-[0_0_4px_rgba(0,0,0,0.35)]
                               dark:drop-shadow-[0_0_5px_rgba(255,255,255,0.3)]"

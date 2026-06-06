@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import { useLocale } from "@/hooks/useLocale";
 import type { EngineeringHighlight } from "@/types";
 
@@ -35,11 +34,9 @@ export default function EngineeringHighlightsSection({ highlights }: Engineering
                   <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-sm" />
                   <div className="relative z-10 flex flex-col items-center gap-3">
                     {highlight.icon ? (
-                      <Image
+                      <img
                         src={highlight.icon}
                         alt={title}
-                        width={36}
-                        height={36}
                         className="w-9 h-9 object-contain shrink-0
                           drop-shadow-[0_0_6px_rgba(0,0,0,0.35)]
                           dark:drop-shadow-[0_0_8px_rgba(255,255,255,0.3)]"
