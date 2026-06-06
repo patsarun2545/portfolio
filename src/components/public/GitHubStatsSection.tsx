@@ -41,27 +41,39 @@ export default function GitHubStatsSection() {
     return () => controller.abort();
   }, []);
 
-  if (loading) {
-    return (
-      <section id="github-stats" className="py-16 sm:py-20 px-4 sm:px-6 lg:px-8 border-t border-border">
-        <div className="max-w-6xl mx-auto animate-fade-in-up">
-          <p className="font-mono text-xs text-primary tracking-widest uppercase mb-2 text-center">{"// GITHUB STATS"}</p>
-          <h2 className="text-3xl sm:text-4xl font-black tracking-tight text-foreground mb-8 sm:mb-12 text-center">
-            {t("githubStats.title")}
-          </h2>
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
-            {[1,2,3,4].map(i => (
-              <div key={i} className="border border-border p-6 sm:p-8 text-center">
-                <div className="w-10 h-10 bg-border/50 rounded-sm mx-auto mb-4 animate-pulse" />
-                <div className="w-16 h-8 bg-border/50 rounded-sm mx-auto mb-2 animate-pulse" />
-                <div className="w-24 h-4 bg-border/50 rounded-sm mx-auto animate-pulse" />
+  {/* แทนที่ loading return เดิมทั้งหมด */}
+    if (loading) {
+      return (
+        <section id="github-stats" className="py-16 sm:py-20 px-4 sm:px-6 lg:px-8 border-t border-border">
+          <div className="max-w-6xl mx-auto animate-fade-in-up">
+            <p className="font-mono text-xs text-primary tracking-widest uppercase mb-2 text-center">
+              {"// GITHUB STATS"}
+            </p>
+            <div className="h-8 w-48 bg-border/50 rounded-sm mx-auto mb-8 sm:mb-12 animate-pulse" />
+
+            {/* แถวบน 3 การ์ด */}
+            <div className="grid grid-cols-3 gap-4 sm:gap-6 mb-4 sm:mb-6">
+              {[1, 2, 3].map((i) => (
+                <div key={i} className="border border-border p-6 sm:p-8 text-center flex flex-col items-center gap-3">
+                  <div className="w-10 h-10 bg-border/50 rounded-full animate-pulse" />
+                  <div className="w-16 h-7 bg-border/50 rounded-sm animate-pulse" />
+                  <div className="w-24 h-4 bg-border/50 rounded-sm animate-pulse" />
+                </div>
+              ))}
+            </div>
+
+            {/* แถวล่าง 1 การ์ดเต็มความกว้าง */}
+            <div className="border border-border p-6 sm:p-8 flex items-center justify-center gap-4 animate-pulse">
+              <div className="w-10 h-10 bg-border/50 rounded-full" />
+              <div className="flex flex-col gap-2">
+                <div className="w-40 h-7 bg-border/50 rounded-sm" />
+                <div className="w-24 h-4 bg-border/50 rounded-sm" />
               </div>
-            ))}
+            </div>
           </div>
-        </div>
-      </section>
-    );
-  }
+        </section>
+      );
+    }
 
   if (error || !stats) {
     return (
