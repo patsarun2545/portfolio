@@ -53,6 +53,7 @@ src/scripts/seed-education.ts
 src/scripts/seed-admin.ts
 src/scripts/seed-blog.ts
 src/scripts/seed-engineering-highlights.ts
+src/scripts/seed-documind.ts
 
 # IDE
 .vscode/

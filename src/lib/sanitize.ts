@@ -5,10 +5,9 @@ import sanitizeHtml from "sanitize-html";
  * Use this for user-provided text that should not contain HTML
  */
 export function sanitizeText(text: string): string {
-  return sanitizeHtml(text, {
-    allowedTags: [],
-    allowedAttributes: {},
-  });
+  // Use a simple regex to remove HTML tags without encoding entities
+  // This preserves special characters like &, <, > in plain text
+  return text.replace(/<[^>]*>/g, "");
 }
 
 /**
