@@ -85,10 +85,10 @@ export interface Experience {
   company: string;
   position: string;
   positionTh?: string | null;
-  description?: string;
+  description?: string | null;
   descriptionTh?: string | null;
   startDate: Date;
-  endDate?: Date;
+  endDate?: Date | null;
   isCurrent: boolean;
   sortOrder: number;
 }
@@ -101,9 +101,9 @@ export interface Education {
   fieldOfStudy?: string;
   fieldOfStudyTh?: string | null;
   startDate: Date;
-  endDate?: Date;
-  gpa?: string;
-  description?: string;
+  endDate?: Date | null;
+  gpa?: string | null;
+  description?: string | null;
   descriptionTh?: string | null;
   sortOrder: number;
 }

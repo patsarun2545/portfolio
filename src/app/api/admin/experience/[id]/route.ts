@@ -42,6 +42,7 @@ export async function PUT(request: Request, { params }: { params: Promise<{ id: 
         ...sanitizedData,
         startDate: new Date(sanitizedData.startDate),
         endDate: sanitizedData.endDate ? new Date(sanitizedData.endDate) : null,
+        description: sanitizedData.description ? sanitizedData.description : null,
       },
     });
 

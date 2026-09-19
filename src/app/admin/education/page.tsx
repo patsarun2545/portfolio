@@ -243,17 +243,18 @@ export default function EducationPage() {
     }
   };
 
-  const handleEdit = (education: Education) => {
-    setEditingEducation(education);
-    reset({
-      ...education,
-      startDate: new Date(education.startDate).toISOString().split('T')[0],
-      endDate: education.endDate ? new Date(education.endDate).toISOString().split('T')[0] : undefined,
-      gpa: education.gpa,
-      degreeTh: education.degreeTh || undefined,
-      fieldOfStudyTh: education.fieldOfStudyTh || undefined,
-      descriptionTh: education.descriptionTh || undefined,
-    });
+const handleEdit = (education: Education) => {
+  setEditingEducation(education);
+  reset({
+    ...education,
+    startDate: new Date(education.startDate).toISOString().split('T')[0],
+    endDate: education.endDate ? new Date(education.endDate).toISOString().split('T')[0] : undefined,
+    gpa: education.gpa || undefined,
+    description: education.description || undefined,
+    degreeTh: education.degreeTh || undefined,
+    fieldOfStudyTh: education.fieldOfStudyTh || undefined,
+    descriptionTh: education.descriptionTh || undefined,
+  });
     setStartDate(education.startDate ? new Date(education.startDate) : undefined);
     setEndDate(education.endDate ? new Date(education.endDate) : undefined);
     setIsDialogOpen(true);

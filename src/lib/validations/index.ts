@@ -89,11 +89,11 @@ export const experienceSchema = z
   .object({
     company: z.string().min(1, "Company is required"),
     position: z.string().min(1, "Position is required"),
-    description: z.string().optional(),
+    description: z.string().nullable().optional(),
     positionTh: z.string().optional(),
     descriptionTh: z.string().optional(),
     startDate: z.string().or(z.date()),
-    endDate: z.string().or(z.date()).optional(),
+    endDate: z.string().or(z.date()).nullable().optional(),
     isCurrent: z.boolean().default(false),
     sortOrder: z.number().default(0),
   })
@@ -108,14 +108,15 @@ export const educationSchema = z.object({
   fieldOfStudy: z.string().optional(),
   degreeTh: z.string().optional(),
   fieldOfStudyTh: z.string().optional(),
-  description: z.string().optional(),
+  description: z.string().nullable().optional(),
   descriptionTh: z.string().optional(),
   startDate: z.string().min(1, "Start date is required"),
-  endDate: z.string().optional(),
+  endDate: z.string().nullable().optional(),
   gpa: z
     .string()
+    .nullable()
     .optional()
-    .transform((val) => (val === "" ? undefined : val))
+    .transform((val) => (val === "" || val == null ? undefined : val))
     .refine((val) => !val || !isNaN(parseFloat(val)), {
       message: "GPA must be a valid number",
     }),

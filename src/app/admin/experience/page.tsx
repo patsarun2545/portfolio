@@ -242,13 +242,20 @@ export default function ExperiencePage() {
     }
   };
 
-  const handleEdit = (experience: Experience) => {
-    setEditingExperience(experience);
-    reset({
-      ...experience,
-      positionTh: experience.positionTh || undefined,
-      descriptionTh: experience.descriptionTh || undefined,
-    });
+const handleEdit = (experience: Experience) => {
+  setEditingExperience(experience);
+  reset({
+    ...experience,
+    positionTh: experience.positionTh || undefined,
+    descriptionTh: experience.descriptionTh || undefined,
+    description: experience.description || undefined,
+    startDate: experience.startDate
+      ? format(new Date(experience.startDate), "yyyy-MM-dd")
+      : "",
+    endDate: experience.endDate
+      ? format(new Date(experience.endDate), "yyyy-MM-dd")
+      : "",
+  });
     setStartDate(experience.startDate ? new Date(experience.startDate) : undefined);
     setEndDate(experience.endDate ? new Date(experience.endDate) : undefined);
     setIsDialogOpen(true);
