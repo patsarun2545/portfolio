@@ -71,12 +71,18 @@ export async function PUT(request: Request, { params }: { params: Promise<{ id: 
       return NextResponse.json({ error: "A post with this slug already exists" }, { status: 409 });
     }
 
+    // Keep the original publish date when editing an already-published post
+    const currentPost = await prisma.blogPost.findUnique({
+      where: { id: parseInt(id) },
+      select: { publishedAt: true },
+    });
+
     const blogPost = await prisma.blogPost.update({
       where: { id: parseInt(id) },
       data: {
         ...sanitizedData,
         content: sanitizeHTML(sanitizedData.content),
-        publishedAt: sanitizedData.isPublished ? new Date() : null,
+        publishedAt: sanitizedData.isPublished ? (currentPost?.publishedAt ?? new Date()) : null,
       },
       include: {
         images: {

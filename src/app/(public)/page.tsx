@@ -87,7 +87,7 @@ export default async function HomePage() {
     }),
     prisma.blogPost.findMany({
       where: { isPublished: true },
-      orderBy: { publishedAt: "desc" },
+      orderBy: [{ sortOrder: "asc" }, { publishedAt: "desc" }],
       include: {
         images: {
           orderBy: { sortOrder: "asc" },

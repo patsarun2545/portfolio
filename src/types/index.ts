@@ -124,6 +124,7 @@ export interface BlogPost {
   publishedAt?: Date;
   createdAt: Date;
   updatedAt: Date;
+  sortOrder: number;
   images: Array<{
     id: number;
     url: string;

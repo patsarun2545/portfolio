@@ -35,17 +35,51 @@ import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
 import { Plus, Pencil, Trash2, GripVertical, X, ZoomIn, Star, Eye } from "lucide-react";
 import dynamic from "next/dynamic";
-import { closestCenter, KeyboardSensor, PointerSensor, useSensor, useSensors, DragEndEvent, DndContext } from "@dnd-kit/core";
-import { arrayMove, sortableKeyboardCoordinates, useSortable, rectSortingStrategy, SortableContext, verticalListSortingStrategy } from "@dnd-kit/sortable";
+import {
+  closestCenter,
+  KeyboardSensor,
+  PointerSensor,
+  useSensor,
+  useSensors,
+  DragEndEvent,
+  DndContext,
+} from "@dnd-kit/core";
+import {
+  arrayMove,
+  sortableKeyboardCoordinates,
+  useSortable,
+  rectSortingStrategy,
+  SortableContext,
+  verticalListSortingStrategy,
+} from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import type { BlogImageWithLoading } from "@/types";
 
-const MDEditor = dynamic(
-  () => import("@uiw/react-md-editor").then((mod) => mod.default),
-  { ssr: false }
-);
+const MDEditor = dynamic(() => import("@uiw/react-md-editor").then((mod) => mod.default), {
+  ssr: false,
+});
 
-function SortableBlogPost({ post, onEdit, onDelete, onTogglePublish, onToggleFeatured, t, onImageClick }: { post: BlogPost; onEdit: (post: BlogPost) => void; onDelete: (id: number) => void; onTogglePublish: (id: number, isPublished: boolean) => void; onToggleFeatured: (id: number, isFeatured: boolean) => void; t: (key: string) => string; onImageClick: (url: string) => void }) {
+// ใช้ลำดับเดียวกับ BlogSection ฝั่ง public: Featured ขึ้นก่อน
+const sortFeaturedFirst = (list: BlogPost[]) =>
+  [...list].sort((a, b) => (b.isFeatured ? 1 : 0) - (a.isFeatured ? 1 : 0));
+
+function SortableBlogPost({
+  post,
+  onEdit,
+  onDelete,
+  onTogglePublish,
+  onToggleFeatured,
+  t,
+  onImageClick,
+}: {
+  post: BlogPost;
+  onEdit: (post: BlogPost) => void;
+  onDelete: (id: number) => void;
+  onTogglePublish: (id: number, isPublished: boolean) => void;
+  onToggleFeatured: (id: number, isFeatured: boolean) => void;
+  t: (key: string) => string;
+  onImageClick: (url: string) => void;
+}) {
   const { attributes, listeners, setNodeRef, transform, transition } = useSortable({ id: post.id });
   const style = {
     transform: CSS.Transform.toString(transform),
@@ -57,7 +91,12 @@ function SortableBlogPost({ post, onEdit, onDelete, onTogglePublish, onToggleFea
   return (
     <TableRow ref={setNodeRef} style={style}>
       <TableCell className="p-3 w-10">
-        <button {...attributes} {...listeners} className="cursor-grab" aria-label="Drag to reorder post">
+        <button
+          {...attributes}
+          {...listeners}
+          className="cursor-grab"
+          aria-label="Drag to reorder post"
+        >
           <GripVertical className="h-4 w-4 text-muted-foreground" />
         </button>
       </TableCell>
@@ -86,7 +125,9 @@ function SortableBlogPost({ post, onEdit, onDelete, onTogglePublish, onToggleFea
         )}
       </TableCell>
       <TableCell className="p-3 text-sm font-medium truncate max-w-[150px]">{post.title}</TableCell>
-      <TableCell className="p-3 text-sm text-muted-foreground hidden sm:table-cell truncate max-w-[150px]">{post.slug}</TableCell>
+      <TableCell className="p-3 text-sm text-muted-foreground hidden sm:table-cell truncate max-w-[150px]">
+        {post.slug}
+      </TableCell>
       <TableCell className="p-3 hidden md:table-cell">
         <Switch
           checked={post.isFeatured}
@@ -100,7 +141,10 @@ function SortableBlogPost({ post, onEdit, onDelete, onTogglePublish, onToggleFea
       </TableCell>
       <TableCell className="p-3 text-sm text-muted-foreground hidden md:table-cell w-28">
         {post.publishedAt
-          ? new Date(post.publishedAt).toLocaleDateString("en-US", { month: "short", year: "numeric" })
+          ? new Date(post.publishedAt).toLocaleDateString("en-US", {
+              month: "short",
+              year: "numeric",
+            })
           : t("admin.blogPage.notPublished")}
       </TableCell>
       <TableCell className="p-3 w-24">
@@ -113,7 +157,13 @@ function SortableBlogPost({ post, onEdit, onDelete, onTogglePublish, onToggleFea
           >
             {post.isPublished ? t("admin.unpublish") : t("admin.publish")}
           </Button>
-          <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => onEdit(post)} aria-label={`Edit post: ${post.title}`}>
+          <Button
+            variant="ghost"
+            size="icon"
+            className="h-8 w-8"
+            onClick={() => onEdit(post)}
+            aria-label={`Edit post: ${post.title}`}
+          >
             <Pencil className="h-4 w-4" />
           </Button>
           <Button
@@ -131,8 +181,18 @@ function SortableBlogPost({ post, onEdit, onDelete, onTogglePublish, onToggleFea
   );
 }
 
-function SortableImage({ image, onDelete, isDeleting }: { image: BlogImageWithLoading; onDelete: (id: number) => void; isDeleting: boolean }) {
-  const { attributes, listeners, setNodeRef, transform, transition } = useSortable({ id: image.id });
+function SortableImage({
+  image,
+  onDelete,
+  isDeleting,
+}: {
+  image: BlogImageWithLoading;
+  onDelete: (id: number) => void;
+  isDeleting: boolean;
+}) {
+  const { attributes, listeners, setNodeRef, transform, transition } = useSortable({
+    id: image.id,
+  });
   const style = {
     transform: CSS.Transform.toString(transform),
     transition,
@@ -140,7 +200,11 @@ function SortableImage({ image, onDelete, isDeleting }: { image: BlogImageWithLo
 
   return (
     <div ref={setNodeRef} style={style} className="relative group">
-      <div {...attributes} {...listeners} className="absolute top-1 left-1 bg-card rounded p-1 cursor-grab opacity-0 group-hover:opacity-100 transition-opacity z-10">
+      <div
+        {...attributes}
+        {...listeners}
+        className="absolute top-1 left-1 bg-card rounded p-1 cursor-grab opacity-0 group-hover:opacity-100 transition-opacity z-10"
+      >
         <GripVertical className="h-4 w-4" />
       </div>
       {image.isLoading ? (
@@ -212,7 +276,7 @@ export default function BlogPage() {
     try {
       const response = await fetch("/api/admin/blog");
       const data = await response.json();
-      setPosts(data.items || data);
+      setPosts(sortFeaturedFirst(data.items || data));
     } catch {
       toast.error(t("admin.blogPage.failedToLoad"));
     } finally {
@@ -289,7 +353,7 @@ export default function BlogPage() {
       isLoading: true,
     }));
 
-    setImages(prev => [...prev, ...tempImages]);
+    setImages((prev) => [...prev, ...tempImages]);
 
     // Upload all files
     for (let i = 0; i < Array.from(files).length; i++) {
@@ -315,34 +379,34 @@ export default function BlogPage() {
           uploadedUrls.push(result.url);
 
           // Update the temp image with the actual URL and remove loading state
-          setImages(prev =>
-            prev.map(img =>
-              img.id === tempImage.id
-                ? { ...img, url: result.url, isLoading: false }
-                : img
+          setImages((prev) =>
+            prev.map((img) =>
+              img.id === tempImage.id ? { ...img, url: result.url, isLoading: false } : img
             )
           );
         } else {
           failedFiles.push(file.name);
           // Remove the failed temp image
-          setImages(prev => prev.filter(img => img.id !== tempImage.id));
+          setImages((prev) => prev.filter((img) => img.id !== tempImage.id));
         }
       } catch (error) {
         clearTimeout(timeoutId);
-        if (error instanceof Error && error.name === 'AbortError') {
+        if (error instanceof Error && error.name === "AbortError") {
           toast.error(t("admin.blogPage.uploadTimeout"));
         } else {
           console.error("Upload error for", file.name, error);
           failedFiles.push(file.name);
         }
         // Remove the failed temp image
-        setImages(prev => prev.filter(img => img.id !== tempImage.id));
+        setImages((prev) => prev.filter((img) => img.id !== tempImage.id));
       }
     }
 
     // Show error for failed uploads
     if (failedFiles.length > 0) {
-      toast.error(t("admin.blogPage.imagesFailed").replace("{count}", failedFiles.length.toString()));
+      toast.error(
+        t("admin.blogPage.imagesFailed").replace("{count}", failedFiles.length.toString())
+      );
     }
 
     // If we have URLs and a postId, save them all at once
@@ -366,17 +430,19 @@ export default function BlogPage() {
     }
 
     if (uploadedUrls.length > 0) {
-      toast.success(t("admin.blogPage.imagesUploaded").replace("{count}", uploadedUrls.length.toString()));
+      toast.success(
+        t("admin.blogPage.imagesUploaded").replace("{count}", uploadedUrls.length.toString())
+      );
     }
   };
 
   const handleDeleteImage = async (imageId: number) => {
     const postId = editingPost?.id;
-    const image = images.find(img => img.id === imageId);
+    const image = images.find((img) => img.id === imageId);
 
     // If image is still loading or has no postId, just remove from local state
     if (!postId || image?.isLoading) {
-      setImages(images.filter(img => img.id !== imageId));
+      setImages(images.filter((img) => img.id !== imageId));
       return;
     }
 
@@ -389,7 +455,7 @@ export default function BlogPage() {
       });
 
       if (response.ok) {
-        setImages(images.filter(img => img.id !== imageId));
+        setImages(images.filter((img) => img.id !== imageId));
         toast.success(t("admin.blogPage.imageDeleted"));
       } else {
         toast.error(t("admin.blogPage.failedToDeleteImage"));
@@ -407,7 +473,7 @@ export default function BlogPage() {
 
     if (postId) {
       try {
-        await fetch(`/api/admin/blog/${postId}/images`, {
+        const response = await fetch(`/api/admin/blog/${postId}/images`, {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
@@ -420,6 +486,7 @@ export default function BlogPage() {
             })),
           }),
         });
+        if (!response.ok) throw new Error("Image reorder failed");
       } catch {
         toast.error(t("admin.blogPage.failedToReorder"));
       }
@@ -448,7 +515,7 @@ export default function BlogPage() {
     if (over && active.id !== over.id) {
       const oldIndex = posts.findIndex((post) => post.id === active.id);
       const newIndex = posts.findIndex((post) => post.id === over.id);
-      const newPosts = arrayMove(posts, oldIndex, newIndex);
+      const newPosts = sortFeaturedFirst(arrayMove(posts, oldIndex, newIndex));
       setPosts(newPosts);
 
       // Update sortOrder
@@ -458,7 +525,7 @@ export default function BlogPage() {
       }));
 
       try {
-        await fetch("/api/admin/blog/reorder", {
+        const response = await fetch("/api/admin/blog/reorder", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -466,6 +533,7 @@ export default function BlogPage() {
           },
           body: JSON.stringify({ items }),
         });
+        if (!response.ok) throw new Error("Reorder failed");
         toast.success(t("admin.blogPage.reorderSuccess"));
       } catch {
         toast.error(t("admin.blogPage.failedToReorder"));
@@ -476,7 +544,7 @@ export default function BlogPage() {
 
   const saveImages = async (postId: number) => {
     if (images.length > 0) {
-      const imageUrls = images.map(img => img.url).filter(url => url !== "");
+      const imageUrls = images.map((img) => img.url).filter((url) => url !== "");
       if (imageUrls.length > 0) {
         const response = await fetch(`/api/admin/blog/${postId}/images`, {
           method: "POST",
@@ -496,9 +564,7 @@ export default function BlogPage() {
   const onSubmit = async (data: z.infer<typeof blogSchema>) => {
     setIsSaving(true);
     try {
-      const url = editingPost
-        ? `/api/admin/blog/${editingPost.id}`
-        : "/api/admin/blog";
+      const url = editingPost ? `/api/admin/blog/${editingPost.id}` : "/api/admin/blog";
       const method = editingPost ? "PUT" : "POST";
 
       const response = await fetch(url, {
@@ -601,7 +667,7 @@ export default function BlogPage() {
   };
 
   const handleDelete = async (id: number) => {
-    const post = posts.find(p => p.id === id);
+    const post = posts.find((p) => p.id === id);
     if (post) {
       setPostToDelete(post);
       setDeleteDialogOpen(true);
@@ -699,7 +765,9 @@ export default function BlogPage() {
       <div className="flex items-center justify-center min-h-[50vh]">
         <div className="flex flex-col items-center gap-4">
           <div className="h-10 w-10 animate-spin rounded-full border-4 border-muted-foreground/30 border-t-primary" />
-          <p className="text-sm text-muted-foreground">{mounted ? t("admin.blogPage.loading") : "Loading..."}</p>
+          <p className="text-sm text-muted-foreground">
+            {mounted ? t("admin.blogPage.loading") : "Loading..."}
+          </p>
         </div>
       </div>
     );
@@ -709,8 +777,12 @@ export default function BlogPage() {
     <div className="space-y-6">
       <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
         <div className="flex-1">
-          <h1 className="text-2xl sm:text-3xl font-bold tracking-tight">{t("admin.blogPage.title")}</h1>
-          <p className="text-muted-foreground text-sm sm:text-base mt-1">{t("admin.blogPage.subtitle")}</p>
+          <h1 className="text-2xl sm:text-3xl font-bold tracking-tight">
+            {t("admin.blogPage.title")}
+          </h1>
+          <p className="text-muted-foreground text-sm sm:text-base mt-1">
+            {t("admin.blogPage.subtitle")}
+          </p>
         </div>
         <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
           <DialogTrigger asChild>
@@ -721,9 +793,13 @@ export default function BlogPage() {
           </DialogTrigger>
           <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto p-4 sm:p-6">
             <DialogHeader>
-              <DialogTitle className="text-lg sm:text-xl">{editingPost ? t("admin.blogPage.editPost") : t("admin.blogPage.addNewPost")}</DialogTitle>
+              <DialogTitle className="text-lg sm:text-xl">
+                {editingPost ? t("admin.blogPage.editPost") : t("admin.blogPage.addNewPost")}
+              </DialogTitle>
               <DialogDescription className="text-sm">
-                {editingPost ? t("admin.blogPage.editPostDesc") : t("admin.blogPage.addNewPostDesc")}
+                {editingPost
+                  ? t("admin.blogPage.editPostDesc")
+                  : t("admin.blogPage.addNewPostDesc")}
               </DialogDescription>
             </DialogHeader>
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 sm:space-y-5">
@@ -732,39 +808,47 @@ export default function BlogPage() {
                 <button
                   type="button"
                   onClick={() => setActiveTab("en")}
-                  className={`px-4 py-2 text-sm font-medium rounded-t transition-colors ${activeTab === "en"
-                    ? "bg-primary text-primary-foreground"
-                    : "text-muted-foreground hover:bg-accent"
-                    }`}
+                  className={`px-4 py-2 text-sm font-medium rounded-t transition-colors ${
+                    activeTab === "en"
+                      ? "bg-primary text-primary-foreground"
+                      : "text-muted-foreground hover:bg-accent"
+                  }`}
                 >
                   English
                 </button>
                 <button
                   type="button"
                   onClick={() => setActiveTab("th")}
-                  className={`px-4 py-2 text-sm font-medium rounded-t transition-colors ${activeTab === "th"
-                    ? "bg-primary text-primary-foreground"
-                    : "text-muted-foreground hover:bg-accent"
-                    }`}
+                  className={`px-4 py-2 text-sm font-medium rounded-t transition-colors ${
+                    activeTab === "th"
+                      ? "bg-primary text-primary-foreground"
+                      : "text-muted-foreground hover:bg-accent"
+                  }`}
                 >
                   ภาษาไทย
                 </button>
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="title" className="text-sm font-medium">{t("admin.blogPage.titleLabel")} *</Label>
+                <Label htmlFor="title" className="text-sm font-medium">
+                  {t("admin.blogPage.titleLabel")} *
+                </Label>
                 <Input id="title" {...register("title")} placeholder="My Blog Post" />
                 {errors.title && <p className="text-xs text-destructive">{errors.title.message}</p>}
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="slug" className="text-sm font-medium">{t("admin.blogPage.slugLabel")} *</Label>
+                <Label htmlFor="slug" className="text-sm font-medium">
+                  {t("admin.blogPage.slugLabel")} *
+                </Label>
                 <Input id="slug" {...register("slug")} placeholder="my-blog-post" />
                 {errors.slug && <p className="text-xs text-destructive">{errors.slug.message}</p>}
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="excerpt" className="text-sm font-medium">{t("admin.blogPage.excerptLabel")}</Label>
+                <Label htmlFor="excerpt" className="text-sm font-medium">
+                  {t("admin.blogPage.excerptLabel")}
+                </Label>
                 <Textarea
                   id="excerpt"
                   {...register("excerpt")}
@@ -778,7 +862,9 @@ export default function BlogPage() {
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="content" className="text-sm font-medium">{t("admin.blogPage.contentLabel")} *</Label>
+                <Label htmlFor="content" className="text-sm font-medium">
+                  {t("admin.blogPage.contentLabel")} *
+                </Label>
                 <div data-color-mode="light">
                   <MDEditor
                     value={watch("content") || ""}
@@ -794,13 +880,19 @@ export default function BlogPage() {
               {activeTab === "th" && (
                 <>
                   <div className="space-y-2">
-                    <Label htmlFor="titleTh" className="text-sm font-medium">{t("admin.blogPage.titleTh")}</Label>
+                    <Label htmlFor="titleTh" className="text-sm font-medium">
+                      {t("admin.blogPage.titleTh")}
+                    </Label>
                     <Input id="titleTh" {...register("titleTh")} placeholder="โพสต์บล็อกของฉัน" />
-                    {errors.titleTh && <p className="text-xs text-destructive">{errors.titleTh.message}</p>}
+                    {errors.titleTh && (
+                      <p className="text-xs text-destructive">{errors.titleTh.message}</p>
+                    )}
                   </div>
 
                   <div className="space-y-2">
-                    <Label htmlFor="excerptTh" className="text-sm font-medium">{t("admin.blogPage.excerptTh")}</Label>
+                    <Label htmlFor="excerptTh" className="text-sm font-medium">
+                      {t("admin.blogPage.excerptTh")}
+                    </Label>
                     <Textarea
                       id="excerptTh"
                       {...register("excerptTh")}
@@ -814,7 +906,9 @@ export default function BlogPage() {
                   </div>
 
                   <div className="space-y-2">
-                    <Label htmlFor="contentTh" className="text-sm font-medium">{t("admin.blogPage.contentTh")}</Label>
+                    <Label htmlFor="contentTh" className="text-sm font-medium">
+                      {t("admin.blogPage.contentTh")}
+                    </Label>
                     <div data-color-mode="light">
                       <MDEditor
                         value={watch("contentTh") || ""}
@@ -830,7 +924,9 @@ export default function BlogPage() {
               )}
 
               <div className="space-y-2">
-                <Label htmlFor="images" className="text-sm font-medium">{t("admin.blogPage.images")}</Label>
+                <Label htmlFor="images" className="text-sm font-medium">
+                  {t("admin.blogPage.images")}
+                </Label>
                 <Input
                   id="images"
                   type="file"
@@ -839,8 +935,15 @@ export default function BlogPage() {
                   onChange={handleImageUpload}
                 />
                 {images.length > 0 && (
-                  <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
-                    <SortableContext items={images.map(img => img.id)} strategy={rectSortingStrategy}>
+                  <DndContext
+                    sensors={sensors}
+                    collisionDetection={closestCenter}
+                    onDragEnd={handleDragEnd}
+                  >
+                    <SortableContext
+                      items={images.map((img) => img.id)}
+                      strategy={rectSortingStrategy}
+                    >
                       <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 mt-2">
                         {images.map((image) => (
                           <SortableImage
@@ -857,9 +960,19 @@ export default function BlogPage() {
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="readingTime" className="text-sm font-medium">{t("admin.blogPage.readingTimeLabel")}</Label>
-                <Input id="readingTime" type="number" {...register("readingTime", { valueAsNumber: true })} placeholder="5" min="0" />
-                {errors.readingTime && <p className="text-xs text-destructive">{errors.readingTime.message}</p>}
+                <Label htmlFor="readingTime" className="text-sm font-medium">
+                  {t("admin.blogPage.readingTimeLabel")}
+                </Label>
+                <Input
+                  id="readingTime"
+                  type="number"
+                  {...register("readingTime", { valueAsNumber: true })}
+                  placeholder="5"
+                  min="0"
+                />
+                {errors.readingTime && (
+                  <p className="text-xs text-destructive">{errors.readingTime.message}</p>
+                )}
               </div>
 
               <div className="flex items-center space-x-4 sm:space-x-6">
@@ -869,7 +982,10 @@ export default function BlogPage() {
                     checked={watch("isFeatured")}
                     onCheckedChange={(checked) => setValue("isFeatured", checked)}
                   />
-                  <Label htmlFor="isFeatured" className="flex items-center gap-2 text-sm font-medium cursor-pointer">
+                  <Label
+                    htmlFor="isFeatured"
+                    className="flex items-center gap-2 text-sm font-medium cursor-pointer"
+                  >
                     <Star className="h-4 w-4" />
                     {t("admin.blogPage.isFeaturedLabel")}
                   </Label>
@@ -880,7 +996,10 @@ export default function BlogPage() {
                     checked={watch("isPublished")}
                     onCheckedChange={(checked) => setValue("isPublished", checked)}
                   />
-                  <Label htmlFor="isPublished" className="flex items-center gap-2 text-sm font-medium cursor-pointer">
+                  <Label
+                    htmlFor="isPublished"
+                    className="flex items-center gap-2 text-sm font-medium cursor-pointer"
+                  >
                     <Eye className="h-4 w-4" />
                     {t("admin.blogPage.published")}
                   </Label>
@@ -888,15 +1007,15 @@ export default function BlogPage() {
               </div>
 
               <div className="flex justify-end gap-2 sm:gap-3 pt-2">
-                <Button
-                  type="button"
-                  variant="outline"
-                  onClick={() => setIsDialogOpen(false)}
-                >
+                <Button type="button" variant="outline" onClick={() => setIsDialogOpen(false)}>
                   {t("admin.blogPage.cancelBtn")}
                 </Button>
                 <Button type="submit" disabled={isSaving}>
-                  {isSaving ? t("admin.blogPage.saving") : editingPost ? t("admin.blogPage.update") : t("admin.blogPage.create")}
+                  {isSaving
+                    ? t("admin.blogPage.saving")
+                    : editingPost
+                      ? t("admin.blogPage.update")
+                      : t("admin.blogPage.create")}
                 </Button>
               </div>
             </form>
@@ -908,7 +1027,10 @@ export default function BlogPage() {
             <DialogHeader>
               <DialogTitle>{t("admin.blogPage.confirmDeleteTitle")}</DialogTitle>
               <DialogDescription>
-                {t("admin.blogPage.confirmDeleteDesc").replace("{title}", postToDelete?.title || "")}
+                {t("admin.blogPage.confirmDeleteDesc").replace(
+                  "{title}",
+                  postToDelete?.title || ""
+                )}
               </DialogDescription>
             </DialogHeader>
             <div className="flex justify-end gap-3 pt-4">
@@ -929,7 +1051,7 @@ export default function BlogPage() {
         </Dialog>
 
         {lightboxOpen && (
-          <div 
+          <div
             className="fixed inset-0 z-50 flex items-center justify-center bg-black"
             onClick={() => setLightboxOpen(false)}
           >
@@ -959,19 +1081,40 @@ export default function BlogPage() {
       <Card>
         <CardContent className="p-0">
           <div className="overflow-x-auto">
-            <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handlePostDragEnd}>
-              <SortableContext items={posts.map((p) => p.id)} strategy={verticalListSortingStrategy}>
+            <DndContext
+              sensors={sensors}
+              collisionDetection={closestCenter}
+              onDragEnd={handlePostDragEnd}
+            >
+              <SortableContext
+                items={posts.map((p) => p.id)}
+                strategy={verticalListSortingStrategy}
+              >
                 <Table>
                   <TableHeader>
                     <TableRow>
                       <TableHead className="w-10" />
-                      <TableHead className="whitespace-nowrap w-16 hidden sm:table-cell">{t("admin.blogPage.image")}</TableHead>
-                      <TableHead className="whitespace-nowrap">{t("admin.blogPage.titleLabel")}</TableHead>
-                      <TableHead className="whitespace-nowrap hidden sm:table-cell">{t("admin.blogPage.slugLabel")}</TableHead>
-                      <TableHead className="whitespace-nowrap w-16 hidden md:table-cell">{t("admin.blogPage.featured")}</TableHead>
-                      <TableHead className="whitespace-nowrap w-20">{t("admin.blogPage.status")}</TableHead>
-                      <TableHead className="whitespace-nowrap w-28 hidden md:table-cell">{t("admin.blogPage.date")}</TableHead>
-                      <TableHead className="whitespace-nowrap w-24 text-right">{t("admin.blogPage.actions")}</TableHead>
+                      <TableHead className="whitespace-nowrap w-16 hidden sm:table-cell">
+                        {t("admin.blogPage.image")}
+                      </TableHead>
+                      <TableHead className="whitespace-nowrap">
+                        {t("admin.blogPage.titleLabel")}
+                      </TableHead>
+                      <TableHead className="whitespace-nowrap hidden sm:table-cell">
+                        {t("admin.blogPage.slugLabel")}
+                      </TableHead>
+                      <TableHead className="whitespace-nowrap w-16 hidden md:table-cell">
+                        {t("admin.blogPage.featured")}
+                      </TableHead>
+                      <TableHead className="whitespace-nowrap w-20">
+                        {t("admin.blogPage.status")}
+                      </TableHead>
+                      <TableHead className="whitespace-nowrap w-28 hidden md:table-cell">
+                        {t("admin.blogPage.date")}
+                      </TableHead>
+                      <TableHead className="whitespace-nowrap w-24 text-right">
+                        {t("admin.blogPage.actions")}
+                      </TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>

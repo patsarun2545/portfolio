@@ -21,7 +21,7 @@ export async function GET(request: Request) {
 
     const [blogPosts, total] = await Promise.all([
       prisma.blogPost.findMany({
-        orderBy: { createdAt: "desc" },
+        orderBy: [{ sortOrder: "asc" }, { createdAt: "desc" }],
         skip,
         take: limit,
         include: {
@@ -100,12 +100,15 @@ export async function POST(request: Request) {
       );
     }
 
+    const { _min } = await prisma.blogPost.aggregate({ _min: { sortOrder: true } });
+
     const blogPost = await prisma.blogPost.create({
       data: {
         ...sanitizedData,
         slug: finalSlug,
         content: sanitizeHTML(sanitizedData.content),
         publishedAt: sanitizedData.isPublished ? new Date() : null,
+        sortOrder: (_min.sortOrder ?? 1) - 1,
       },
     });
 

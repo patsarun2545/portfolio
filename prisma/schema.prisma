@@ -10,32 +10,32 @@ datasource db {
 }
 
 model About {
-  id                  Int      @id @default(autoincrement())
-  name                String   @db.VarChar(100)
-  title               String   @db.VarChar(200)
-  titleTh             String?  @db.VarChar(200)
-  bio                 String   @db.Text
-  bioTh               String?  @db.Text
-  avatarUrl           String?  @db.VarChar(500)
-  resumeUrl           String?  @db.VarChar(500)
-  githubUrl           String?  @db.VarChar(300)
-  linkedinUrl         String?  @db.VarChar(300)
-  email               String   @db.VarChar(200)
-  phone               String?  @db.VarChar(50)
-  location            String?  @db.VarChar(200)
-  locationTh          String?  @db.VarChar(200)
-  status              String?  @db.VarChar(500)
-  statusTh            String?  @db.VarChar(500)
-  availability        String?  @db.VarChar(100)
-  availabilityTh      String?  @db.VarChar(100)
-  yearsOfExperience   Int?     @default(0)
-  strengths           String?  @db.Text
-  strengthsTh         String?  @db.Text
-  goals               String?  @db.Text
-  goalsTh             String?  @db.Text
-  nowLearning         String?  @db.Text
-  nowLearningTh       String?  @db.Text
-  updatedAt           DateTime @updatedAt
+  id                Int      @id @default(autoincrement())
+  name              String   @db.VarChar(100)
+  title             String   @db.VarChar(200)
+  titleTh           String?  @db.VarChar(200)
+  bio               String   @db.Text
+  bioTh             String?  @db.Text
+  avatarUrl         String?  @db.VarChar(500)
+  resumeUrl         String?  @db.VarChar(500)
+  githubUrl         String?  @db.VarChar(300)
+  linkedinUrl       String?  @db.VarChar(300)
+  email             String   @db.VarChar(200)
+  phone             String?  @db.VarChar(50)
+  location          String?  @db.VarChar(200)
+  locationTh        String?  @db.VarChar(200)
+  status            String?  @db.VarChar(500)
+  statusTh          String?  @db.VarChar(500)
+  availability      String?  @db.VarChar(100)
+  availabilityTh    String?  @db.VarChar(100)
+  yearsOfExperience Int?     @default(0)
+  strengths         String?  @db.Text
+  strengthsTh       String?  @db.Text
+  goals             String?  @db.Text
+  goalsTh           String?  @db.Text
+  nowLearning       String?  @db.Text
+  nowLearningTh     String?  @db.Text
+  updatedAt         DateTime @updatedAt
 }
 
 model Skill {
@@ -152,8 +152,10 @@ model BlogPost {
   createdAt   DateTime    @default(now())
   updatedAt   DateTime    @updatedAt
   images      BlogImage[]
+  sortOrder   Int         @default(0)
 
   @@index([isPublished, publishedAt])
+  @@index([sortOrder])
   @@index([slug])
 }
 
